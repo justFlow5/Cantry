@@ -11,7 +11,7 @@ netlifyIdentity.init();
 const handleClick = () => {
   netlifyIdentity.logout();
   console.log('logged out');
-  navigate('/');
+  // navigate('/');
 };
 
 const NavBar = styled.nav`

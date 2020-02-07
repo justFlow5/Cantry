@@ -19,6 +19,6 @@ import dotenv from 'dotenv';
 import netlifyIdentity from 'netlify-identity-widget';
 dotenv.config();
 
-// netlifyIdentity.init()
+netlifyIdentity.init();
 
 ReactDOM.render(<App />, document.getElementById('root'));
