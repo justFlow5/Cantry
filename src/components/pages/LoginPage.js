@@ -16,14 +16,13 @@ netlifyIdentity.init();
 const LoginPage = () => {
   const [uid, setUid] = useState('');
   const handleClick = () => {
-    netlifyIdentity.open('login');
+    netlifyIdentity.open();
     netlifyIdentity.on('login', user => {
       console.log('WELCOME: ', user.id);
-      if (user) {
-        // setUid(user.id);
-
-        navigate('/dashboard');
-      }
+      navigate('/dashboard');
+      // if (user) {
+      //   // setUid(user.id);
+      // }
     });
   };
 
