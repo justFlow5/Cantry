@@ -16,23 +16,9 @@ import AppRouter from './AppRouter';
 import UserContext from './components/User-context';
 
 import dotenv from 'dotenv';
+import netlifyIdentity from 'netlify-identity-widget';
 dotenv.config();
 
-export function initNetlifyIdentity() {
-  console.log('initNetlifyIdentity called.');
-  const script = document.createElement('script');
-
-  script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-  script.async = true;
-
-  document.body.appendChild(script);
-}
-
-export function openNetlifyModal() {
-  const netlifyIdentity = window.netlifyIdentity;
-
-  if (netlifyIdentity) netlifyIdentity.open();
-  else console.log('netlifyIdentity not defined');
-}
+// netlifyIdentity.init()
 
 ReactDOM.render(<App />, document.getElementById('root'));

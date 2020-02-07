@@ -3,6 +3,16 @@ import styled from 'styled-components';
 import { Link } from '@reach/router';
 // import { logout } from '../index';
 import { logout } from '../firebase/Firebase';
+import netlifyIdentity from 'netlify-identity-widget';
+import { navigate } from '@reach/router';
+
+netlifyIdentity.init();
+
+const handleClick = () => {
+  netlifyIdentity.logout();
+  console.log('logged out');
+  navigate('/');
+};
 
 const NavBar = styled.nav`
   position: fixed;
@@ -56,7 +66,14 @@ export default () => {
     <NavBar>
       <Link to="/dashboard">HOME</Link>
       <Link to="/about">ABOUT</Link>
-      <a onClick={logout}>LOGOUT</a>
+
+      <a onClick={handleClick}>LOGOUT</a>
+
+      {/*       
+      <a onClick={() => {
+        logout
+      }}>LOGOUT</a> */}
+
       {/* <button onClick={logout}>loog out</button> */}
     </NavBar>
   );

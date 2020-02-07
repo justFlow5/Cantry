@@ -128,7 +128,10 @@ const SadFace = styled.div`
   }
 `;
 
-export default () => {
+export default props => {
+  const uid = props.location.state.uid;
+  console.log('UUUIIIIDDD', uid);
+
   const [step, setStep] = useState(1);
 
   const [plans, dispatch] = useReducer(plansReducer, [], () => {
@@ -185,7 +188,7 @@ export default () => {
     // GET A KEY OF NEWLY ADDED PLAN
     var key;
 
-    db.ref('plans')
+    db.ref(`users/${uid}/plans`)
       .push(newPlan)
       .then(snap => {
         key = snap.key;
@@ -197,15 +200,15 @@ export default () => {
         // console.log('KEY under IF: ', key);
 
         // specificators.forEach(({ singleSpec }) => {
-        db.ref(`plans/${key}/specificators`).set(specificators);
+        db.ref(`users/${uid}/plans/${key}/specificators`).set(specificators);
         // });
 
         // prices.forEach(({ singlePrice }) => {
-        db.ref(`plans/${key}/prices`).set(prices);
+        db.ref(`users/${uid}/plans/${key}/prices`).set(prices);
         // });
 
         // dailyTasks.forEach(({ dailyTask }) => {
-        db.ref(`plans/${key}/dailyTasks`).set(dailyTasks);
+        db.ref(`users/${uid}/plans/${key}/dailyTasks`).set(dailyTasks);
         // });
       })
 
@@ -237,7 +240,7 @@ export default () => {
 
         // snapshot.forEach(childSnapshot => {
 
-        db.ref(`plans/${key}/specificators`)
+        db.ref(`users/${uid}/plans/${key}/specificators`)
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(spec => {
@@ -248,7 +251,7 @@ export default () => {
             });
           });
 
-        db.ref(`plans/${key}/prices`)
+        db.ref(`users/${uid}/plans/${key}/prices`)
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(price => {
@@ -259,7 +262,7 @@ export default () => {
             });
           });
 
-        db.ref(`plans/${key}/dailyTasks`)
+        db.ref(`users/${uid}/plans/${key}/dailyTasks`)
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(task => {
@@ -413,7 +416,7 @@ export default () => {
       deadline,
       id
     };
-    db.ref(`plans/${id}`).update(updatedPlan);
+    db.ref(`users/${uid}/plans/${id}`).update(updatedPlan);
 
     const updatedPlans = plans.map(plan => {
       if (plan.id === id) {
@@ -496,7 +499,7 @@ export default () => {
 
   const getDataFromDb = async () => {
     console.log('DB FROM FUNCTION: ', db);
-    const plansRef = db.ref('plans');
+    const plansRef = db.ref('users/${uid}/plans');
     const plansSnapshot = await plansRef.once('value');
 
     var plansLength;
@@ -524,11 +527,13 @@ export default () => {
       (async () => {
         const idDb = childSnapshot.key;
 
-        const goalRef = db.ref(`plans/${childSnapshot.key}/goal`);
+        const goalRef = db.ref(`users/${uid}/plans/${childSnapshot.key}/goal`);
         const goalSnapshot = await goalRef.once('value');
         const goalDb = goalSnapshot.val();
 
-        const deadlineRef = db.ref(`plans/${childSnapshot.key}/deadline`);
+        const deadlineRef = db.ref(
+          `users/${uid}/plans/${childSnapshot.key}/deadline`
+        );
         const deadlineSnapshot = await deadlineRef.once('value');
         const deadlineDb = deadlineSnapshot.val();
 
@@ -545,7 +550,9 @@ export default () => {
         });
 
         const pricesDb = [];
-        const pricesRef = db.ref(`plans/${childSnapshot.key}/prices`);
+        const pricesRef = db.ref(
+          `users/${uid}/plans/${childSnapshot.key}/prices`
+        );
         const pricesSnapshot = await pricesRef.once('value');
         pricesSnapshot.forEach(price => {
           pricesDb.push(
@@ -555,7 +562,9 @@ export default () => {
         });
 
         const dailyTasksDb = [];
-        const dailyTasksRef = db.ref(`plans/${childSnapshot.key}/dailyTasks`);
+        const dailyTasksRef = db.ref(
+          `users/${uid}/plans/${childSnapshot.key}/dailyTasks`
+        );
         const dailyTasksSnapshot = await dailyTasksRef.once('value');
         dailyTasksSnapshot.forEach(task => {
           dailyTasksDb.push(
