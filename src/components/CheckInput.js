@@ -60,7 +60,15 @@ const LabelText = styled.label`
   color: #606060;
   color: #505050;
   letter-spacing: 0.1px;
+  display: inline-block;
   transition: all 0.2s;
+
+  &.activeTask {
+    background: #d6d7d8;
+    border: 1px solid #858689;
+    box-shadow: 0 0 10px;
+    /* padding: 5px 20px; */
+  }
 
   /* & + .horizontalLine {
     width: 80%;
@@ -86,11 +94,18 @@ const LabelText = styled.label`
     color: #181818;
     color: #101010;
     color: #181818;
-    letter-spacing: 0.15px;
+    /* letter-spacing: 0.15px; */
   }
 `;
 
-const CheckInput = ({ dailyTask, id }) => {
+const CheckInput = ({
+  dailyTask,
+  id,
+  isEditible,
+  editField,
+  setIsEditActive,
+  isEditActive
+}) => {
   return (
     <>
       <Input type="checkbox" id={id} className="check" />
@@ -101,7 +116,18 @@ const CheckInput = ({ dailyTask, id }) => {
 
         {/* <span className="taskText"> 30 min per day on programming</span> */}
       </LabelBox>
-      <LabelText htmlFor={id}>{dailyTask}</LabelText>
+      <LabelText
+        id={id}
+        className={isEditActive === id ? 'activeTask' : ''}
+        contentEditable={isEditible}
+        htmlFor={isEditible ? 'u' : id}
+        onClick={isEditible && editField}
+        onBlur={() => {
+          setIsEditActive('');
+        }}
+      >
+        {dailyTask}
+      </LabelText>
       <div className="horizontalLine"></div>
     </>
   );

@@ -1,12 +1,7 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
+import { Link } from '@reach/router';
 
-import PlanContext from '../Plan-context';
-
-import 'react-dates/initialize';
-// import '../formComponents/_datepicker_custom.css';
-import './_template_datePicker.css';
-
-import { SingleDatePicker } from 'react-dates';
+import InputField from '../formComponents/InputField';
 
 import styled from 'styled-components';
 import NavBar from '../Navbar';
@@ -173,10 +168,9 @@ const PlanTitle = styled.h3`
 
 const Deadline = styled.p`
   font-size: 17px;
-  /* width: 100%; */
+  width: 100%;
   text-align: center;
   font-weight: 300;
-  /* display: inline; */
   transition: all 0.3s;
 
   &.activeDeadline {
@@ -219,7 +213,6 @@ const DescriptionContainer = styled.div`
     padding: 10px;
     display: flex;
     margin: 30px auto 0;
-    width: 100%;
 
     /* flex: 1 1 0; */
 
@@ -343,8 +336,7 @@ const EditPopUp = styled.div`
   height: 70px;
   /* background: rgba(255, 255, 255, 0.7); */
   background-color: rgba(0, 0, 0, 0.45);
-  /* color: #d8d8d8; */
-  color: #F9F4F3;
+  color: #d8d8d8;
   border-radius: 10px;
   /* right: ${props => (props.hide ? '0' : '65px')}; */
   right: -150px;
@@ -369,21 +361,15 @@ const EditPopUp = styled.div`
   }
 `;
 
-const PlanTemplate = ({ location }) => {
+const PlanTemplateEdit = ({ location }) => {
   const {
     id,
     goal,
     specificators,
     prices,
     dailyTasks,
-    deadline,
-    setGoal,
-    setDeadline,
-    setSpecificators,
-    setPrices,
-    setDailyTasks
+    deadline
   } = location.state;
-
   // console.log('location.state: ', location.state);
 
   const [isEditible, setIsEditible] = useState(false);
@@ -391,8 +377,6 @@ const PlanTemplate = ({ location }) => {
   const [editComplete, setEditComplete] = useState(true);
 
   const [isEditActive, setIsEditActive] = useState('');
-
-  const [superNewDeadline, setSuperNewDeadline] = useState('');
 
   const buttonContent = useRef(null);
 
@@ -407,14 +391,12 @@ const PlanTemplate = ({ location }) => {
     }
   };
 
+  const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
+
   const editField = e => {
     // if (isEditible)
     console.dir(e.target);
-    // e.target.innerText;
     setIsEditActive(e.target.id);
-
-    // console.log('HTML change');
-    // if (e.target.name === 'specificators') setSpecificators()
 
     // e.target.style.background = '#D6D7D8';
     // e.target.style.border = '1px solid black';
@@ -423,14 +405,6 @@ const PlanTemplate = ({ location }) => {
   // const closeEdit = e => {
   //   e.target.style.background = 'rgba(244, 244, 244, 0.7)';
   // };
-  const [focused, setFocused] = useState(null);
-  // const [date, setDate] = useState(null);
-
-  const onDateChange = newDeadline => {
-    if (newDeadline) {
-      setSuperNewDeadline(newDeadline);
-    }
-  };
 
   return (
     <>
@@ -441,77 +415,20 @@ const PlanTemplate = ({ location }) => {
           {/* <InnerBox> */}
           <div className="innerBox">
             <PlanContent>
-              {/* <div className="example"> */}
-              {/* <PlanTitleContainer> */}
-              <PlanTitle
-                id={id}
-                contentEditable={isEditible}
-                className={isEditActive === id ? 'activeTitle' : ''}
-                onClick={isEditible && editField}
-                onBlur={() => {
-                  setIsEditActive('');
-                }}
-              >
-                {goal}
-                {isEditible && (
-                  <span>
-                    <FeatherIcon
-                    // width="40px"
-                    // height="40px"
-                    // className="featherIcon"
-                    />
-                  </span>
-                )}
-              </PlanTitle>
-              {/* {isEditible && <img src={Feather} alt="feather pen"></img>} */}
-              {/* </PlanTitleContainer> */}
-              {/* </div> */}
-
-              {isEditible ? (
-                <>
-                  <span>Deadline: </span>
-                  <SingleDatePicker
-                    placeholder={moment(deadline).format('DD MMM YYYY')}
-                    date={superNewDeadline} // momentPropTypes.momentObj or null
-                    onDateChange={date => onDateChange(date)} // PropTypes.func.isRequired
-                    focused={focused} // PropTypes.bool
-                    onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequiredfunc.isRequired
-                    id="mydatepickerr" // PropTypes.string.isRequired,
-                    displayFormat={'DD-MMM-YYYY'}
-                    numberOfMonths={1}
-                    openDirection="down"
-                    hideKeyboardShortcutsPanel={true}
-                    // showDefaultInputIcon={true}
-                    // showClearDate={true}
-                    // reopenPickerOnClearDates={true}
-                    // withPortal={true}
-                  />
-                </>
-              ) : (
-                <Deadline
-                // id={id + 's'}
-                // contentEditable={isEditible}
-                // className={isEditActive === id ? 'activeDeadline' : ''}
-                // onClick={isEditible && editField}
-                // onBlur={() => {
-                //   setIsEditActive('');
-                // }}
-                >
-                  <span onClick>Deadline:</span>{' '}
-                  {moment(deadline)
-                    .format('DD MMM YYYY')
-                    .toString()}
-                  {isEditible && (
-                    <span className="spanIcon">
-                      <FeatherIcon
-                      // width="40px"
-                      // height="40px"
-                      // className="featherIcon"
-                      />
-                    </span>
-                  )}
-                </Deadline>
-              )}
+              <div className="example">
+                {/* <PlanTitleContainer> */}
+                <PlanTitle id={id}>
+                  <InputField value={goal} id={id} name="goal" />
+                </PlanTitle>
+                {/* {isEditible && <img src={Feather} alt="feather pen"></img>} */}
+                {/* </PlanTitleContainer> */}
+              </div>
+              <Deadline id={Math.random()}>
+                <span onClick>Deadline:</span>{' '}
+                {moment(deadline)
+                  .format('DD MMM YYYY')
+                  .toString()}
+              </Deadline>
               <DescriptionContainer>
                 <Details className="descriptor">
                   <span>
@@ -526,25 +443,13 @@ const PlanTemplate = ({ location }) => {
                             // className={isEditActive === id? 'editActive': ''}
                             key={id}
                             id={id}
-                            contentEditable={isEditible}
-                            className={`verticalBorder ${
-                              isEditActive === id ? 'editActive' : ''
-                            }`}
-                            onClick={isEditible && editField}
-                            onBlur={() => {
-                              setIsEditActive('');
-                            }}
                           >
-                            {singleSpec}
-                            {isEditible && (
-                              <span>
-                                <FeatherIcon
-                                // width="40px"
-                                // height="40px"
-                                // className="featherIcon"
-                                />
-                              </span>
-                            )}
+                            <InputField
+                              value={singleSpec}
+                              id={id}
+                              name="specificators"
+                              textarea
+                            />
                           </li>
                         </>
                       );
@@ -559,28 +464,8 @@ const PlanTemplate = ({ location }) => {
                   <ul>
                     {prices.map(({ singlePrice, id }) => {
                       return (
-                        <li
-                          key={id}
-                          id={id}
-                          contentEditable={isEditible}
-                          className={`verticalBorder ${
-                            isEditActive === id ? 'editActive' : ''
-                          }`}
-                          onClick={isEditible && editField}
-                          onBlur={() => {
-                            setIsEditActive('');
-                          }}
-                        >
+                        <li key={id} id={id}>
                           {singlePrice}
-                          {isEditible && (
-                            <span>
-                              <FeatherIcon
-                              // width="40px"
-                              // height="40px"
-                              // className="featherIcon"
-                              />
-                            </span>
-                          )}
                         </li>
                       );
                     })}
@@ -598,21 +483,11 @@ const PlanTemplate = ({ location }) => {
                       // const newId = `check${Date.now()}${id}`;
                       // console.log(newId);
                       return (
-                        <li
-                          key={id}
-                          // className={isEditActive === id ? 'activeTask' : ''}
-                          // onClick={isEditible && editField}
-                          // id={id}
-                        >
+                        <li key={id}>
                           <CheckInput
-                            isEditible={isEditible}
                             dailyTask={dailyTask}
                             id={id}
                             key={id}
-                            editField={editField}
-                            setIsEditActive={setIsEditActive}
-                            isEditActive={isEditActive}
-                            // onClick={isEditible && editField}
                           ></CheckInput>
                         </li>
                       );
@@ -646,4 +521,4 @@ const PlanTemplate = ({ location }) => {
   );
 };
 
-export default PlanTemplate;
+export default PlanTemplateEdit;

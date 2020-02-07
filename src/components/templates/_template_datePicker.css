@@ -109,7 +109,7 @@
   display: block;
 }
 .SingleDatePicker_picker {
-  z-index: 1;
+  z-index: 5;
   background-color: #fff;
   position: absolute;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -679,7 +679,7 @@
   font-size: 22px;
   line-height: 24px;
   color: #484848;
-  background-color: #eee;
+  background-color: rgba(244, 244, 244, 0.7);
   width: 100%;
   padding: 11px 11px 9px;
   border: 0;
@@ -712,6 +712,10 @@
   border-right: 0;
   border-bottom: 2px solid #b11adc;
   border-left: 0;
+
+  background: #d6d7d8;
+  border: 1px solid #858689;
+  box-shadow: 0 0 10px;
 }
 .DateInput_input__disabled {
   background: #f2f2f2;

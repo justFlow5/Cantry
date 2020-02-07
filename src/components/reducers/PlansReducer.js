@@ -32,6 +32,9 @@ const plansReducer = (state, action) => {
         }
       ];
 
+    case 'UPDATE_PLAN':
+      return [...action.updatedPlans];
+
     case 'LOAD_DB_PLANS':
       return [...action.plansDb];
 

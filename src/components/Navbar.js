@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
+// import { logout } from '../index';
+import { logout } from '../firebase/Firebase';
 
 const NavBar = styled.nav`
   position: fixed;
@@ -12,6 +14,7 @@ const NavBar = styled.nav`
   background-color: rgba(202, 211, 200, 1);
   background-color: #44474b;
   background-color: rgb(102, 102, 102);
+  /* background-color: rgba(0, 0, 0, 0.53); */
   height: 50px;
   width: 100%;
   /* z-index: 3; */
@@ -21,7 +24,8 @@ const NavBar = styled.nav`
 
   a {
     color: #fff;
-    color: white;
+    color: #e0e0e0;
+    /* color: rgba(255, 255, 255, 0.5); */
     text-decoration: none;
     font-size: 20px;
     margin: 0 10px;
@@ -40,9 +44,9 @@ const NavBar = styled.nav`
   }
 
   a:hover {
+    color: white;
     /* transform: scale(1.1); */
     /* font-size: 17.4px; */
-    color: #e0e0e0;
     /* color: hsla(0, 0%, 100%, 0.7); */
   }
 `;
@@ -50,9 +54,10 @@ const NavBar = styled.nav`
 export default () => {
   return (
     <NavBar>
-      <Link to="/">HOME</Link>
+      <Link to="/dashboard">HOME</Link>
       <Link to="/about">ABOUT</Link>
-      <a>LOGOUT</a>
+      <a onClick={logout}>LOGOUT</a>
+      {/* <button onClick={logout}>loog out</button> */}
     </NavBar>
   );
 };

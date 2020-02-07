@@ -107,6 +107,7 @@ const Inner = styled.div`
   padding-top: 20px;
   /* padding-right: 30px; */
   font-size: 16px;
+  word-wrap: break-word;
   -webkit-transform: rotate(-1deg);
   -moz-transform: rotate(-1deg);
   -ms-transform: rotate(-1deg);

@@ -7,34 +7,6 @@ import CreatePlan from './CreatePlan';
 
 import styled from 'styled-components';
 
-// import PlanContext from '../plan-context';
-// $button-bg: #0D52E9;
-// $speed: 0.6s;
-// $delay: ($speed * .5);
-// $easing: cubic-bezier(.55,0,.1,1);
-
-const OpenModal = styled.button`
-  background-color: #0d52e9;
-  position: relative;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 0.75em;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  transition: background 0.25s cubic-bezier(0.55, 0, 0.1, 1);
-
-  &:hover {
-    background: red;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-/* const OpenModal = styled.button` */
 const Modal__Overlay = styled.div`
   @media (min-width: 40em) {
     display: flex;
@@ -128,9 +100,19 @@ const Modal = styled.div`
       transform 0.6s cubic-bezier(0.55, 0, 0.1, 1);
     transition-delay: 0.3s;
 
-    svg {
-      width: 1.75em;
-      height: 1.75em;
+    .closeIcon {
+      width: 30px;
+      height: 30px;
+      fill: #808080;
+      background: transparent;
+      padding: 3px;
+      transition: all 0.4s;
+      border-radius: 50%;
+      &:hover {
+        fill: #111111;
+
+        background: #e2e2e2;
+      }
     }
   }
 `;
@@ -173,12 +155,12 @@ export default props => {
 
   const toggleModal = e => {
     // e.preventDefault();
-    e.stopPropagation();
-    e.nativeEvent.stopImmediatePropagation();
+    // e.stopPropagation();
+    // e.nativeEvent.stopImmediatePropagation();
     setIsActive(isActive === '' ? 'active' : '');
-    e.stopPropagation();
+    // e.stopPropagation();
 
-    e.nativeEvent.stopImmediatePropagation();
+    // e.nativeEvent.stopImmediatePropagation();
   };
 
   typeof document !== 'undefined' &&
@@ -197,8 +179,6 @@ export default props => {
 
   return (
     <>
-      {/* <OpenModal onClick={toggleModal}>Open modal</OpenModal> */}
-      {/* <Button */}
       <Button
         action={toggleModal}
         content="Create new plan"
@@ -220,9 +200,9 @@ export default props => {
       >
         <Modal className={isActive} ref={content}>
           <a className="close-modal" onClick={toggleModal}>
-            <svg viewBox="0 0 20 20">
+            <svg className="closeIcon" viewBox="0 0 20 20">
               <path
-                fill="#000000"
+                // fill="#000000"
                 d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z"
               ></path>
             </svg>

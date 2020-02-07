@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
+import uuid from 'uuid';
 import { createGlobalStyle } from 'styled-components';
 import plansReducer from '../reducers/PlansReducer';
 import Sloth from '../sloth.png';
@@ -82,7 +83,8 @@ const ButtonContainer = styled.section`
 
 const DashBoard = styled.main`
   width: 100%;
-  min-height: 100%;
+  /* min-height: 100%; */
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   background: #f4f4f4;
@@ -194,17 +196,17 @@ export default () => {
         // if (key) {
         // console.log('KEY under IF: ', key);
 
-        specificators.forEach(({ singleSpec }) => {
-          db.ref(`plans/${key}/specificators`).push(singleSpec);
-        });
+        // specificators.forEach(({ singleSpec }) => {
+        db.ref(`plans/${key}/specificators`).set(specificators);
+        // });
 
-        prices.forEach(({ singlePrice }) => {
-          db.ref(`plans/${key}/prices`).push(singlePrice);
-        });
+        // prices.forEach(({ singlePrice }) => {
+        db.ref(`plans/${key}/prices`).set(prices);
+        // });
 
-        dailyTasks.forEach(({ dailyTask }) => {
-          db.ref(`plans/${key}/dailyTasks`).push(dailyTask);
-        });
+        // dailyTasks.forEach(({ dailyTask }) => {
+        db.ref(`plans/${key}/dailyTasks`).set(dailyTasks);
+        // });
       })
 
       .then(() => {
@@ -239,10 +241,10 @@ export default () => {
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(spec => {
-              specificatorsDb.push({
-                id: spec.key,
-                singleSpec: spec.val()
-              });
+              specificatorsDb.push(
+                // id: spec.key,
+                spec.val()
+              );
             });
           });
 
@@ -250,10 +252,10 @@ export default () => {
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(price => {
-              pricesDb.push({
-                id: price.key,
-                singlePrice: price.val()
-              });
+              pricesDb.push(
+                // id: price.key,
+                price.val()
+              );
             });
           });
 
@@ -261,10 +263,10 @@ export default () => {
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(task => {
-              dailyTasksDb.push({
-                id: task.key,
-                dailyTask: task.val()
-              });
+              dailyTasksDb.push(
+                // id: task.key,
+                task.val()
+              );
             });
           });
 
@@ -318,19 +320,19 @@ export default () => {
   };
 
   const addSpec = () => {
-    const id = Math.random();
+    const id = uuid();
     setSpecificators([...specificators, { singleSpec, id }]); //temporary specificator -- no need for stable/secure id
     setSingleSpec('');
   };
 
   const addPrice = () => {
-    const id = Math.random();
+    const id = uuid();
     setPrices([...prices, { singlePrice, id }]); //temporary specificator -- no need for stable/secure id]);
     setSinglePrice('');
   };
 
   const addTask = () => {
-    const id = Math.random();
+    const id = uuid();
     setDailyTasks([...dailyTasks, { dailyTask, id }]);
 
     setDailyTask('');
@@ -356,6 +358,104 @@ export default () => {
     });
     setDailyTasks(filteredTasks);
   };
+
+  // const updateSpecificators = (idPlan, idSpec, content) => {
+  //   db.ref(`plans/${idPlan}/specificators/${idSpec}`).update(content);
+
+  //   const updatedSpecs = specificators.map(spec => {
+  //     if (spec.id === id) {
+  //       return {
+  //         singleSpec: content,
+  //         id: spec.id
+  //       };
+  //     } else {
+  //       return spec;
+  //     }
+  //   });
+  //   setSpecificators(updatedSpecs);
+  // };
+
+  // const updatePrices = (id, content) => {
+  //   const updatedPrices = prices.map(price => {
+  //     if (price.id === id) {
+  //       return {
+  //         singlePrice: content,
+  //         id: price.id
+  //       };
+  //     } else {
+  //       return price;
+  //     }
+  //   });
+
+  //   setPrices(updatedPrices);
+  // };
+
+  // const updateDailyTasks = (id, content) => {
+  //   const updatedDailyTasks = dailyTasks.map(dailyTask => {
+  //     if (dailyTask.id === id) {
+  //       return {
+  //         dailyTask: content,
+  //         id: dailyTask.id
+  //       };
+  //     } else {
+  //       return dailyTask;
+  //     }
+  //   });
+  //   setDailyTasks(updatedDailyTasks);
+  // };
+
+  const updatePlan = id => {
+    const updatedPlan = {
+      goal,
+      specificators,
+      prices,
+      dailyTasks,
+      deadline,
+      id
+    };
+    db.ref(`plans/${id}`).update(updatedPlan);
+
+    const updatedPlans = plans.map(plan => {
+      if (plan.id === id) {
+        return updatedPlan;
+      } else {
+        return plan;
+      }
+    });
+    dispatch({ type: 'UPDATE_PLAN', updatedPlans });
+  };
+
+  // const updatePlan = id => {
+  //   const updatedPlan = {
+  //     goal,
+  //     specificators,
+  //     prices,
+  //     dailyTasks,
+  //     deadline,
+  //     id
+  //   };
+  //   // const updatedPlans = plans.map(plan => {
+  //   //   if (plan.id === id) {
+  //   //     return {
+  //   //       goal,
+  //   //       specificators,
+  //   //       prices,
+  //   //       dailyTasks,
+  //   //       deadline
+  //   //     };
+  //   //   } else {
+  //   //     return plan;
+  //   //   }
+  //   // });
+
+  //   // db.ref(`plans/${id}`).update(updatedPlan)
+  //   // specificators.forEach(({singleSpec, id}) => {
+  //   //   if (id === )
+  //   // })
+  //   // db.ref(`plans/${id}.specificators`)
+
+  //   // dispatch({ type: 'UPDATE_PLAN', updatedPlans });
+  // };
 
   const nextStep = () => {
     setStep(step + 1);
@@ -398,6 +498,7 @@ export default () => {
     console.log('DB FROM FUNCTION: ', db);
     const plansRef = db.ref('plans');
     const plansSnapshot = await plansRef.once('value');
+
     var plansLength;
 
     if (plansSnapshot.val()) {
@@ -421,6 +522,8 @@ export default () => {
     // putting async keyword before childsnapshot function makes it unable to loop with forEach more than once
     plansSnapshot.forEach(childSnapshot => {
       (async () => {
+        const idDb = childSnapshot.key;
+
         const goalRef = db.ref(`plans/${childSnapshot.key}/goal`);
         const goalSnapshot = await goalRef.once('value');
         const goalDb = goalSnapshot.val();
@@ -435,33 +538,34 @@ export default () => {
         );
         const specificatorsSnapshot = await specificatorsRef.once('value');
         specificatorsSnapshot.forEach(spec => {
-          specificatorsDb.push({
-            id: spec.key,
-            singleSpec: spec.val()
-          });
+          specificatorsDb.push(
+            // id: spec.key,
+            spec.val()
+          );
         });
 
         const pricesDb = [];
         const pricesRef = db.ref(`plans/${childSnapshot.key}/prices`);
         const pricesSnapshot = await pricesRef.once('value');
         pricesSnapshot.forEach(price => {
-          pricesDb.push({
-            id: price.key,
-            singlePrice: price.val()
-          });
+          pricesDb.push(
+            // id: price.key,
+            price.val()
+          );
         });
 
         const dailyTasksDb = [];
         const dailyTasksRef = db.ref(`plans/${childSnapshot.key}/dailyTasks`);
         const dailyTasksSnapshot = await dailyTasksRef.once('value');
         dailyTasksSnapshot.forEach(task => {
-          dailyTasksDb.push({
-            id: task.key,
-            dailyTask: task.val()
-          });
+          dailyTasksDb.push(
+            // id: task.key,
+            task.val()
+          );
         });
 
         plansDb.push({
+          id: idDb,
           goal: goalDb,
           deadline: deadlineDb,
           specificators: specificatorsDb,
@@ -532,7 +636,6 @@ export default () => {
             {plans.length === 0 && isLoader && <Loader />}
 
             {(() => {
-              console.log('above if complete');
               //if local storage is filled with plans
               if (plans.length > 0) {
                 toggleLoader();
@@ -587,6 +690,7 @@ export default () => {
             {/* <Loader /> */}
             <Plan>
               {plans.map(plan => {
+                console.log('planplan: ', plan);
                 return <Accordion plan={plan} key={plan.id} />;
               })}
             </Plan>

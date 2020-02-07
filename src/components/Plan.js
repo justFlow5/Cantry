@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
+import PlanContext from './Plan-context';
+
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 import PlanContent from './PlanContent';
@@ -167,13 +169,21 @@ const AccordionContent = styled.div`
 `;
 
 const SinglePlan = props => {
+  const {
+    setGoal,
+    setDeadline,
+    setSpecificators,
+    setPrices,
+    setDailyTasks
+  } = useContext(PlanContext);
+
   const [setActive, setActiveState] = useState('');
   const [setHeight, setHeightState] = useState('0px');
   const [setRotate, setRotateState] = useState('accordionIcon');
 
   const { goal, dailyTasks, deadline } = props.plan;
   const { plan } = props;
-  // console.log('THE PLAN', plan);
+  console.log('THE PLAN', plan);
 
   const content = useRef(null);
 
