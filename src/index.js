@@ -14,11 +14,15 @@ import {
 import { navigate } from '@reach/router';
 import AppRouter from './AppRouter';
 import UserContext from './components/User-context';
+import netlifyIdentity from 'netlify-identity-widget';
 
 import dotenv from 'dotenv';
-import netlifyIdentity from 'netlify-identity-widget';
+// import netlifyIdentity from 'netlify-identity-widget';
+window.netlifyIdentity = netlifyIdentity;
+netlifyIdentity.init();
+
 dotenv.config();
 
-netlifyIdentity.init();
+// netlifyIdentity.init();
 
 ReactDOM.render(<App />, document.getElementById('root'));

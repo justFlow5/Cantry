@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 // import { logout } from '../index';
 import { logout } from '../firebase/Firebase';
 import netlifyIdentity from 'netlify-identity-widget';
 import { navigate } from '@reach/router';
+import UserContext from './User-context';
 
-netlifyIdentity.init();
+import firebase from '../firebase/Firebase';
 
-const handleClick = () => {
-  netlifyIdentity.logout();
-  console.log('logged out');
-  // navigate('/');
-};
+// netlifyIdentity.init();
+
+// const handleClick = () => {
+//   netlifyIdentity.logout();
+//   console.log('logged out');
+//   navigate('/');
+// };
 
 const NavBar = styled.nav`
   position: fixed;
@@ -62,19 +65,22 @@ const NavBar = styled.nav`
 `;
 
 export default () => {
+  // const { handleLogout } = useContext(UserContext);
+
   return (
     <NavBar>
       <Link to="/dashboard">HOME</Link>
       <Link to="/about">ABOUT</Link>
 
-      <a onClick={handleClick}>LOGOUT</a>
+      {/* <a onClick={handleLogout}>LOGOUT</a> */}
 
-      {/*       
-      <a onClick={() => {
-        logout
-      }}>LOGOUT</a> */}
-
-      {/* <button onClick={logout}>loog out</button> */}
+      <a
+        onClick={() => {
+          firebase.auth().signOut();
+        }}
+      >
+        LOGOUT
+      </a>
     </NavBar>
   );
 };
