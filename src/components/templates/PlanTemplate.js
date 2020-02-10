@@ -376,12 +376,12 @@ const PlanTemplate = ({ location }) => {
     specificators,
     prices,
     dailyTasks,
-    deadline,
-    setGoal,
-    setDeadline,
-    setSpecificators,
-    setPrices,
-    setDailyTasks
+    deadline
+    // setGoal,
+    // setDeadline,
+    // setSpecificators,
+    // setPrices,
+    // setDailyTasks
   } = location.state;
 
   // console.log('location.state: ', location.state);

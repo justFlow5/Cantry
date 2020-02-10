@@ -16,6 +16,7 @@ import Loader from '../Loader';
 import Modal from '../Modal2';
 import db from '../../firebase/Firebase';
 import UserContext from '../Plan-context';
+import { AuthContext } from '../Auth';
 
 // const GlobalStyles = createGlobalStyle`
 // @import url(https://fonts.googleapis.com/css?family=Lora);
@@ -134,7 +135,11 @@ export default props => {
   // var uid = location.state.uid.toString();
   // console.log('dashboard uid', uid);
 
-  const { uid } = useContext(UserContext);
+  // const { uid } = useContext(UserContext);
+
+  const { currentUser } = useContext(AuthContext);
+
+  console.log('CURRENT USER ID', currentUser);
 
   const [step, setStep] = useState(1);
 
@@ -192,7 +197,7 @@ export default props => {
     // GET A KEY OF NEWLY ADDED PLAN
     var key;
 
-    db.ref(`users/${uid}/plans`)
+    db.ref(`users/${currentUser.uid}/plans`)
       .push(newPlan)
       .then(snap => {
         key = snap.key;
@@ -204,15 +209,19 @@ export default props => {
         // console.log('KEY under IF: ', key);
 
         // specificators.forEach(({ singleSpec }) => {
-        db.ref(`users/${uid}/plans/${key}/specificators`).set(specificators);
+        db.ref(`users/${currentUser.uid}/plans/${key}/specificators`).set(
+          specificators
+        );
         // });
 
         // prices.forEach(({ singlePrice }) => {
-        db.ref(`users/${uid}/plans/${key}/prices`).set(prices);
+        db.ref(`users/${currentUser.uid}/plans/${key}/prices`).set(prices);
         // });
 
         // dailyTasks.forEach(({ dailyTask }) => {
-        db.ref(`users/${uid}/plans/${key}/dailyTasks`).set(dailyTasks);
+        db.ref(`users/${currentUser.uid}/plans/${key}/dailyTasks`).set(
+          dailyTasks
+        );
         // });
       })
 
@@ -244,7 +253,7 @@ export default props => {
 
         // snapshot.forEach(childSnapshot => {
 
-        db.ref(`users/${uid}/plans/${key}/specificators`)
+        db.ref(`users/${currentUser.uid}/plans/${key}/specificators`)
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(spec => {
@@ -255,7 +264,7 @@ export default props => {
             });
           });
 
-        db.ref(`users/${uid}/plans/${key}/prices`)
+        db.ref(`users/${currentUser.uid}/plans/${key}/prices`)
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(price => {
@@ -266,7 +275,7 @@ export default props => {
             });
           });
 
-        db.ref(`users/${uid}/plans/${key}/dailyTasks`)
+        db.ref(`users/${currentUser.uid}/plans/${key}/dailyTasks`)
           .once('value')
           .then(childchildSnapshot => {
             childchildSnapshot.forEach(task => {
@@ -420,7 +429,7 @@ export default props => {
       deadline,
       id
     };
-    db.ref(`users/${uid}/plans/${id}`).update(updatedPlan);
+    db.ref(`users/${currentUser.uid}/plans/${id}`).update(updatedPlan);
 
     const updatedPlans = plans.map(plan => {
       if (plan.id === id) {
@@ -505,7 +514,7 @@ export default props => {
   const getDataFromDb = async () => {
     // console.log('DB FROM FUNCTION: ', db);
     // console.log()
-    const plansRef = db.ref(`users/${uid}/plans`);
+    const plansRef = db.ref(`users/${currentUser.uid}/plans`);
     const plansSnapshot = await plansRef.once('value');
 
     var plansLength;
@@ -533,19 +542,21 @@ export default props => {
       (async () => {
         const idDb = childSnapshot.key;
 
-        const goalRef = db.ref(`users/${uid}/plans/${childSnapshot.key}/goal`);
+        const goalRef = db.ref(
+          `users/${currentUser.uid}/plans/${childSnapshot.key}/goal`
+        );
         const goalSnapshot = await goalRef.once('value');
         const goalDb = goalSnapshot.val();
 
         const deadlineRef = db.ref(
-          `users/${uid}/plans/${childSnapshot.key}/deadline`
+          `users/${currentUser.uid}/plans/${childSnapshot.key}/deadline`
         );
         const deadlineSnapshot = await deadlineRef.once('value');
         const deadlineDb = deadlineSnapshot.val();
 
         const specificatorsDb = [];
         const specificatorsRef = db.ref(
-          `plans/${childSnapshot.key}/specificators`
+          `users/${currentUser.uid}/plans/${childSnapshot.key}/specificators`
         );
         const specificatorsSnapshot = await specificatorsRef.once('value');
         specificatorsSnapshot.forEach(spec => {
@@ -557,7 +568,7 @@ export default props => {
 
         const pricesDb = [];
         const pricesRef = db.ref(
-          `users/${uid}/plans/${childSnapshot.key}/prices`
+          `users/${currentUser.uid}/plans/${childSnapshot.key}/prices`
         );
         const pricesSnapshot = await pricesRef.once('value');
         pricesSnapshot.forEach(price => {
@@ -569,7 +580,7 @@ export default props => {
 
         const dailyTasksDb = [];
         const dailyTasksRef = db.ref(
-          `users/${uid}/plans/${childSnapshot.key}/dailyTasks`
+          `users/${currentUser.uid}/plans/${childSnapshot.key}/dailyTasks`
         );
         const dailyTasksSnapshot = await dailyTasksRef.once('value');
         dailyTasksSnapshot.forEach(task => {

@@ -7,7 +7,7 @@ import netlifyIdentity from 'netlify-identity-widget';
 import { navigate } from '@reach/router';
 import UserContext from './User-context';
 
-import firebase from '../firebase/Firebase';
+import { firebase } from '../firebase/Firebase';
 
 // netlifyIdentity.init();
 
@@ -76,6 +76,8 @@ export default () => {
 
       <a
         onClick={() => {
+          localStorage.removeItem('plans');
+          localStorage.removeItem('userData');
           firebase.auth().signOut();
         }}
       >
