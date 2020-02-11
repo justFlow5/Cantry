@@ -1,28 +1,11 @@
-// import React from 'react';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-
-import {
-  firebase,
-  googleAuthProvider,
-  login,
-  logout
-} from './firebase/Firebase';
-import { navigate } from '@reach/router';
 import AppRouter from './AppRouter';
-import UserContext from './components/User-context';
-import netlifyIdentity from 'netlify-identity-widget';
 
+import * as serviceWorker from './serviceWorker';
 import dotenv from 'dotenv';
-// import netlifyIdentity from 'netlify-identity-widget';
-window.netlifyIdentity = netlifyIdentity;
-netlifyIdentity.init();
 
 dotenv.config();
 
-// netlifyIdentity.init();
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<AppRouter />, document.getElementById('root'));

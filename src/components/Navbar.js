@@ -1,21 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from '@reach/router';
-// import { logout } from '../index';
-import { logout } from '../firebase/Firebase';
-import netlifyIdentity from 'netlify-identity-widget';
-import { navigate } from '@reach/router';
-import UserContext from './User-context';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 import { firebase } from '../firebase/Firebase';
-
-// netlifyIdentity.init();
-
-// const handleClick = () => {
-//   netlifyIdentity.logout();
-//   console.log('logged out');
-//   navigate('/');
-// };
 
 const NavBar = styled.nav`
   position: fixed;

@@ -384,7 +384,7 @@ const PlanTemplate = ({ location }) => {
     // setDailyTasks
   } = location.state;
 
-  // console.log('location.state: ', location.state);
+  console.log('location.state: ', location.state);
 
   const [isEditible, setIsEditible] = useState(false);
 

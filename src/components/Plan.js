@@ -2,13 +2,15 @@ import React, { useState, useRef, useContext } from 'react';
 import PlanContext from './Plan-context';
 
 import styled from 'styled-components';
-import { Link } from '@reach/router';
+// import { Link } from '@reach/router';
 import PlanContent from './PlanContent';
 
 import ExternalLinkIcon from './icons/LinkIcon';
 import EditIcon from './icons/EditIcon';
 import PlanIcon from './icons/PlanIcon';
 import Chevron from './icons/Chevron';
+
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 // import BoxInput from './checkInput';
 // import Routerro from '../pages/plan2';
 
@@ -209,8 +211,11 @@ const SinglePlan = props => {
         <LinkContainer>
           <EditIcon className={'editIcon'} />
           <ExternalLinkIcon className={'linkIcon'} />
-
-          <Link to={`/plan/${formatGoal(goal)}`} state={plan}>
+          {console.log('HEERE IS THE PLAN BABE: ', plan)}
+          {/* <Link to={`/plan/${formatGoal(goal)}`} state={plan}>
+            <PlanIcon className={'planIcon'} />
+          </Link> */}
+          <Link to={{ pathname: `/plan/${formatGoal(goal)}`, state: plan }}>
             <PlanIcon className={'planIcon'} />
           </Link>
         </LinkContainer>
