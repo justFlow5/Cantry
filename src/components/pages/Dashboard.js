@@ -649,6 +649,7 @@ export default props => {
         setDailyTask,
         deleteTempTask,
         dailyTasks,
+        setDailyTasks,
         addTask
       }}
     >

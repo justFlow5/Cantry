@@ -176,8 +176,23 @@ const SinglePlan = props => {
     setDeadline,
     setSpecificators,
     setPrices,
-    setDailyTasks
+    setDailyTasks,
+    deleteTempSpec,
+    deleteTempPrice,
+    deleteTempTask
   } = useContext(PlanContext);
+
+  console.log(
+    'M FUNCTIONS: ',
+    setGoal,
+    setDeadline,
+    setSpecificators,
+    setPrices,
+    setDailyTasks,
+    deleteTempSpec,
+    deleteTempPrice,
+    deleteTempTask
+  );
 
   const [setActive, setActiveState] = useState('');
   const [setHeight, setHeightState] = useState('0px');
@@ -215,7 +230,22 @@ const SinglePlan = props => {
           {/* <Link to={`/plan/${formatGoal(goal)}`} state={plan}>
             <PlanIcon className={'planIcon'} />
           </Link> */}
-          <Link to={{ pathname: `/plan/${formatGoal(goal)}`, state: plan }}>
+          <Link
+            to={{
+              pathname: `/plan/${formatGoal(goal)}`,
+              state: {
+                plan,
+                setGoal: setGoal.toString(),
+                setDeadline: setDeadline.toString(),
+                setSpecificators: setSpecificators.toString(),
+                setPrices: setPrices.toString(),
+                setDailyTasks: setDailyTasks.toString(),
+                deleteTempSpec: deleteTempSpec.toString(),
+                deleteTempPrice: deleteTempPrice.toString(),
+                deleteTempTask: deleteTempTask.toString()
+              }
+            }}
+          >
             <PlanIcon className={'planIcon'} />
           </Link>
         </LinkContainer>

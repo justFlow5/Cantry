@@ -1,7 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { Link } from '@reach/router';
 
-import InputField from '../formComponents/InputField';
+import 'react-dates/initialize';
+// import '../formComponents/_datepicker_custom.css';
+import './_template_datePicker.css';
+
+import { SingleDatePicker } from 'react-dates';
+
+import InputFieldEdit from '../formComponents/InputFieldEdit';
 
 import styled from 'styled-components';
 import NavBar from '../Navbar';
@@ -94,35 +100,16 @@ const PlanContent = styled.div`
   /* border: 1px solid black; */
 `;
 
-// const PlanTitleContainer = styled.div`
-//   &:hover {
-//     cursor: pointer;
-//     & .activeTitle {
-//       /* &:before,
-//       &:after {
-//         width: 100%;
-//         opacity: 1; */
-//       &:before,
-//       &:after {
-//         width: 50%;
-//       }
-//     }
-//   }
-// `;
 const PlanTitle = styled.h3`
   color: black;
   font-size: 42px;
   font-weight: 500;
   position: relative;
   outline: 0;
-  padding: 10px 30px;
+  padding: 15px 30px;
+  height: 60px;
   transition: all 0.3s;
 
-  &.activeTitle {
-    background: #d6d7d8;
-    border: 1px solid #858689;
-    box-shadow: 0 0 10px;
-  }
   & span {
     display: inline-block;
 
@@ -134,60 +121,34 @@ const PlanTitle = styled.h3`
       height: 25px;
     }
   }
-  /* margin-top: 50px; */
-
-  /* &.activeTitle:before,
-  &.activeTitle:after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    width: 0px;
-    height: 5px;
-    margin: 5px 0 0;
-    transition: all 0.2s ease-in-out;
-    transition-duration: 0.4s;
-    opacity: 0;
-    background-color: black;
-
-    &.activeTitle:before {
-      left: 50%;
-    }
-    &.activeTitle:after {
-      right: 50%;
-    }
-    &:hover {
-      cursor: pointer;
-      &:before,
-      &:after {
-        width: 100%;
-        opacity: 1;
-      }
-    } */
-  /* } */
 `;
 
 const Deadline = styled.p`
-  font-size: 17px;
-  width: 100%;
+  /* font-size: 17px; */
+  /* width: 100%; */
   text-align: center;
-  font-weight: 300;
+  /* font-weight: 300; */
+  margin: 15px 0;
+  /* display: inline-block; */
+
   transition: all 0.3s;
-
-  &.activeDeadline {
-    background: #d6d7d8;
-    border: 1px solid #858689;
-    box-shadow: 0 0 10px;
+  & > span {
+    /* margin-right: 5px; */
+    font-weight: 500;
+    position: relative;
+    /* bottom: 8px; */
+    font-size: 19px;
+    line-height: 1.2;
   }
-
-  & .spanIcon {
+  & textarea {
+    padding-bottom: 0px;
+    width: auto;
+    font-size: 18px;
+  }
+  & > * {
     display: inline-block;
-
-    position: absolute;
-    top: -18%;
-    right: 1%;
-    & svg {
-      width: 25px;
-      height: 25px;
+    & > * {
+      display: inline-block;
     }
   }
 `;
@@ -196,6 +157,8 @@ const DescriptionContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-self: center;
+  align-items: center;
 
   /* & > .container */
   & > .break {
@@ -212,10 +175,35 @@ const DescriptionContainer = styled.div`
   & > .descriptor {
     padding: 10px;
     display: flex;
-    margin: 30px auto 0;
+    width: 100%;
+    /* margin: 30px auto 0; */
 
     /* flex: 1 1 0; */
 
+    & .deleteField {
+      position: absolute;
+      /* top: 5px; */
+      /* right: 5px; */
+      font-size: 12px;
+      color: #414a4c;
+      cursor: pointer;
+      border-radius: 50%;
+      padding: 2px 2px 2px 4px;
+      /* padding: 3px; */
+      z-index: 12;
+      font-weight: 400;
+
+      transition: color 0.3s, font-weight 0.1s linear, background-color 0.3s;
+
+      &:hover {
+        color: #0e1111;
+        color: black;
+        font-weight: 600;
+
+        background-color: #e6e6e6;
+        /* padding: 3px; */
+      }
+    }
     h4 {
       font-size: 22px;
       padding: 10px;
@@ -225,37 +213,34 @@ const DescriptionContainer = styled.div`
     }
 
     ul {
-      padding: 5px 5px 0;
+      padding: 5px 10px 0 45px;
       list-style-type: none;
       width: 80%;
+      position: relative;
 
       li {
-        padding: 0px 15px;
+        padding: 0px 10px;
         text-decoration: none;
-        margin-top: 25px;
+        /* margin-top: 25px; */
         transition: all 0.3s;
         border: none;
         outline: none;
         box-shadow: none;
-        padding: 10px;
-        padding-right: 20px;
+        /* padding: 10px; */
+        /* padding-right: 20px; */
         position: relative;
+        width: 100%;
 
         &:first-child {
           margin-top: 10px;
         }
 
-        &.verticalBorder {
-          /* border-left: 4px solid #716d6e; */
-          /* border-left: 4px solid #34353a; */
-          border-left: 4px solid #34353a;
+        &.thinBorder {
+          border-left: 3px solid #c2c2c2;
+        }
 
-          &.editActive {
-            background: #d6d7d8;
-            border: 1px solid #858689;
-            box-shadow: 0 0 10px;
-            /* padding: 10px; */
-          }
+        &.thickBorder {
+          border-left: 3px solid #34353a;
         }
         & span {
           display: inline-block;
@@ -363,71 +348,106 @@ const EditPopUp = styled.div`
 
 const PlanTemplateEdit = ({ location }) => {
   const {
-    id,
-    goal,
-    specificators,
-    prices,
-    dailyTasks,
-    deadline
+    plan
+    // setGoal,
+    // setDeadline,
+    // setSpecificators,
+    // setPrices,
+    // setDailyTasks,
+    // deleteTempSpec,
+    // deleteTempPrice,
+    // deleteTempTask
   } = location.state;
   // console.log('location.state: ', location.state);
+  // console.log('EVAAAL: ', typeof deleteTempSpec);
 
-  const [isEditible, setIsEditible] = useState(false);
+  // const deleteSpec = new Function('id', deleteTempSpec);
 
-  const [editComplete, setEditComplete] = useState(true);
+  const [verticalBorder, setVerticalBorder] = useState('');
 
-  const [isEditActive, setIsEditActive] = useState('');
+  const [clickedInputId, setClickedInputId] = useState('');
+
+  const [superNewDeadline, setSuperNewDeadline] = useState('');
+
+  const [isClicked, setIsClicked] = useState(false);
+
+  const [focused, setFocused] = useState(null);
 
   const buttonContent = useRef(null);
 
-  const toggleEdit = e => {
-    if (!isEditible) {
-      setIsEditible(true);
+  const showCalendar = () => {
+    if (!isClicked) setIsClicked(true);
+  };
 
-      buttonContent.current.innerText = 'save changes';
-    } else {
-      setIsEditible(false);
-      buttonContent.current.innerText = 'edit';
+  const hideCalendar = () => {
+    if (isClicked) setIsClicked(false);
+  };
+
+  const onDateChange = newDeadline => {
+    if (newDeadline) {
+      setSuperNewDeadline(newDeadline);
     }
   };
 
-  const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
-
-  const editField = e => {
-    // if (isEditible)
-    console.dir(e.target);
-    setIsEditActive(e.target.id);
-
-    // e.target.style.background = '#D6D7D8';
-    // e.target.style.border = '1px solid black';
+  const getId = e => {
+    setClickedInputId(e.target.id);
+    console.log();
   };
+
+  const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
 
   // const closeEdit = e => {
   //   e.target.style.background = 'rgba(244, 244, 244, 0.7)';
   // };
 
+  const setThickBorder = e => {
+    if (verticalBorder === '') setVerticalBorder('thickBorder');
+  };
+
+  const setThinBorder = () => {
+    if (verticalBorder === 'thickBorder') setVerticalBorder('');
+  };
+
   return (
     <>
       <NavBar />
       <PlanContainer>
-        <EditPopUp className={isEditible ? 'appear' : ''}>EDIT MODE</EditPopUp>}
+        {/* <EditPopUp className={isEditible ? 'appear' : ''}>EDIT MODE</EditPopUp>} */}
         <Box>
           {/* <InnerBox> */}
           <div className="innerBox">
             <PlanContent>
               <div className="example">
                 {/* <PlanTitleContainer> */}
-                <PlanTitle id={id}>
-                  <InputField value={goal} id={id} name="goal" />
+                <PlanTitle>
+                  <InputFieldEdit value={plan.goal} name="goal" />
                 </PlanTitle>
                 {/* {isEditible && <img src={Feather} alt="feather pen"></img>} */}
                 {/* </PlanTitleContainer> */}
               </div>
-              <Deadline id={Math.random()}>
-                <span onClick>Deadline:</span>{' '}
-                {moment(deadline)
-                  .format('DD MMM YYYY')
-                  .toString()}
+              <Deadline onClick={showCalendar} onBlur={hideCalendar}>
+                <span>Deadline:</span>
+                {/* {isClicked ? ( */}
+                <SingleDatePicker
+                  placeholder={moment(plan.deadline).format('DD MMM YYYY')}
+                  date={superNewDeadline} // momentPropTypes.momentObj or null
+                  onDateChange={date => onDateChange(date)} // PropTypes.func.isRequired
+                  focused={focused} // PropTypes.bool
+                  onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequiredfunc.isRequired
+                  id="mydatepickerr" // PropTypes.string.isRequired,
+                  displayFormat={'DD MMM YYYY'}
+                  numberOfMonths={1}
+                  openDirection="down"
+                  hideKeyboardShortcutsPanel={true}
+                />
+                {/* // ) : (
+                //   <InputFieldEdit */}
+                {/* //     textarea
+                //     value={moment(deadline).format('DD MMM YYYY')}
+                //     name="deadline"
+                //     style={{ display: 'inline-block' }}
+                //   />
+                // )} */}
               </Deadline>
               <DescriptionContainer>
                 <Details className="descriptor">
@@ -436,20 +456,49 @@ const PlanTemplateEdit = ({ location }) => {
                   </span>
                   <h4> Make it specific:</h4>{' '}
                   <ul>
-                    {specificators.map(({ singleSpec, id }) => {
+                    {plan.specificators.map(({ singleSpec, id }) => {
                       return (
                         <>
+                          {console.log('specID: ', id)}
                           <li
-                            // className={isEditActive === id? 'editActive': ''}
                             key={id}
                             id={id}
+                            // className={`thinBorder ${verticalBorder}`}
+                            className={
+                              clickedInputId === id
+                                ? 'thickBorder'
+                                : 'thinBorder'
+                            }
+                            onClick={getId}
+                            onBlur={() => {
+                              setClickedInputId('');
+                            }}
                           >
-                            <InputField
+                            <InputFieldEdit
                               value={singleSpec}
                               id={id}
                               name="specificators"
                               textarea
                             />
+
+                            <span
+                              id={id}
+                              className="deleteField"
+                              // onClick={() => {
+                              //   console.log('SPAN ID : ', id);
+                              //   console.log(
+                              //     'specificators.length: ',
+                              //     plan.specificators.length
+                              //   );
+                              //   deleteSpec(id);
+                              //   console.log(
+                              //     'specificators.length2: ',
+                              //     plan.specificators.length
+                              //   );
+                              // }}
+                            >
+                              &#x2715;
+                            </span>
                           </li>
                         </>
                       );
@@ -462,10 +511,28 @@ const PlanTemplateEdit = ({ location }) => {
                   </span>
                   <h4> Price to pay:</h4>
                   <ul>
-                    {prices.map(({ singlePrice, id }) => {
+                    {plan.prices.map(({ singlePrice, id }) => {
                       return (
-                        <li key={id} id={id}>
-                          {singlePrice}
+                        <li
+                          key={id}
+                          id={id}
+                          // className={`thinBorder ${verticalBorder}`}
+                          className={
+                            clickedInputId === id ? 'thickBorder' : 'thinBorder'
+                          }
+                          onClick={getId}
+                          onBlur={() => {
+                            setClickedInputId('');
+                          }}
+                          spellcheck="false"
+                        >
+                          <InputFieldEdit
+                            value={singlePrice}
+                            id={id}
+                            name="prices"
+                            textarea
+                          />
+                          <span className="deleteField">&#x2715;</span>
                         </li>
                       );
                     })}
@@ -479,16 +546,30 @@ const PlanTemplateEdit = ({ location }) => {
                   </span>
                   <h4>Daily regimen</h4>
                   <ul>
-                    {dailyTasks.map(({ dailyTask, id }) => {
+                    {plan.dailyTasks.map(({ dailyTask, id }) => {
                       // const newId = `check${Date.now()}${id}`;
                       // console.log(newId);
                       return (
-                        <li key={id}>
-                          <CheckInput
-                            dailyTask={dailyTask}
+                        <li
+                          key={id}
+                          id={id}
+                          // className={`thinBorder ${verticalBorder}`}
+                          className={
+                            clickedInputId === id ? 'thickBorder' : 'thinBorder'
+                          }
+                          onClick={getId}
+                          onBlur={() => {
+                            setClickedInputId('');
+                          }}
+                          spellcheck="false"
+                        >
+                          <InputFieldEdit
+                            value={dailyTask}
                             id={id}
-                            key={id}
-                          ></CheckInput>
+                            name="dailyTasks"
+                            textarea
+                          />
+                          <span className="deleteField">&#x2715;</span>
                         </li>
                       );
                     })}
@@ -506,10 +587,6 @@ const PlanTemplateEdit = ({ location }) => {
                     width="175px"
                     scale="1.3"
                   ></Button>
-
-                  <EditButton ref={buttonContent} onClick={toggleEdit}>
-                    edit
-                  </EditButton>
                 </GoToPlan>
               </PlanStage>
             </PlanContent>

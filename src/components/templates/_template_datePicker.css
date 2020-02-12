@@ -338,22 +338,22 @@
   color: #484848;
 }
 .CalendarDay__selected_span {
-  background: #c35ae0;
-  border: 1px double #c35ae0;
+  background: #545c5d;
+  border: 1px double #808080;
   color: #fff;
 }
 .CalendarDay__selected_span:active,
 .CalendarDay__selected_span:hover {
-  background: #c35ae0;
-  border: 1px double #c35ae0;
+  background: #545c5d;
+  border: 1px double #808080;
   color: #fff;
 }
 .CalendarDay__selected,
 .CalendarDay__selected:active,
 .CalendarDay__selected:hover {
-  background: #c35ae0;
-  border: 1px double #c35ae0;
-  border: 1px double #a630c7;
+  background: #545c5d;
+  /* border: 1px double #c35ae0; */
+  border: 1px double #808080;
   color: #fff;
 }
 .CalendarDay__hovered_span,
@@ -676,9 +676,9 @@
 .DateInput_input {
   text-align: center;
   font-weight: 400;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 24px;
-  color: #484848;
+  color: #c2c2c2;
   background-color: rgba(244, 244, 244, 0.7);
   width: 100%;
   padding: 11px 11px 9px;
@@ -688,6 +688,7 @@
   border-bottom: 2px solid #eee;
   border-left: 0;
   border-radius: 0;
+  transition: color 0.3s;
 }
 .DateInput_input__small {
   font-size: 15px;
@@ -706,16 +707,16 @@
 }
 .DateInput_input__focused {
   outline: 0;
-  background: #eee;
+  background-color: rgba(247, 247, 247, 1);
   border: 0;
   border-top: 0;
   border-right: 0;
   border-bottom: 2px solid #b11adc;
   border-left: 0;
+  color: #1d2122;
 
-  background: #d6d7d8;
-  border: 1px solid #858689;
-  box-shadow: 0 0 10px;
+  /* background: #d6d7d8; */
+  border-bottom: 1px solid #1d2122;
 }
 .DateInput_input__disabled {
   background: #f2f2f2;

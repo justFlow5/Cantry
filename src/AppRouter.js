@@ -12,6 +12,7 @@ import SignUp from './components/pages/SignUp';
 
 import { AuthProvider } from './components/Auth';
 import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 
 import Signup_Login2 from './components/pages/Signup_Login2';
 import Login_SignUp from './components/pages/Login_Signup';
@@ -23,11 +24,22 @@ const AppRouter = () => {
       <Router>
         <div style={{ height: '100%', width: '100%' }}>
           {/* <PrivateRoute exact path="/" component={Dashboard} /> */}
-          <Route exact path="/" component={Signup_Login2} />
+          <PublicRoute exact path="/" component={Signup_Login2} />
           <Route exact path="/login" component={Login_SignUp} />
           <Route exact path="/about" component={About} />
-          <PrivateRoute path="/plan/:goal" component={PlanTemplate} />
-          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <div>
+            <PrivateRoute
+              exact
+              path="/dashboard"
+              component={Dashboard}
+            ></PrivateRoute>
+            <PrivateRoute exact path="/plan/:goal" component={PlanTemplate} />
+            <PrivateRoute
+              exact
+              path="/plan/:goal/edit"
+              component={PlanTemplateEdit}
+            />
+          </div>
         </div>
       </Router>
     </AuthProvider>
