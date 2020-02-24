@@ -10,11 +10,9 @@ const Button = styled.button`
   color: #1F1C23;
   /* background-color: transparent; */
   margin: 40px;
-  font-family: "Merriweather", serif;
   white-space: nowrap;
 
   letter-spacing: 2px;
-  font-family: "Open Sans", sans-serif;
   background: 0 0;
   text-transform: uppercase;
   /* float: right; */
@@ -53,18 +51,18 @@ const Button = styled.button`
      /* content: "\\002B"; */
     position: absolute;
     opacity: 0;
-    top: -2px;
+    top: -1px;
    
     transform: scale(${props => props.scale});
     transform: rotate(${props => props.rotate});
-    right: -30px;
+    right: -25px;
     /* left: -30px; */
 
     transition: 0.3s;
   }
   
   :hover span {
-    padding-right: 35px;
+    padding-right: 25px;
   
 
   }

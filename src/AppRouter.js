@@ -8,14 +8,18 @@ import About from './components/pages/About';
 import PlanTemplate from './components/templates/PlanTemplate';
 import PlanTemplateEdit from './components/templates/PlanTemplateEdit';
 // import Login from './components/pages/Login';
-import SignUp from './components/pages/SignUp';
 
-import { AuthProvider } from './components/Auth';
+import { AuthProvider } from './components/contexts/Auth';
+
+import { FunctionsProvider } from './components/contexts/FunctionsProvider';
+
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 
 import Signup_Login2 from './components/pages/Signup_Login2';
 import Login_SignUp from './components/pages/Login_Signup';
+import QuoteSettings from './components/pages/QuoteSettings';
+import Strategy from './components/Strategy';
 
 const AppRouter = () => {
   return (
@@ -27,7 +31,7 @@ const AppRouter = () => {
           <PublicRoute exact path="/" component={Signup_Login2} />
           <Route exact path="/login" component={Login_SignUp} />
           <Route exact path="/about" component={About} />
-          <div>
+          <FunctionsProvider>
             <PrivateRoute
               exact
               path="/dashboard"
@@ -36,10 +40,21 @@ const AppRouter = () => {
             <PrivateRoute exact path="/plan/:goal" component={PlanTemplate} />
             <PrivateRoute
               exact
+              path="/dashboard/quote-settings"
+              component={QuoteSettings}
+            />
+            <PrivateRoute
+              exact
+              path="/plan/:goal/tactic"
+              component={Strategy}
+            />
+
+            <PrivateRoute
+              exact
               path="/plan/:goal/edit"
               component={PlanTemplateEdit}
             />
-          </div>
+          </FunctionsProvider>
         </div>
       </Router>
     </AuthProvider>

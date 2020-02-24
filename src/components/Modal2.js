@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import PlanContext from './Plan-context';
+import PlanContext from './contexts/Plan-context';
 
 import Button from './Button';
 
@@ -182,7 +182,7 @@ export default props => {
       <Button
         action={toggleModal}
         content="Create new plan"
-        width="300px"
+        width="285px"
         mark="\002B"
         scale="1.6"
       >

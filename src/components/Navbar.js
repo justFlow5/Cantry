@@ -14,13 +14,18 @@ const NavBar = styled.nav`
   background-color: rgba(202, 211, 200, 1);
   background-color: #44474b;
   background-color: rgb(102, 102, 102);
-  /* background-color: rgba(0, 0, 0, 0.53); */
+  background-color: rgba(0, 0, 0, 0.65);
   height: 50px;
   width: 100%;
+
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
+  box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
   /* z-index: 3; */
   /* width: 100%; */
   display: flex;
   align-items: center;
+  z-index: 9;
 
   a {
     color: #fff;

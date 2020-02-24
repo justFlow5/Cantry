@@ -13,6 +13,8 @@ const pulse = keyframes`
 `;
 
 const SpinnerBox = styled.div`
+  /* width: ${props => (props.size ? props.size : '100px')}; */
+  /* height: ${props => (props.size ? props.size : '100px')}; */
   width: 100px;
   height: 100px;
   display: flex;
@@ -23,15 +25,15 @@ const SpinnerBox = styled.div`
 `;
 
 const PulseContainer = styled.div`
-  width: 120px;
+  width: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 const PulseBubble = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
 
   background-color: #070707;
@@ -46,7 +48,7 @@ const PulseBubble = styled.div`
   }
 `;
 
-export default props => {
+const LoaderQuote = props => {
   return (
     <SpinnerBox>
       <PulseContainer>
@@ -58,3 +60,5 @@ export default props => {
     // )
   );
 };
+
+export default LoaderQuote;

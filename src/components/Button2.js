@@ -10,7 +10,6 @@ const Button = styled.button`
   color: #1F1C23;
   /* background-color: transparent; */
   margin: 40px;
-  font-family: "Merriweather", serif;
   white-space: nowrap;
 
   letter-spacing: 2px;

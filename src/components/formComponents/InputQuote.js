@@ -9,12 +9,14 @@ const FormField = styled.div`
   &.form-field--is-active {
     & .form-field__control {
       &::after {
-        border-bottom: 2px solid #b11adc;
+        border-bottom: 2px solid #1d2122;
         transform: scaleX(150);
       }
     }
     & .form-field__label {
-      color: #b11adc;
+      color: #1d2122;
+      color: black;
+
       font-size: 0.8rem;
       top: 0px;
 
@@ -34,8 +36,7 @@ const FormField = styled.div`
 `;
 
 const Label = styled.label`
-  /* display: #b11adc; */
-  font-size: 1.45rem;
+  font-size: 1.3rem;
 
   font-weight: normal;
   left: 0;
@@ -54,7 +55,9 @@ const Control = styled.div`
   overflow: hidden;
   position: relative;
   width: 50%;
-  margin: 30px auto 0px;
+  width: 70%;
+
+  margin: 5px auto 0px;
 
   &::after {
     border-bottom: 2px solid black;
@@ -76,7 +79,8 @@ const Input = styled.input`
   background: transparent;
   border: 0;
   border-bottom: 1px solid #999;
-  color: #4a4949;
+  color: #1d2122;
+  color: black;
   display: block;
   font-size: 18px;
   margin-top: 24px;
@@ -87,7 +91,7 @@ const Input = styled.input`
   cursor: text;
 `;
 
-const InputField = props => {
+const InputQuote = props => {
   const [isActive, setIsActive] = useState('');
   const [isFilled, setIsFilled] = useState('');
 
@@ -163,7 +167,9 @@ const InputField = props => {
                 // maxHeight: '120px',
                 lineHeight: '1.3'
               }}
-              //   oninput={autoGrow(content)}
+              onKeyDown={() => {
+                autoGrow(content);
+              }}
             ></Input>
           ) : (
             <Input
@@ -194,4 +200,4 @@ const InputField = props => {
   );
 };
 
-export default InputField;
+export default InputQuote;

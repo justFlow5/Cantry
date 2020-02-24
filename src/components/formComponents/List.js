@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import PlanContext from '../Plan-context';
+import PlanContext from '../contexts/Plan-context';
+// import { FuncContext } from '../contexts/FunctionsProvider';
 
 const Descriptor = styled.div`
   font-size: 20px;
@@ -16,7 +17,7 @@ const Descriptor = styled.div`
   /* min-width: 250px; */
 
   /* width: 300px; */
-  margin: 20px;
+  margin: 30px;
   -webkit-transform: rotate(1deg);
   -moz-transform: rotate(1deg);
   -ms-transform: rotate(1deg);

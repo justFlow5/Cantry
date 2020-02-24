@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import PlanContext from './Plan-context';
+import PlanContext from './contexts/Plan-context';
 
 import FormGoal from './formComponents/FormGoal';
 import FormSpecifics from './formComponents/FormSpecifics';

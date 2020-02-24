@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { FuncContext } from './contexts/FunctionsProvider';
 import styled from 'styled-components';
+import Loader from './LoaderQuote';
 
 import axios from 'axios';
 
@@ -31,6 +33,8 @@ const Quote = styled.section`
 
 const QuoteContainer = styled.div`
   /* width: 100%; */
+  margin-top: 40px;
+  margin: 40px 0 40px;
   max-width: 600px;
   position: relative;
   /* margin: 15px auto 35px; */
@@ -38,12 +42,16 @@ const QuoteContainer = styled.div`
 
 const QuoteContent = styled.blockquote`
   /* border: 2em solid transparent; */
-  font-size: 18px;
-  font-family: 'Lora', serif;
+  font-size: 20px;
+  /* font-family: 'Great Vibes', cursive; */
   font-style: italic;
-  line-height: 1.5;
+  line-height: 1.3;
+  letter-spacing: 1.5px;
   width: 85%;
   text-align: center;
+  font-family: 'Gentium Basic', serif;
+
+  margin: 5px 0;
 
   footer {
     padding-top: 10px;
@@ -52,71 +60,105 @@ const QuoteContent = styled.blockquote`
       font-style: normal;
       font-size: 22px;
       font-weight: bold;
+      white-space: nowrap;
     }
   }
 `;
 
 const UpperLine = styled.div`
-  /* -webkit-transition: width 900ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -moz-transition: width 900ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition: width 900ms cubic-bezier(0.165, 0.84, 0.44, 1); */
+  position: absolute;
+  top: 0;
 
-  /* width: 0px; */
-  width: 100px;
+  width: 20%;
+  top: -30%;
+  right: 48%;
+  height: 2px;
 
-  height: 1px;
-  /* background: #fff; */
-  background: black;
+  background: #1d2122;
 
-  margin-bottom: 20px;
   margin-top: 15px;
-  margin-right: 70px;
 `;
 
 const BelowLine = styled.div`
-  /* -webkit-transition: width 900ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -moz-transition: width 900ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition: width 900ms cubic-bezier(0.165, 0.84, 0.44, 1); */
-  width: 100px;
-  height: 1px;
-  background: black;
+  position: absolute;
+  bottom: -30%;
+  right: 48%;
+  margin: 0 auto;
+  width: 20%;
+  height: 2px;
+  /* width: 100px; */
+  /* height: 2margin: 0 auto;px; */
+  background: #1d2122;
   margin-bottom: 12px;
-  margin-top: 20px;
-  margin-right: 70px;
+  /* margin-right: 70px; */
 `;
 
 export default () => {
+  const { quoteOption, singleQuoteDb, quotesDb } = useContext(FuncContext);
+
   const [quote, setQuote] = useState('');
+
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const [qStatus, setQStatus] = useState('');
 
   useEffect(() => {
     getRandomQuote();
   }, []);
 
   const getRandomQuote = async () => {
-    try {
-      const res = await axios.get('https://type.fit/api/quotes');
-      let data = res.data;
-      let singleQuote = data[Math.floor(Math.random() * data.length)];
+    let quoteStatus = localStorage.getItem('quoteStatus');
+    setQStatus(quoteStatus);
+    if (!quoteStatus) {
+      quoteStatus = quoteOption;
+      setQStatus(quoteStatus);
+    }
 
-      return setQuote(singleQuote);
-    } catch (error) {
-      console.log(error);
+    if (quoteStatus === 'many') {
+      let quotes = JSON.parse(localStorage.getItem('quoteMany')) || quotesDb;
+      let singleQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      setQuote(singleQuote);
+      setIsLoaded(true);
+    } else if (quoteStatus === 'one') {
+      const quote =
+        JSON.parse(localStorage.getItem('quoteOne')) || singleQuoteDb;
+      setQuote(quote);
+      setIsLoaded(true);
+    } else {
+      try {
+        const res = await axios.get('https://type.fit/api/quotes');
+        let data = res.data;
+        let singleQuote = data[Math.floor(Math.random() * data.length)];
+
+        setQuote(singleQuote);
+        setIsLoaded(true);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
-
   return (
     <Quote>
-      <UpperLine></UpperLine>
       <QuoteContainer>
+        <UpperLine />
+        {!isLoaded && <Loader />}
         <QuoteContent>
-          {quote.text}
+          {qStatus ? quote.quote : quote.text}
+          {/* {quote.quote} */}
           <footer>
             {/* &mdash; */}
-            <cite> {quote.author === null ? 'Unknown' : quote.author}</cite>
+            {qStatus ? (
+              <cite> {quote.author === null ? '' : quote.author}</cite>
+            ) : (
+              <cite>
+                {' '}
+                {quote.author === null ? ' Author Unknown' : quote.author}
+              </cite>
+            )}
           </footer>
         </QuoteContent>
+        <BelowLine />
       </QuoteContainer>
-      <BelowLine></BelowLine>
     </Quote>
   );
 };

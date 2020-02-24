@@ -2,10 +2,11 @@ import React, { useState, useEffect, useReducer, useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from '@reach/router';
 import uuid from 'uuid';
+import PlanContext from '../contexts/Plan-context';
 import { createGlobalStyle } from 'styled-components';
 import plansReducer from '../reducers/PlansReducer';
 import Sloth from '../sloth.png';
-import PlanContext from '../Plan-context';
+
 import Quote from '../QuoteGenerator.js';
 import Accordion from '../Plan';
 import Button from '../Button.js';
@@ -15,8 +16,8 @@ import Loader from '../Loader';
 // import { getFirebase } from '../../firebase/Firebase';
 import Modal from '../Modal2';
 import db from '../../firebase/Firebase';
-import UserContext from '../Plan-context';
-import { AuthContext } from '../Auth';
+import { AuthContext } from '../contexts/Auth';
+import { FuncContext } from '../contexts/FunctionsProvider';
 
 // const GlobalStyles = createGlobalStyle`
 // @import url(https://fonts.googleapis.com/css?family=Lora);
@@ -37,6 +38,9 @@ const ContentContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-left: 200px;
+  /* position: relative; */
+  /* left: 200px; */
 `;
 
 const PlanContainer = styled.section`
@@ -59,8 +63,10 @@ const PlanContainer = styled.section`
   hr {
     width: 13%;
     position: relative;
-    background: #0c447b;
+    background: #1d2122;
     margin: 0;
+    height: 4px;
+    top: -3px;
   }
 `;
 
@@ -131,54 +137,47 @@ const SadFace = styled.div`
 `;
 
 export default props => {
-  // const uid = location.state.uid;
-  // var uid = location.state.uid.toString();
-  // console.log('dashboard uid', uid);
-
-  // const { uid } = useContext(UserContext);
-
   const { currentUser } = useContext(AuthContext);
+  const {
+    plans,
+    goal,
+    specificators,
+    prices,
+    dailyTasks,
+    deadline,
+    setGoal,
+    setSpecificators,
+    setPrices,
+    setDailyTasks,
+    setDeadline,
 
-  console.log('CURRENT USER ID', currentUser);
+    updatePlan,
+
+    dispatch,
+
+    deleteSpec
+  } = useContext(FuncContext);
 
   const [step, setStep] = useState(1);
 
-  const [plans, dispatch] = useReducer(plansReducer, [], () => {
-    const localPlans = localStorage.getItem('plans');
-    if (localPlans) {
-      console.log('LOCAL PLANS', localPlans);
-      return JSON.parse(localPlans);
-    } else {
-      return [];
-    }
-  });
+  // const [plans, dispatch] = useReducer(plansReducer, [], () => {
   //   const localPlans = localStorage.getItem('plans');
-
   //   if (localPlans) {
-  //     console.log('LOCAL PLANS');
+  //     console.log('LOCAL PLANS', localPlans);
   //     return JSON.parse(localPlans);
   //   } else {
-  //     console.log('getDataFromDb() hueheueu');
-  //     return getDataFromDb();
+  //     return [];
   //   }
-
-  //   // return localPlans ? JSON.parse(localPlans) : getDataFromDb();
   // });
-  // return getDataFromDb();
-  // console.log('weeehaa plans', plans);
-  // });
-  // const [plans, setPlans] = useReducer([]);
 
-  const [goal, setGoal] = useState('');
-  const [specificators, setSpecificators] = useState([]);
   const [singleSpec, setSingleSpec] = useState('');
-  const [prices, setPrices] = useState([]);
+  // const [prices, setPrices] = useState([]);
   const [singlePrice, setSinglePrice] = useState('');
 
   const [dailyTask, setDailyTask] = useState('');
-  const [dailyTasks, setDailyTasks] = useState([]);
+  // const [dailyTasks, setDailyTasks] = useState([]);
 
-  const [deadline, setDeadline] = useState(null);
+  // const [deadline, setDeadline] = useState(null);
 
   const [isComplete, setIsComplete] = useState(false);
 
@@ -187,14 +186,11 @@ export default props => {
   const [isActive, setIsActive] = useState('');
 
   const addPlan = () => {
-    // setPlans([...plans, { goal, specificators, deadline, prices, dailyTasks }]);
-
-    // ADD PLAN TO FIREBASE
     const newPlan = {
       goal,
       deadline: deadline.valueOf()
     };
-    // GET A KEY OF NEWLY ADDED PLAN
+
     var key;
 
     db.ref(`users/${currentUser.uid}/plans`)
@@ -204,54 +200,21 @@ export default props => {
       })
 
       .then(() => {
-        // ADD specs, prices and tasks to the newly added plan
-        // if (key) {
-        // console.log('KEY under IF: ', key);
-
-        // specificators.forEach(({ singleSpec }) => {
         db.ref(`users/${currentUser.uid}/plans/${key}/specificators`).set(
           specificators
         );
-        // });
 
-        // prices.forEach(({ singlePrice }) => {
         db.ref(`users/${currentUser.uid}/plans/${key}/prices`).set(prices);
-        // });
 
-        // dailyTasks.forEach(({ dailyTask }) => {
         db.ref(`users/${currentUser.uid}/plans/${key}/dailyTasks`).set(
           dailyTasks
         );
-        // });
       })
 
       .then(() => {
-        // RETURN PLANS PLANS FROM FIREBASE
-
-        // db.ref((`plans/${key}`))
-        //   .once('value')
-        // .then(snapshot => {
-
-        // const plansDb = [];
-        // var goalDb;
-        // var deadlineD;
         const specificatorsDb = [];
         const pricesDb = [];
         const dailyTasksDb = [];
-
-        // db.ref(`plans/${key}/goal`)
-        //   .once('value')
-        //   .then(snap => {
-        //     goalDb = snap.val();
-        //   });
-
-        // db.ref(`plans/${key}/deadline`)
-        //   .once('value')
-        //   .then(snap => {
-        //     deadlineDb = snap.val();
-        //   });
-
-        // snapshot.forEach(childSnapshot => {
 
         db.ref(`users/${currentUser.uid}/plans/${key}/specificators`)
           .once('value')
@@ -286,19 +249,6 @@ export default props => {
             });
           });
 
-        // db.ref(`plans/${key}/goal`)
-        //   .once('value')
-        //   .then(snap => {
-        //     // var goalDb = snap.val();
-        //     goalDb.push(snap.val());
-        //   });
-
-        // db.ref(`plans/${key}/deadline`)
-        //   .once('value')
-        //   .then(snap => {
-        //     deadlineDb.push(snap.val());
-        //   });
-
         return {
           id: key,
           goal: newPlan.goal,
@@ -307,11 +257,6 @@ export default props => {
           prices: pricesDb,
           dailyTasks: dailyTasksDb
         };
-
-        // END OF FIREBASE RETURN
-        // console.log('specificatorsDb: ', specificatorsDb);
-        // console.log('pricesDb: ', pricesDb);
-        // console.log('dailyTasksDb: ', dailyTasksDb);
       })
       .then(data => {
         dispatch({
@@ -352,27 +297,6 @@ export default props => {
     setDailyTasks([...dailyTasks, { dailyTask, id }]);
 
     setDailyTask('');
-  };
-
-  const deleteTempPrice = id => {
-    const filteredPrices = prices.filter(price => {
-      return price.id !== id;
-    });
-    setPrices(filteredPrices);
-  };
-
-  const deleteTempSpec = id => {
-    const filteredSpecs = specificators.filter(spec => {
-      return spec.id !== id;
-    });
-    setSpecificators(filteredSpecs);
-  };
-
-  const deleteTempTask = id => {
-    const filteredTasks = dailyTasks.filter(task => {
-      return task.id !== id;
-    });
-    setDailyTasks(filteredTasks);
   };
 
   // const updateSpecificators = (idPlan, idSpec, content) => {
@@ -420,27 +344,6 @@ export default props => {
   //   setDailyTasks(updatedDailyTasks);
   // };
 
-  const updatePlan = id => {
-    const updatedPlan = {
-      goal,
-      specificators,
-      prices,
-      dailyTasks,
-      deadline,
-      id
-    };
-    db.ref(`users/${currentUser.uid}/plans/${id}`).update(updatedPlan);
-
-    const updatedPlans = plans.map(plan => {
-      if (plan.id === id) {
-        return updatedPlan;
-      } else {
-        return plan;
-      }
-    });
-    dispatch({ type: 'UPDATE_PLAN', updatedPlans });
-  };
-
   // const updatePlan = id => {
   //   const updatedPlan = {
   //     goal,
@@ -450,28 +353,38 @@ export default props => {
   //     deadline,
   //     id
   //   };
-  //   // const updatedPlans = plans.map(plan => {
-  //   //   if (plan.id === id) {
-  //   //     return {
-  //   //       goal,
-  //   //       specificators,
-  //   //       prices,
-  //   //       dailyTasks,
-  //   //       deadline
-  //   //     };
-  //   //   } else {
-  //   //     return plan;
-  //   //   }
-  //   // });
+  //   db.ref(`users/${currentUser.uid}/plans/${id}`).update(updatedPlan);
 
-  //   // db.ref(`plans/${id}`).update(updatedPlan)
-  //   // specificators.forEach(({singleSpec, id}) => {
-  //   //   if (id === )
-  //   // })
-  //   // db.ref(`plans/${id}.specificators`)
-
-  //   // dispatch({ type: 'UPDATE_PLAN', updatedPlans });
+  //   const updatedPlans = plans.map(plan => {
+  //     if (plan.id === id) {
+  //       return updatedPlan;
+  //     } else {
+  //       return plan;
+  //     }
+  //   });
+  //   dispatch({ type: 'UPDATE_PLAN', updatedPlans });
   // };
+
+  const deleteTempPrice = id => {
+    const filteredPrices = prices.filter(price => {
+      return price.id !== id;
+    });
+    setPrices(filteredPrices);
+  };
+
+  const deleteTempSpec = id => {
+    const filteredSpecs = specificators.filter(spec => {
+      return spec.id !== id;
+    });
+    setSpecificators(filteredSpecs);
+  };
+
+  const deleteTempTask = id => {
+    const filteredTasks = dailyTasks.filter(task => {
+      return task.id !== id;
+    });
+    setDailyTasks(filteredTasks);
+  };
 
   const nextStep = () => {
     setStep(step + 1);
@@ -481,33 +394,7 @@ export default props => {
     setStep(step - 1);
   };
 
-  // useEffect(() => {
-  //   const data = localStorage.getItem('plans');
-  //   console.log('data', data);
-  //   if (JSON.parse(data).length > 0) {
-  //     setPlans(JSON.parse(data));
-  //   }
-  // }, []);
-
-  // SAVE DATA IN LOCAL STORAGE
-  // useEffect(() => {
-  //   localStorage.setItem('plans', JSON.stringify(plans));
-  // }, [plans]);
-
-  // useEffect(() => {
-  //   (async function() {
-  //     const plansFromDb = await getDataFromDb();
-  //     // const plansFromDb_length = await getDataFromDb().length;
-  //     console.log('plansFromDb" ', plansFromDb);
-  //     console.log('plansFromDbLENGTH" ', plansFromDb.length);
-
-  //     if (plansFromDb.length > 0) {
-  //       dispatch({ type: 'LOAD_DB_PLANS', plansFromDb });
-  //     }
-  //   })();
-  // }, []);
   useEffect(() => {
-    // var uid = location.state.uid.toString();
     getDataFromDb();
   }, []);
 
@@ -617,40 +504,28 @@ export default props => {
       value={{
         step,
         setStep,
-        plans,
-        // setPlans,
-        dispatch,
-        goal,
-        setGoal,
-        specificators,
-        setSpecificators,
-        deleteTempSpec,
-        singleSpec,
-        setSingleSpec,
-        prices,
-        setPrices,
-        singlePrice,
-        setSinglePrice,
-        deleteTempPrice,
-        deadline,
-        setDeadline,
-        // isComplete,
-        // setIsComplete,
-        // showForm,
-        // setShowForm,
-        isActive,
-        setIsActive,
-        addPlan,
-        addSpec,
-        addPrice,
         nextStep,
         prevStep,
+        //
+        singleSpec,
+        setSingleSpec,
+        addSpec,
+        deleteTempSpec,
+        //
+        singlePrice,
+        setSinglePrice,
+        addPrice,
+        deleteTempPrice,
+        //
+        isActive,
+        setIsActive,
+        //
+        addPlan,
+        //
         dailyTask,
         setDailyTask,
-        deleteTempTask,
-        dailyTasks,
-        setDailyTasks,
-        addTask
+        addTask,
+        deleteTempTask
       }}
     >
       <Navbar />
@@ -726,7 +601,26 @@ export default props => {
             {/* <Link to="/createPlan/"> */}
             {/* <Button plus content="Create new plan" width="300px" mark='' /> */}
             {/* <div>plan: {JSON.stringify(plans)}</div> */}
-
+            {/* <div>{JSON.stringify(specificators)}</div>
+            {console.log('specificators:::: ', specificators)} */}
+            {/* <button
+              style={{
+                position: 'asbolute',
+                top: '0',
+                right: '0',
+                width: '300px',
+                height: '300px',
+                cursor: 'pointer'
+              }}
+              onClick={() => {
+                deleteSpec(
+                  '-M-k8WBxBljjRF6NlVoU',
+                  '64982272-2519-4a41-a2db-856b030aeca5'
+                );
+              }}
+            >
+              delete
+            </button> */}
             <Modal />
 
             {/* <div>daily Tasks: {JSON.stringify(dailyTasks)}</div> */}
@@ -747,7 +641,7 @@ export default props => {
             <Link to="/plan/">
               <Button
                 content="Go to organizer"
-                width="300px"
+                width="285px"
                 mark="\00bb"
                 scale="1.6"
               />

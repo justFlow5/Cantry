@@ -1,7 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
 
-import PlanContext from '../Plan-context';
-
 import 'react-dates/initialize';
 // import '../formComponents/_datepicker_custom.css';
 import './_template_datePicker.css';
@@ -69,7 +67,9 @@ const Box = styled.div`
   .innerBox {
     position: relative;
     border: 2px solid black;
-    padding: 53px;
+    /* padding: 53px; */
+    padding: 7px;
+
     &:before,
     &:after {
       content: '•';
@@ -171,7 +171,67 @@ const PlanTitle = styled.h3`
     } */
   /* } */
 `;
+const EditButton = styled.button`
+  padding: 10px 15px;
+  cursor: pointer;
+  position: relative;
+  border: 1.5px solid #1F1C23;
+  outline: none;
+  color: #1F1C23;
+margin-bottom: 20px;
+  white-space: nowrap;
 
+  letter-spacing: 2px;
+  background: 0 0;
+  text-transform: uppercase;
+  /* float: right; */
+  text-align: center;
+  font-weight: 500;
+
+  border-radius: 4px;
+  font-size: 18px;
+  /* padding: 5px; */
+  /* width: 300px; */
+  width: 200px;
+  transition: all 0.3s;
+
+
+  box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+
+  
+  span {
+    /* cursor: pointer; */
+    display: inline-block;
+    position: relative;
+    transition: 0.3s;
+  }
+  
+  span:after {
+    /* content:"${props => (props.plus ? '\\002B' : '\\00bb')}"; */
+    /* content:"${props => (props.plus ? '\\002B' : props.mark)}"; */
+    content: '\\270E';
+    color:  #0e1111;
+    font-weight: 600;
+
+    position: absolute;
+    opacity: 0;
+    top: -4px;
+    transform: scale(1.3);
+    right: -30px;
+    transition: 0.3s;
+  }
+  
+  :hover span {
+    padding-right: 33px;
+  
+
+  }
+
+  :hover span:after {
+    opacity: 1;
+    right: 0;
+  }
+`;
 const Deadline = styled.p`
   font-size: 17px;
   /* width: 100%; */
@@ -214,13 +274,22 @@ const DescriptionContainer = styled.div`
   & .descriptorIcon {
     position: relative;
     bottom: -25px;
+    /* padding: 0 20px; */
   }
 
   & > .descriptor {
-    padding: 10px;
+    /* padding: 10px; */
+    /* box-sizing: content-box; */
     display: flex;
     margin: 30px auto 0;
-    width: 100%;
+    /* width: 100%; */
+    border-bottom: 1px solid #8e8e8e;
+    padding: 0px 20px 40px;
+    justify-content: center;
+    width: 85%;
+
+    /* & > * {} */
+    /* padding: 0px 40px 40px; */
 
     /* flex: 1 1 0; */
 
@@ -229,6 +298,7 @@ const DescriptionContainer = styled.div`
       padding: 10px;
       display: inline-block;
       width: 20%;
+      /* margin-right: 20px; */
       /* text-align: center; */
     }
 
@@ -248,9 +318,18 @@ const DescriptionContainer = styled.div`
         padding: 10px;
         padding-right: 20px;
         position: relative;
+        word-break: break-all;
+
+        &.task {
+          margin-top: 0;
+        }
 
         &:first-child {
           margin-top: 10px;
+
+          &.task {
+            margin-top: 0;
+          }
         }
 
         &.verticalBorder {
@@ -258,12 +337,12 @@ const DescriptionContainer = styled.div`
           /* border-left: 4px solid #34353a; */
           border-left: 4px solid #34353a;
 
-          &.editActive {
+          /* &.editActive {
             background: #d6d7d8;
             border: 1px solid #858689;
             box-shadow: 0 0 10px;
-            /* padding: 10px; */
-          }
+            padding: 10px;
+          } */
         }
         & span {
           display: inline-block;
@@ -328,66 +407,12 @@ const GoToPlan = styled.div`
   right: 40px;
 `;
 
-const EditButton = styled.button`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-  background: #858689;
-`;
-
-const EditPopUp = styled.div`
-  position: fixed;
-  width: 150px;
-  height: 70px;
-  /* background: rgba(255, 255, 255, 0.7); */
-  background-color: rgba(0, 0, 0, 0.45);
-  /* color: #d8d8d8; */
-  color: #F9F4F3;
-  border-radius: 10px;
-  /* right: ${props => (props.hide ? '0' : '65px')}; */
-  right: -150px;
-  top: 15%;
-  /* visibility: ${props => (props.hide ? 'hidden' : 'visible')}; */
-  visibility: hidden;
-
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 5px 5px 20px;
-
-  transition: all 0.3s;
-
-  &.appear {
-    right: 30px;
-    visibility: visible;
-
-  }
-`;
-
 const PlanTemplate = ({ location }) => {
-  const {
-    plan,
-    setGoal,
-    setDeadline,
-    setSpecificators,
-    setPrices,
-    setDailyTasks,
-    deleteTempSpec,
-    deleteTempPrice,
-    deleteTempTask
-  } = location.state;
+  const { plan } = location.state;
 
   console.log('location.state: ', location.state.plan);
 
   const [isEditible, setIsEditible] = useState(false);
-
-  const [isEditActive, setIsEditActive] = useState('');
 
   const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
 
@@ -395,7 +420,6 @@ const PlanTemplate = ({ location }) => {
     <>
       <NavBar />
       <PlanContainer>
-        <EditPopUp className={isEditible ? 'appear' : ''}>EDIT MODE</EditPopUp>}
         <Box>
           <div className="innerBox">
             <PlanContent>
@@ -416,12 +440,7 @@ const PlanTemplate = ({ location }) => {
                   <ul>
                     {plan.specificators.map(({ singleSpec, id }) => {
                       return (
-                        <li
-                          // className={isEditActive === id? 'editActive': ''}
-                          key={id}
-                          id={id}
-                          className="verticalBorder"
-                        >
+                        <li key={id} id={id} className="verticalBorder">
                           {singleSpec}
                         </li>
                       );
@@ -453,7 +472,7 @@ const PlanTemplate = ({ location }) => {
                   <ul>
                     {plan.dailyTasks.map(({ dailyTask, id }) => {
                       return (
-                        <li key={id}>
+                        <li key={id} className="task">
                           <CheckInput
                             dailyTask={dailyTask}
                             id={id}
@@ -469,30 +488,19 @@ const PlanTemplate = ({ location }) => {
                 <Graph />
                 <StatText>You are on 20 day stroke.</StatText>
                 <GoToPlan>
-                  <Button
-                    mark={'\\270E'}
-                    content={'Tasks'}
-                    width="175px"
-                    scale="1.3"
-                  ></Button>
-
-                  {/* <EditButton ref={buttonContent} onClick={toggleEdit}>
-                    edit
-                  </EditButton> */}
-                  {/* <Link to={`{plan/${goal}/edit}`}>Edit plan</Link> */}
-
                   <Link
                     to={{
                       pathname: `/plan/${formatGoal(plan.goal)}/edit`,
                       state: location.state
                     }}
                   >
-                    Edit plan
+                    <EditButton>
+                      <span>Edit Plan</span>
+                    </EditButton>
                   </Link>
                 </GoToPlan>
               </PlanStage>
             </PlanContent>
-            {/* </InnerBox> */}
           </div>
         </Box>
       </PlanContainer>

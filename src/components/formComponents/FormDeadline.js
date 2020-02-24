@@ -1,18 +1,22 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
-import 'react-dates/initialize';
-import './_datepicker_custom.css';
-
 import { SingleDatePicker } from 'react-dates';
+import moment from 'moment';
+import 'react-dates/initialize';
+import './datepickerDeadline.css';
 
-import PlanContext from '../Plan-context';
+import PlanContext from '../contexts/Plan-context';
+import { FuncContext } from '../contexts/FunctionsProvider';
+
 import InputField from './InputField';
 import Request from './Request';
 
 import ButtonBack from '../Button2';
 import AddButton from './AddInputButton';
 import ButtonNext from '../Button';
+
+import NavigationArrow from './NavigationArrow';
 
 // import SingleDatePicker from './singleDatePicker';
 
@@ -24,11 +28,8 @@ const ButtonNextContainer = styled.div`
 
 const ButtonBackContainer = styled.div`
   position: fixed;
-  bottom: 10px;
-  left: 30px;
-  > button {
-    /* position: absolute; */
-  }
+  top: 40%;
+  left: 8%;
 `;
 const CalendarContainer = styled.div`
   /* margin: 0 auto; */
@@ -38,21 +39,11 @@ const CalendarContainer = styled.div`
   /* align-items: center; */
 `;
 export default props => {
-  const {
-    deadline,
-    setDeadline,
-    nextStep,
-    prevStep,
-    plans,
-    goal,
-    specificators,
-    prices,
-    addPlan
-  } = useContext(PlanContext);
+  const { prevStep, addPlan } = useContext(PlanContext);
 
-  // const [date, setDate] = useState(null);
+  const { deadline, setDeadline } = useContext(FuncContext);
+
   const [focused, setFocused] = useState(null);
-  // const [date, setDate] = useState(null);
 
   const onDateChange = newDeadline => {
     if (newDeadline) {
@@ -86,6 +77,7 @@ export default props => {
           openDirection="down"
           hideKeyboardShortcutsPanel={true}
           showDefaultInputIcon={true}
+
           // showClearDate={true}
           // reopenPickerOnClearDates={true}
           // withPortal={true}
@@ -93,14 +85,11 @@ export default props => {
       </CalendarContainer>
 
       <ButtonBackContainer>
-        <ButtonBack
-          rotate="180deg"
-          action={prevStep}
-          content="BACK"
-          width="150px"
-          mark="\00bb"
-          scale="3"
-        ></ButtonBack>
+        <NavigationArrow
+          nextContent="Set Daily Tasks"
+          nextStep={prevStep}
+          arrowDirection="left"
+        />
       </ButtonBackContainer>
       <ButtonNextContainer>
         <ButtonNext
@@ -109,6 +98,8 @@ export default props => {
           mark="\2714"
           width="250px"
           scale="1.2"
+          // disabled={deadline.length > 0 ? false : true}
+          disabled={moment.isMoment(deadline) ? false : true}
         ></ButtonNext>
       </ButtonNextContainer>
 

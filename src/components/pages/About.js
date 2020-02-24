@@ -1,7 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
+import NavBar from '../Navbar';
 
 const About = () => {
-  return <div>ABOUT MAN</div>;
+  return <NavBar />;
 };
 
 export default About;

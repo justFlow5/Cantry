@@ -3,7 +3,7 @@ import { withRouter, Redirect } from 'react-router';
 import styled, { keyframes } from 'styled-components';
 
 import { firebase, googleAuthProvider } from '../../firebase/Firebase';
-import { AuthContext } from '../Auth';
+import { AuthContext } from '../contexts/Auth';
 
 import BgImg from '../../images/bgImg2.jpg';
 
@@ -102,7 +102,6 @@ const Form = styled.form`
   box-sizing: border-box;
 
   & > h3 {
-    font-family: 'Dosis';
     font-size: 35px;
     text-transform: uppercase;
     color: #353839;
@@ -151,7 +150,6 @@ const Form = styled.form`
 `;
 
 const Headline = styled.p`
-  font-family: 'Roboto', sans-serif;
   font-weight: 100;
   text-transform: uppercase;
   font-size: 12px;
@@ -171,7 +169,6 @@ const FbButton = styled.button`
   background: #1d2122;
   width: 160px;
   height: 25px;
-  font-family: 'Roboto', sans-serif;
   font-size: 12px;
   color: #fff;
   text-transform: uppercase;
@@ -195,7 +192,6 @@ const ButtonFormBtn = styled.button`
   height: 60px;
   bottom: 0;
   border: 0;
-  font-family: 'Dosis';
   font-size: 24px;
   text-transform: uppercase;
   cursor: pointer;
@@ -270,7 +266,6 @@ const Input = styled.input`
   border-bottom: 1px solid #c0c0c0;
 
   width: 85%;
-  font-family: 'Roboto';
   /* color: #545c5d; */
   color: #1d2122;
   text-align: left;

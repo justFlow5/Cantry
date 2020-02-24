@@ -1,66 +1,46 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
-import PlanContext from '../Plan-context';
+import PlanContext from '../contexts/Plan-context';
+import { FuncContext } from '../contexts/FunctionsProvider';
 
 import InputField from './InputField';
 
 import List from './List';
 import Request from './Request';
 
-import ButtonNext from '../Button';
-import ButtonBack from '../Button2';
 import AddButton from './AddInputButton';
 
+import NavigationArrow from './NavigationArrow';
+
 const ButtonNextContainer = styled.div`
-  position: absolute;
-  bottom: -70px;
-
-  right: 175px;
-
-  > button {
-    position: absolute;
-  }
+  position: fixed;
+  top: 40%;
+  right: 1%;
 `;
 
 const ButtonBackContainer = styled.div`
-  position: absolute;
-  bottom: -70px;
-
-  left: 30px;
-  > button {
-    position: absolute;
-  }
+  position: fixed;
+  top: 40%;
+  left: 8%;
 `;
 
 const ListContainer = styled.div`
+  position: relative;
   display: flex;
   /* justify-content: space-between; */
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
+  margin-top: 17px;
 `;
 
 export default () => {
-  const {
-    nextStep,
-    prevStep,
-    dailyTask,
-    setDailyTask,
-    dailyTasks,
-    addTask,
-    addPlan
-  } = useContext(PlanContext);
+  const { nextStep, prevStep, dailyTask, setDailyTask, addTask } = useContext(
+    PlanContext
+  );
 
-  // const [inputLength, setInputLength] = useState(0);
-
-  // window.addEventListener('keydown', e => {
-  //   console.log(dailyTask.length);
-  //   if (e.keyCode === 13 && dailyTask.length > 3) {
-  //     console.log('************************GOES THROUGH!&&&&&&&&&&&&&&&&&&&');
-  //     addTask(e);
-  //   }
-  // });
+  const { dailyTasks } = useContext(FuncContext);
 
   return (
     <>
@@ -80,33 +60,28 @@ export default () => {
         title="Task"
         // setInputLength={setInputLength}
       />
-      <AddButton addField={addTask}></AddButton>
+
+      <AddButton
+        addField={addTask}
+        disabled={dailyTask.length > 5 ? false : true}
+      ></AddButton>
       <br></br>
-      {/* <button onClick={nextStep}>Next</button> */}
-      {/* <button onClick={prevStep}>Back</button> */}
+
       <ButtonNextContainer>
-        <ButtonNext
-          action={nextStep}
-          content="NEXT"
-          width="150px"
-          mark="\00bb"
-          scale="1.3"
+        <NavigationArrow
+          nextContent="Set Deadline"
+          nextStep={nextStep}
           disabled={dailyTasks.length > 0 ? false : true}
-        ></ButtonNext>
+          arrowDirection="right"
+        />
       </ButtonNextContainer>
       <ButtonBackContainer>
-        <ButtonBack
-          rotate="180deg"
-          action={prevStep}
-          content="BACK"
-          width="150px"
-          mark="\00bb"
-          scale="3"
-        ></ButtonBack>
+        <NavigationArrow
+          nextContent="Pay The Price"
+          nextStep={prevStep}
+          arrowDirection="left"
+        />
       </ButtonBackContainer>
-      {/* <button onClick={addTask}>Add Daily Task</button> */}
-
-      {/* <button onClick={addPlan}>Save plan</button> */}
       <ListContainer>
         {dailyTasks.map(({ dailyTask, id }) => {
           return (

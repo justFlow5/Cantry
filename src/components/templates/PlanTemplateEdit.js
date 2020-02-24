@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { Link } from '@reach/router';
+import uuid from 'uuid';
 
 import 'react-dates/initialize';
 // import '../formComponents/_datepicker_custom.css';
@@ -9,18 +10,41 @@ import { SingleDatePicker } from 'react-dates';
 
 import InputFieldEdit from '../formComponents/InputFieldEdit';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import NavBar from '../Navbar';
 
-import Button from '../Button';
+// import Button from '../Button';
 
 import SpecificsIcon from '../icons/SpecificsIcon';
 import PriceIcon from '../icons/PriceIcon';
 import ProgressIcon from '../icons/ProgressIcon';
 import CheckInput from '../CheckInput';
 import FeatherIcon from '../icons/Feather';
+import Button from '../Button';
+
+import { FuncContext } from '../contexts/FunctionsProvider';
+import ModalDeletePlan from '../ModalDeletePlan';
 
 import moment from 'moment';
+
+const popupAppear = keyframes`
+  0% {   
+    opacity: 0;
+    transform: translateX(100%);
+      }
+  10% {
+    opacity: 1;
+    transform: translateX(-20%);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(-20%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+`;
 
 const PlanContainer = styled.div`
   display: flex;
@@ -106,8 +130,9 @@ const PlanTitle = styled.h3`
   font-weight: 500;
   position: relative;
   outline: 0;
-  padding: 15px 30px;
+  padding: 15px 30px 0px;
   height: 60px;
+  text-align: center;
   transition: all 0.3s;
 
   & span {
@@ -128,7 +153,7 @@ const Deadline = styled.p`
   /* width: 100%; */
   text-align: center;
   /* font-weight: 300; */
-  margin: 15px 0;
+  margin: 30px 0 15px;
   /* display: inline-block; */
 
   transition: all 0.3s;
@@ -173,22 +198,28 @@ const DescriptionContainer = styled.div`
   }
 
   & > .descriptor {
-    padding: 10px;
+    padding: 40px;
     display: flex;
     width: 100%;
+    border-bottom: 1px solid #8e8e8e;
+
+    /* &:last-child {
+      border-bottom: none;
+    } */
     /* margin: 30px auto 0; */
 
     /* flex: 1 1 0; */
 
     & .deleteField {
       position: absolute;
-      /* top: 5px; */
-      /* right: 5px; */
+      top: -5px;
+      /* right: -5px; */
       font-size: 12px;
       color: #414a4c;
       cursor: pointer;
       border-radius: 50%;
       padding: 2px 2px 2px 4px;
+      /* margin-left: 5px; */
       /* padding: 3px; */
       z-index: 12;
       font-weight: 400;
@@ -305,63 +336,303 @@ const GoToPlan = styled.div`
   right: 40px;
 `;
 
-const EditButton = styled.button`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-  background: #858689;
-`;
+// const EditPopUp = styled.div`
+//   position: fixed;
+//   width: 150px;
+//   height: 70px;
+//   /* background: rgba(255, 255, 255, 0.7); */
+//   background-color: rgba(0, 0, 0, 0.45);
+//   color: #d8d8d8;
+//   border-radius: 10px;
+//   /* right: ${props => (props.hide ? '0' : '65px')}; */
+//   right: -150px;
+//   top: 15%;
+//   /* visibility: ${props => (props.hide ? 'hidden' : 'visible')}; */
+//   visibility: hidden;
 
-const EditPopUp = styled.div`
-  position: fixed;
-  width: 150px;
-  height: 70px;
-  /* background: rgba(255, 255, 255, 0.7); */
-  background-color: rgba(0, 0, 0, 0.45);
-  color: #d8d8d8;
-  border-radius: 10px;
-  /* right: ${props => (props.hide ? '0' : '65px')}; */
-  right: -150px;
-  top: 15%;
-  /* visibility: ${props => (props.hide ? 'hidden' : 'visible')}; */
-  visibility: hidden;
+//   font-size: 24px;
+//   font-weight: 600;
+//   letter-spacing: 1px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   box-shadow: 5px 5px 20px;
 
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 5px 5px 20px;
+//   transition: all 0.3s;
 
+//   &.appear {
+//     right: 30px;
+//     visibility: visible;
+
+//   }
+// `;
+
+const NewField = styled.button`
+  width: 200px;
+  display: inline-block;
+  /* margin: 0px auto; */
+  /* background-color:  */
+  color: #c2c2c2;
+  background-color: rgba(247, 247, 247, 1);
+  position: relative;
+  /* top: -5px; */
+  left: 15px;
+  letter-spacing: 1.5px;
+  font-size: 11px;
+  text-transform: uppercase;
   transition: all 0.3s;
+  border: 1px solid #c2c2c2;
+  border-radius: 10px;
+  padding: 10px 15px 10px 20px;
+  text-align: left;
+  cursor: pointer;
 
-  &.appear {
-    right: 30px;
-    visibility: visible;
+  & > span {
+    font-size: 16px;
+    position: absolute;
+    left: 2.5%;
+    top: 25%;
+  }
 
+  &:hover {
+    color: #1d2122;
+    border: 1px solid #1d2122;
   }
 `;
 
-const PlanTemplateEdit = ({ location }) => {
-  const {
-    plan
-    // setGoal,
-    // setDeadline,
-    // setSpecificators,
-    // setPrices,
-    // setDailyTasks,
-    // deleteTempSpec,
-    // deleteTempPrice,
-    // deleteTempTask
-  } = location.state;
-  // console.log('location.state: ', location.state);
-  // console.log('EVAAAL: ', typeof deleteTempSpec);
+const ButtonContainer = styled.div`
+  margin-top: 110px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
-  // const deleteSpec = new Function('id', deleteTempSpec);
+const EditButton = styled.button`
+  width: 220px;
+  height: 50px;
+  /* color: #e2e2e2; */
+  color: #eaeff0;
+  border: 1px solid #1d2122;
+  border-radius: 4px;
+  background-color: #1d2122;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  letter-spacing: 0.6px;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  text-transform: uppercase;
+
+  transition: all 0.3s;
+
+  &:hover {
+    color: #b1b1b1;
+    border: 1px solid black;
+    box-shadow: 0 10px 10px -5px;
+  }
+`;
+
+const DeleteButton = styled.button`
+  padding: 10px 15px;
+  cursor: pointer;
+  position: relative;
+  border: 1.5px solid #1F1C23;
+  outline: none;
+  color: #1F1C23;
+  /* background-color: transparent; */
+  /* margin: 40px; */
+  white-space: nowrap;
+
+  letter-spacing: 1.5px;
+  background: 0 0;
+  text-transform: uppercase;
+  /* float: right; */
+  text-align: center;
+  font-weight: 500;
+
+  border-radius: 4px;
+  font-size: 18px;
+  /* padding: 5px; */
+  /* width: 300px; */
+  width: 220px;
+  transition: all 0.3s;
+  /* cursor: pointer; */
+  /* margin: 5px;
+  margin-bottom: 20px; */
+  /* margin: 0px 5px 40px; */
+ 
+
+  box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+
+  
+  span {
+    /* cursor: pointer; */
+    display: inline-block;
+    position: relative;
+    transition: 0.3s;
+  }
+  
+  span:after {
+    /* content:"${props => (props.plus ? '\\002B' : '\\00bb')}"; */
+    /* content:"${props => (props.plus ? '\\002B' : props.mark)}"; */
+    content: '\\2715';
+    color:  #0e1111;
+    font-weight: 900;
+
+
+
+     /* content: "\\002B"; */
+    position: absolute;
+    opacity: 0;
+    top: -5px;
+    transform: scale(1.1);
+    /* transform: scale(${props => props.scale}); */
+    /* transform: rotate(${props => props.rotate}); */
+    right: -30px;
+    /* left: -30px; */
+
+    transition: 0.3s;
+  }
+  
+  :hover span {
+    padding-right: 30px;
+  
+
+  }
+
+  :hover span:after {
+    opacity: 1;
+    right: 0;
+  }
+`;
+
+const PopupFeedback = styled.div`
+  height: 40px;
+  width: 170px;
+  border: 1px solid #1d2122;
+  border-radius: 4px;
+  background: #1d2122;
+  color: #eaeff0;
+  font-size: 15px;
+  letter-spacing: 1.2px;
+  font-weight: 500;
+
+  padding: 8px 14px;
+  opacity: 0;
+  position: fixed;
+  top: 20%;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(100%);
+
+  /* animation: ${popupAppear} 6s cubic-bezier(0.29, 1.03, 0.77, 0.87); */
+
+  animation: ${popupAppear} 5s cubic-bezier(.175,.885,.32,1.275);
+`;
+
+const PlanTemplateEdit = ({ location }) => {
+  const { plan } = location.state;
+
+  const { updatePlan, removePlan } = useContext(FuncContext);
+
+  const [isEditClicked, setIsEditClicked] = useState(false);
+
+  // setSpecificators(plan.specificators);
+  // setPrices(plan.prices);
+  // setDailyTasks(plan.dailyTasks);
+  const [goalEdit, setGoalEdit] = useState(plan.goal);
+  console.log('plan.deadline', plan.deadline);
+
+  const [planId, setPlanId] = useState(plan.id);
+
+  const [deadlineEdit, setDeadlineEdit] = useState(plan.deadline);
+
+  const [specificatorsEdit, setSpecificatorsEdit] = useState(
+    plan.specificators
+  );
+  const [pricesEdit, setPricesEdit] = useState(plan.prices);
+  const [tasksEdit, setTasksEdit] = useState(plan.dailyTasks);
+
+  //ADD NEW POSITION TO THE SPECS/PRICES/DAILY-TASKS
+  const [field, setField] = useState('');
+  const [newId, setNewId] = useState(uuid());
+
+  const handleAddNewField = () => {
+    if (field) {
+      setField('');
+    }
+    setNewId(uuid());
+  };
+
+  //END TO ADD NEW POSITION TO THE SPECS/PRICES/DAILY-TASKS
+
+  const newFieldGenerator = fieldType => {
+    // console.log('FIELDTYYYYPE:', fieldtype);
+    handleAddNewField();
+    const id = newId;
+
+    if (fieldType === 'specs') {
+      const newSpec = { singleSpec: field, id };
+      setSpecificatorsEdit([...specificatorsEdit, newSpec]);
+    } else if (fieldType === 'prices') {
+      const newPrice = { singlePrice: field, id };
+      setPricesEdit([...pricesEdit, newPrice]);
+    } else if (fieldType === 'dailyTasks') {
+      const newTask = { dailyTask: field, id };
+      setTasksEdit([...tasksEdit, newTask]);
+    }
+  };
+
+  // const addField = (type, content) => {
+  //   const id = uuid();
+
+  //   if (type === 'specs') {
+  //     const newField = { singleSpec: content, id };
+
+  //     setSpecificatorsEdit([...specificatorsEdit, newField]);
+  //   } else if (type === 'prices') {
+  //     const newField = { singlePrice: content, id };
+  //     setPricesEdit([...pricesEdit, newField]);
+  //   } else if (type === 'dailyTasks') {
+  //     const newField = { dailyTask: content, id };
+  //     setTasksEdit([...tasksEdit, newField]);
+  //   }
+  // };
+
+  const deleteSpec = specId => {
+    const updatedSpecs = specificatorsEdit.filter(spec => {
+      return spec.id !== specId;
+    });
+    setSpecificatorsEdit(updatedSpecs);
+  };
+
+  const deletePrice = priceId => {
+    const updatedPrices = pricesEdit.filter(price => {
+      return price.id !== priceId;
+    });
+    setPricesEdit(updatedPrices);
+  };
+
+  const deleteDailyTask = dailyTaskId => {
+    const updatedDailyTasks = tasksEdit.filter(dailyTask => {
+      return dailyTask.id !== dailyTaskId;
+    });
+    setTasksEdit(updatedDailyTasks);
+  };
+
+  const handleEdit = () => {
+    updatePlan(planId, {
+      goal: goalEdit,
+      deadline: deadlineEdit.valueOf(), // VALUE OF ???
+      specificators: specificatorsEdit,
+      prices: pricesEdit,
+      dailyTasks: tasksEdit,
+      id: plan.id
+    });
+  };
 
   const [verticalBorder, setVerticalBorder] = useState('');
 
@@ -372,6 +643,8 @@ const PlanTemplateEdit = ({ location }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const [focused, setFocused] = useState(null);
+
+  const [showModal, setShowModal] = useState('');
 
   const buttonContent = useRef(null);
 
@@ -385,7 +658,7 @@ const PlanTemplateEdit = ({ location }) => {
 
   const onDateChange = newDeadline => {
     if (newDeadline) {
-      setSuperNewDeadline(newDeadline);
+      setDeadlineEdit(newDeadline);
     }
   };
 
@@ -394,18 +667,47 @@ const PlanTemplateEdit = ({ location }) => {
     console.log();
   };
 
-  const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
+  // const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
 
-  // const closeEdit = e => {
-  //   e.target.style.background = 'rgba(244, 244, 244, 0.7)';
+  // const editSpec = (idSpec, updatedContent) => {
+  //   specificatorsEdit.forEach(spec => {
+  //     if (spec.id === idSpec) {
+  //       spec.singleSpec = updatedContent;
+  //     }
+  //   });
   // };
 
-  const setThickBorder = e => {
-    if (verticalBorder === '') setVerticalBorder('thickBorder');
+  const editSpec = (idSpec, updatedContent) => {
+    const updatedSpecs = specificatorsEdit.map(spec => {
+      if (spec.id === idSpec) {
+        spec.singleSpec = updatedContent;
+      }
+      return spec;
+    });
+
+    setSpecificatorsEdit(updatedSpecs);
   };
 
-  const setThinBorder = () => {
-    if (verticalBorder === 'thickBorder') setVerticalBorder('');
+  const editPrice = (idPrice, updatedContent) => {
+    const updatedPrices = pricesEdit.map(price => {
+      if (price.id === idPrice) {
+        price.singlePrice = updatedContent;
+      }
+      return price;
+    });
+
+    setPricesEdit(updatedPrices);
+  };
+
+  const editDailyTasks = (idDailyTask, updatedContent) => {
+    const updatedDailyTasks = tasksEdit.map(task => {
+      if (task.id === idDailyTask) {
+        task.dailyTask = updatedContent;
+      }
+      return task;
+    });
+
+    setTasksEdit(updatedDailyTasks);
   };
 
   return (
@@ -418,9 +720,15 @@ const PlanTemplateEdit = ({ location }) => {
           <div className="innerBox">
             <PlanContent>
               <div className="example">
-                {/* <PlanTitleContainer> */}
                 <PlanTitle>
-                  <InputFieldEdit value={plan.goal} name="goal" />
+                  <InputFieldEdit
+                    value={goalEdit}
+                    name="goal"
+                    // handleChange={e => setGoalEdit(e.target.value)}
+                    setGoalEdit={setGoalEdit}
+                    setIsEditClicked={setIsEditClicked}
+                    isEditClicked={isEditClicked}
+                  />
                 </PlanTitle>
                 {/* {isEditible && <img src={Feather} alt="feather pen"></img>} */}
                 {/* </PlanTitleContainer> */}
@@ -429,8 +737,8 @@ const PlanTemplateEdit = ({ location }) => {
                 <span>Deadline:</span>
                 {/* {isClicked ? ( */}
                 <SingleDatePicker
-                  placeholder={moment(plan.deadline).format('DD MMM YYYY')}
-                  date={superNewDeadline} // momentPropTypes.momentObj or null
+                  placeholder={moment(deadlineEdit).format('DD MMM YYYY')}
+                  date={moment(deadlineEdit)} // momentPropTypes.momentObj or null
                   onDateChange={date => onDateChange(date)} // PropTypes.func.isRequired
                   focused={focused} // PropTypes.bool
                   onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequiredfunc.isRequired
@@ -440,6 +748,12 @@ const PlanTemplateEdit = ({ location }) => {
                   openDirection="down"
                   hideKeyboardShortcutsPanel={true}
                 />
+
+                {/* <div>
+                  {specificatorsEdit.map(spec =>
+                    JSON.stringify(spec.singleSpec)
+                  )}
+                </div> */}
                 {/* // ) : (
                 //   <InputFieldEdit */}
                 {/* //     textarea
@@ -456,53 +770,53 @@ const PlanTemplateEdit = ({ location }) => {
                   </span>
                   <h4> Make it specific:</h4>{' '}
                   <ul>
-                    {plan.specificators.map(({ singleSpec, id }) => {
+                    {specificatorsEdit.map(({ singleSpec, id }) => {
                       return (
-                        <>
-                          {console.log('specID: ', id)}
-                          <li
-                            key={id}
+                        <li
+                          key={id}
+                          id={id}
+                          className={
+                            clickedInputId === id ? 'thickBorder' : 'thinBorder'
+                          }
+                          onClick={getId}
+                          onBlur={() => {
+                            setClickedInputId('');
+                          }}
+                        >
+                          <InputFieldEdit
+                            value={singleSpec}
                             id={id}
-                            // className={`thinBorder ${verticalBorder}`}
-                            className={
-                              clickedInputId === id
-                                ? 'thickBorder'
-                                : 'thinBorder'
-                            }
-                            onClick={getId}
-                            onBlur={() => {
-                              setClickedInputId('');
+                            name="specificators"
+                            textarea
+                            // action={singleSpec}
+                            action={editSpec}
+                            setIsEditClicked={setIsEditClicked}
+                            isEditClicked={isEditClicked}
+                            // action={() => {
+                            //   handleInputChange(id, 'spec');
+                            // }}
+                          />
+
+                          <span
+                            className="deleteField"
+                            onClick={() => {
+                              deleteSpec(id);
                             }}
                           >
-                            <InputFieldEdit
-                              value={singleSpec}
-                              id={id}
-                              name="specificators"
-                              textarea
-                            />
-
-                            <span
-                              id={id}
-                              className="deleteField"
-                              // onClick={() => {
-                              //   console.log('SPAN ID : ', id);
-                              //   console.log(
-                              //     'specificators.length: ',
-                              //     plan.specificators.length
-                              //   );
-                              //   deleteSpec(id);
-                              //   console.log(
-                              //     'specificators.length2: ',
-                              //     plan.specificators.length
-                              //   );
-                              // }}
-                            >
-                              &#x2715;
-                            </span>
-                          </li>
-                        </>
+                            &#x2715;
+                          </span>
+                        </li>
                       );
-                    })}
+                    })}{' '}
+                    {/* ADD NEW FIELD */}
+                    <NewField
+                      name="specs"
+                      onClick={e => {
+                        newFieldGenerator(e.target.name);
+                      }}
+                    >
+                      <span>&#43;</span> add new descriptor
+                    </NewField>
                   </ul>
                 </Details>
                 <Price className="descriptor">
@@ -511,7 +825,7 @@ const PlanTemplateEdit = ({ location }) => {
                   </span>
                   <h4> Price to pay:</h4>
                   <ul>
-                    {plan.prices.map(({ singlePrice, id }) => {
+                    {pricesEdit.map(({ singlePrice, id }) => {
                       return (
                         <li
                           key={id}
@@ -531,11 +845,31 @@ const PlanTemplateEdit = ({ location }) => {
                             id={id}
                             name="prices"
                             textarea
+                            action={editPrice}
+                            setIsEditClicked={setIsEditClicked}
+                            isEditClicked={isEditClicked}
                           />
-                          <span className="deleteField">&#x2715;</span>
+                          <span
+                            // id={id}
+                            className="deleteField"
+                            onClick={() => {
+                              deletePrice(id);
+                            }}
+                          >
+                            &#x2715;
+                          </span>
                         </li>
                       );
                     })}
+                    {/* ADD NEW FIELD */}
+                    <NewField
+                      name="prices"
+                      onClick={e => {
+                        newFieldGenerator(e.target.name);
+                      }}
+                    >
+                      <span>&#43;</span> add new price
+                    </NewField>
                   </ul>
                 </Price>
                 <div className="break"></div>
@@ -546,7 +880,7 @@ const PlanTemplateEdit = ({ location }) => {
                   </span>
                   <h4>Daily regimen</h4>
                   <ul>
-                    {plan.dailyTasks.map(({ dailyTask, id }) => {
+                    {tasksEdit.map(({ dailyTask, id }) => {
                       // const newId = `check${Date.now()}${id}`;
                       // console.log(newId);
                       return (
@@ -568,28 +902,80 @@ const PlanTemplateEdit = ({ location }) => {
                             id={id}
                             name="dailyTasks"
                             textarea
+                            action={editDailyTasks}
+                            setIsEditClicked={setIsEditClicked}
+                            isEditClicked={isEditClicked}
                           />
-                          <span className="deleteField">&#x2715;</span>
+                          <span
+                            className="deleteField"
+                            onClick={() => {
+                              deleteDailyTask(id);
+                            }}
+                          >
+                            &#x2715;
+                          </span>
                         </li>
                       );
                     })}
+                    {/* ADD NEW FIELD */}
+                    <NewField
+                      name="dailyTasks"
+                      onClick={e => {
+                        newFieldGenerator(e.target.name);
+                      }}
+                    >
+                      <span>&#43;</span> add new task
+                    </NewField>
                   </ul>
                 </DailyRegimen>
               </DescriptionContainer>
 
-              <PlanStage>
+              {/* <PlanStage>
                 <Graph />
                 <StatText>You are on 20 day stroke.</StatText>
-                <GoToPlan>
-                  <Button
-                    mark={'\\270E'}
-                    content={'Tasks'}
-                    width="175px"
-                    scale="1.3"
-                  ></Button>
-                </GoToPlan>
-              </PlanStage>
+                <GoToPlan></GoToPlan>
+              </PlanStage> */}
             </PlanContent>
+
+            <ButtonContainer>
+              <DeleteButton
+                onClick={() => {
+                  setShowModal('active');
+                }}
+              >
+                <span>Delete Plan</span>
+              </DeleteButton>
+
+              <EditButton
+                onClick={() => {
+                  handleEdit();
+                  setIsEditClicked(true);
+                }}
+              >
+                Save Changes
+              </EditButton>
+
+              {isEditClicked && <PopupFeedback>Changes Saved</PopupFeedback>}
+            </ButtonContainer>
+            {/* {showModal && <ModalDeletePlan active />} */}
+            {/* {console.log('showModal: ', showModal)} */}
+            {/* {showModal && (
+              <ModalDeletePlan active={showModal ? 'active' : ''} />
+            )} */}
+
+            <ModalDeletePlan
+              setShowModal={setShowModal}
+              isActive={showModal}
+              goal={goalEdit}
+              removePlan={removePlan}
+              id={plan.id}
+            />
+            {/* <Button
+              mark={'\\2717'}
+              content={'Delete Plan'}
+              width="220px"
+              scale="1.2"
+            ></Button> */}
             {/* </InnerBox> */}
           </div>
         </Box>

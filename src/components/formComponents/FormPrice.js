@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import PlanContext from '../Plan-context';
+import PlanContext from '../contexts/Plan-context';
+import { FuncContext } from '../contexts/FunctionsProvider';
+
 import InputField from './InputField';
 import List from './List';
 import Request from './Request';
@@ -9,34 +11,28 @@ import Request from './Request';
 import ButtonNext from '../Button';
 import ButtonBack from '../Button2';
 import AddButton from './AddInputButton';
+import NavigationArrow from './NavigationArrow';
 
 const ButtonNextContainer = styled.div`
-  position: absolute;
-  bottom: -70px;
-
-  right: 175px;
-
-  > button {
-    position: absolute;
-  }
+  position: fixed;
+  top: 40%;
+  right: 1%;
 `;
 
 const ButtonBackContainer = styled.div`
-  position: absolute;
-  bottom: -70px;
-
-  left: 30px;
-  > button {
-    position: absolute;
-  }
+  position: fixed;
+  top: 40%;
+  left: 8%;
 `;
 
 const ListContainer = styled.div`
+  position: relative;
   display: flex;
   /* justify-content: space-between; */
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
+  margin-top: 17px;
 `;
 
 export default props => {
@@ -45,18 +41,10 @@ export default props => {
     setSinglePrice,
     nextStep,
     prevStep,
-    addPrice,
-    prices
+    addPrice
   } = useContext(PlanContext);
-  // const next = e => {
-  //   e.preventDefault();
-  //   props.nextStep();
-  // };
 
-  // const back = e => {
-  //   e.preventDefault();
-  //   props.prevStep();
-  // };
+  const { prices } = useContext(FuncContext);
 
   return (
     <>
@@ -74,10 +62,12 @@ export default props => {
         action={setSinglePrice}
         title="Price"
       />
-      <AddButton addField={addPrice}></AddButton>
+      <AddButton
+        addField={addPrice}
+        disabled={singlePrice.length > 5 ? false : true}
+      ></AddButton>
 
-      {/* <button onClick={nextStep}>Next</button> */}
-      {/* <button onClick={prevStep}>Back</button> */}
+      <br></br>
 
       <ListContainer>
         {prices.map(({ singlePrice, id }) => {
@@ -94,28 +84,21 @@ export default props => {
       </ListContainer>
 
       <ButtonNextContainer>
-        <ButtonNext
-          action={nextStep}
-          content="NEXT"
-          width="150px"
-          mark="\00bb"
-          scale="1.3"
+        <NavigationArrow
+          nextContent={`Set Daily Tasks`}
+          nextStep={nextStep}
           disabled={prices.length > 0 ? false : true}
-        ></ButtonNext>
+          arrowDirection="right"
+        />
       </ButtonNextContainer>
 
       <ButtonBackContainer>
-        <ButtonBack
-          rotate="180deg"
-          action={prevStep}
-          content="BACK"
-          width="150px"
-          mark="\00bb"
-          scale="3"
-        ></ButtonBack>
+        <NavigationArrow
+          nextContent="Make It Specific"
+          nextStep={prevStep}
+          arrowDirection="left"
+        />
       </ButtonBackContainer>
-
-      {/* <button onClick={addPrice}>Add price</button> */}
     </>
   );
 };
