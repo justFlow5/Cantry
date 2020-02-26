@@ -13,6 +13,12 @@ const FormField = styled.div`
         transform: scaleX(150);
       }
     }
+    & .form-field__label {
+      color: #1d2122;
+      font-size: 0.8rem;
+      top: 0px;
+      transform: translateY(-14px);
+    }
   }
 
   &.form-field--is-filled {
@@ -69,7 +75,7 @@ const Input = styled.input`
   width: 100%;
   resize: none;
   cursor: text;
-  transition: all 0.3s;
+  /* transition: all 0.3s; */
 
   &:focus {
     color: #1d2122;
@@ -89,10 +95,10 @@ const InputFieldEdit = props => {
   const inputContent = useRef(null);
   const content = useRef(null);
 
-  const autoGrow = (el, defaultHight) => {
-    if (el !== null && el.current !== null) {
-      el.current.style.height = defaultHight || 'inherit';
-      // el.current.style.height = '45px';
+  const autoGrow = el => {
+    if (content !== null && content.current !== null) {
+      // console.log(el);
+      el.current.style.height = '35px';
       el.current.style.height = `${el.current.scrollHeight}px`;
     }
   };
@@ -115,12 +121,8 @@ const InputFieldEdit = props => {
   }, []);
 
   useEffect(() => {
-    autoGrow(inputContent, '15px');
+    autoGrow(content);
   }, []);
-
-  // useEffect(() => {
-  //   autoGrow(inputContent, '15px');
-  // }, [height]);
 
   const onInputChange = e => {
     // e.preventDefault();
@@ -128,7 +130,7 @@ const InputFieldEdit = props => {
     const id = e.target.id;
 
     props.action(id, field);
-    // autoGrow(inputContent);
+
     autoGrow(inputContent);
 
     if (props.isEditClicked) props.setIsEditClicked(false);
@@ -143,27 +145,22 @@ const InputFieldEdit = props => {
           {props.textarea ? (
             <Input
               as="textarea"
-              // onKeyDown={() => {
-              //   autoGrow(inputContent);
-              // }}
               id={props.id}
               name={props.name}
               value={props.value}
               onChange={e => {
                 e.preventDefault();
+                props.action(props.id, e.target.value);
+                autoGrow(content);
+                if (props.isEditClicked) props.setIsEditClicked(false);
 
-                onInputChange(e);
-                // autoGrow(inputContent);
+                // onInputChange(e);
               }}
-              // onClick={() => {
-              //   autoGrow(inputContent);
-              // }}
               type="text"
-              ref={inputContent}
+              ref={content}
               onBlur={() => {
                 setActive(false);
-                autoGrow(inputContent, '15px');
-                // autoGrow(e.target, '15px');
+                autoGrow(content);
               }}
               onFocus={() => setActive(true)}
               style={{
@@ -179,21 +176,16 @@ const InputFieldEdit = props => {
               value={props.value}
               onChange={e => {
                 props.setGoalEdit(e.target.value);
-                // autoGrow(content);
+
                 if (props.isEditClicked) props.setIsEditClicked(false);
               }}
-              // onChange={e => {
-              //   e.preventDefault();
-              //   props.action(e.target.value);
-              //   // props.setInputLength(content.current.value);
-              // }}
               type="text"
               ref={content}
               onBlur={() => setActive(false)}
               onFocus={() => setActive(true)}
               style={{
                 fontSize: 'inherit',
-                paddingBottom: '0px',
+                paddingBottom: '10px',
                 height: 'inherit',
                 lineHeight: '1.3',
                 textAlign: 'center'

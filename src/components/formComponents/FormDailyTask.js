@@ -69,7 +69,7 @@ export default () => {
 
       <ButtonNextContainer>
         <NavigationArrow
-          nextContent="Set Deadline"
+          nextContent="Develop Your Strategy"
           nextStep={nextStep}
           disabled={dailyTasks.length > 0 ? false : true}
           arrowDirection="right"

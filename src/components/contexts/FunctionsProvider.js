@@ -23,6 +23,8 @@ export const FunctionsProvider = ({ children }) => {
   const [specificators, setSpecificators] = useState([]);
   const [prices, setPrices] = useState([]);
   const [dailyTasks, setDailyTasks] = useState([]);
+  const [planJobs, setPlanJobs] = useState([]);
+
   const [deadline, setDeadline] = useState(null);
 
   // QUOTES SECTION
@@ -140,6 +142,10 @@ export const FunctionsProvider = ({ children }) => {
         setDeadline,
         updatePlan,
         removePlan,
+
+        //
+        planJobs,
+        setPlanJobs,
 
         dispatch,
         //

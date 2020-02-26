@@ -18,9 +18,6 @@ import NavBar from '../Navbar';
 import SpecificsIcon from '../icons/SpecificsIcon';
 import PriceIcon from '../icons/PriceIcon';
 import ProgressIcon from '../icons/ProgressIcon';
-import CheckInput from '../CheckInput';
-import FeatherIcon from '../icons/Feather';
-import Button from '../Button';
 
 import { FuncContext } from '../contexts/FunctionsProvider';
 import ModalDeletePlan from '../ModalDeletePlan';
@@ -330,12 +327,6 @@ const StatText = styled.p`
   margin-bottom: 80px;
 `;
 
-const GoToPlan = styled.div`
-  position: absolute;
-  bottom: 5px;
-  right: 40px;
-`;
-
 // const EditPopUp = styled.div`
 //   position: fixed;
 //   width: 150px;
@@ -530,7 +521,7 @@ const PopupFeedback = styled.div`
 
   /* animation: ${popupAppear} 6s cubic-bezier(0.29, 1.03, 0.77, 0.87); */
 
-  animation: ${popupAppear} 5s cubic-bezier(.175,.885,.32,1.275);
+  animation: ${popupAppear} 4s cubic-bezier(.175,.885,.32,1.275);
 `;
 
 const PlanTemplateEdit = ({ location }) => {
@@ -544,7 +535,7 @@ const PlanTemplateEdit = ({ location }) => {
   // setPrices(plan.prices);
   // setDailyTasks(plan.dailyTasks);
   const [goalEdit, setGoalEdit] = useState(plan.goal);
-  console.log('plan.deadline', plan.deadline);
+  // console.log('plan.deadline', plan.deadline);
 
   const [planId, setPlanId] = useState(plan.id);
 
@@ -630,7 +621,7 @@ const PlanTemplateEdit = ({ location }) => {
       specificators: specificatorsEdit,
       prices: pricesEdit,
       dailyTasks: tasksEdit,
-      id: plan.id
+      id: planId
     });
   };
 
@@ -664,7 +655,7 @@ const PlanTemplateEdit = ({ location }) => {
 
   const getId = e => {
     setClickedInputId(e.target.id);
-    console.log();
+    // console.log();
   };
 
   // const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
@@ -792,9 +783,6 @@ const PlanTemplateEdit = ({ location }) => {
                             action={editSpec}
                             setIsEditClicked={setIsEditClicked}
                             isEditClicked={isEditClicked}
-                            // action={() => {
-                            //   handleInputChange(id, 'spec');
-                            // }}
                           />
 
                           <span

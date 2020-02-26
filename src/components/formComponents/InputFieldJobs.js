@@ -15,8 +15,6 @@ const FormField = styled.div`
     }
     & .form-field__label {
       color: #1d2122;
-      color: black;
-
       font-size: 0.8rem;
       top: 0px;
 
@@ -36,7 +34,8 @@ const FormField = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 1.3rem;
+  /* display: #b11adc; */
+  font-size: 1.45rem;
 
   font-weight: normal;
   left: 0;
@@ -54,10 +53,8 @@ const Control = styled.div`
   border-radius: 8px 8px 0 0;
   overflow: hidden;
   position: relative;
-  width: 50%;
-  width: 70%;
-
-  margin: 5px auto 0px;
+  width: 100%;
+  margin: 15px auto 15px;
 
   &::after {
     border-bottom: 2px solid black;
@@ -78,20 +75,49 @@ const Input = styled.input`
   appearance: none;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid #999;
-  color: #1d2122;
-  color: black;
+  border-bottom: 1px solid #737373;
+  color: #737373;
   display: block;
-  font-size: 18px;
-  margin-top: 24px;
+  font-size: 17px;
+  /* margin-top: 24px; */
   outline: 0;
-  padding: 0 12px 10px 12px;
+  padding: 10px 12px 10px 12px;
   width: 100%;
   resize: none;
   cursor: text;
+  letter-spacing: 0.4px;
+  /* transition: all 0.3s; */
+
+  &:focus {
+    color: #1d2122;
+    font-weight: 500;
+  }
+
+  & + .deleteField {
+    position: absolute;
+    top: -2px;
+    right: 2px;
+
+    font-size: 12px;
+    color: #414a4c;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 2px 2px 2px 4px;
+
+    z-index: 12;
+    font-weight: 400;
+
+    transition: color 0.3s, font-weight 0.1s linear, background-color 0.3s;
+
+    &:hover {
+      color: #0e1111;
+      color: black;
+      font-weight: 600;
+    }
+  }
 `;
 
-const InputQuote = props => {
+const InputField = props => {
   const [isActive, setIsActive] = useState('');
   const [isFilled, setIsFilled] = useState('');
 
@@ -134,40 +160,55 @@ const InputQuote = props => {
         // style={{ maxHeight: `${setHeight}` }}
       >
         <Control className="form-field__control">
-          <Label htmlFor={props.id} className="form-field__label">
+          {/* <Label htmlFor={props.id} className="form-field__label">
             {props.title}
-          </Label>
+          </Label> */}
 
           {props.textarea ? (
-            <Input
-              as="textarea"
-              //   autoFocus
-              id={props.id}
-              name={props.name}
-              value={props.value}
-              onChange={e => {
-                e.preventDefault();
-                props.action(e.target.value);
-
-                autoGrow(content);
-                // props.setInputLength(content.current.value);
-              }}
-              type="text"
-              ref={content}
-              onBlur={() => {
-                setActive(false);
-                setTimeout(() => {
+            <>
+              <Input
+                spellCheck={false}
+                as="textarea"
+                //   autoFocus
+                id={props.id}
+                name={props.name}
+                value={props.value}
+                onChange={e => {
+                  e.preventDefault();
+                  // props.action();
+                  props.action(props.id, {
+                    type: 'text',
+                    content: e.target.value
+                  });
                   autoGrow(content);
-                }, 100);
-              }}
-              onFocus={() => setActive(true)}
-              style={{
-                overflow: 'hidden',
-                // minHeight: '30px',
-                // maxHeight: '120px',
-                lineHeight: '1.3'
-              }}
-            ></Input>
+                  // props.setInputLength(content.current.value);
+                }}
+                type="text"
+                ref={content}
+                onBlur={() => {
+                  setActive(false);
+                  setTimeout(() => {
+                    autoGrow(content);
+                  }, 100);
+                }}
+                onFocus={() => setActive(true)}
+                style={{
+                  overflow: 'hidden',
+                  // minHeight: '30px',
+                  // maxHeight: '120px',
+                  lineHeight: '1.3'
+                }}
+                //   oninput={autoGrow(content)}
+              ></Input>
+              <span
+                className="deleteField"
+                onClick={() => {
+                  props.deletePlanJob(props.id);
+                }}
+              >
+                &#x2715;
+              </span>
+            </>
           ) : (
             <Input
               id={props.id}
@@ -197,4 +238,4 @@ const InputQuote = props => {
   );
 };
 
-export default InputQuote;
+export default InputField;

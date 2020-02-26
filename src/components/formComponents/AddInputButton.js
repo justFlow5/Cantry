@@ -53,6 +53,9 @@ export default props => {
       disabled={props.disabled}
       onClick={() => {
         props.addField();
+        if (props.handleChange) {
+          props.handleChange();
+        }
         // props.handleClick(props.content);
       }}
     >

@@ -214,7 +214,7 @@ const SinglePlan = props => {
               to={{
                 pathname: `/plan/${formatGoal(goal)}/tactic`,
                 state: {
-                  plan
+                  planJobs: plan.planJobs
                 }
               }}
             >

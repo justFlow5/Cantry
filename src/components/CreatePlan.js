@@ -6,6 +6,7 @@ import FormSpecifics from './formComponents/FormSpecifics';
 import FormPrice from './formComponents/FormPrice';
 import FormDeadline from './formComponents/FormDeadline';
 import FormDailyTask from './formComponents/FormDailyTask';
+import FormStrategy from './formComponents/FormStrategy';
 
 export default props => {
   const { step } = useContext(PlanContext);
@@ -19,6 +20,8 @@ export default props => {
     case 4:
       return <FormDailyTask />;
     case 5:
+      return <FormStrategy />;
+    case 6:
       return <FormDeadline />;
   }
 };

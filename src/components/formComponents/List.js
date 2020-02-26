@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import PlanContext from '../contexts/Plan-context';
+import fire from '../../images/fire.png';
 // import { FuncContext } from '../contexts/FunctionsProvider';
 
 const Descriptor = styled.div`
@@ -42,6 +43,18 @@ const Descriptor = styled.div`
     transform: translate3d(0, 0, 0) !important;
     -webkit-transform: translate3d(0, 0, 0) !important;
     transform: perspective(1px) scale(1.1);
+
+    &.difficulty {
+      left: 5px;
+      right: unset;
+      display: flex;
+      cursor: default;
+
+      & img {
+        width: 20px;
+        height: 20px;
+      }
+    }
 
     &:hover {
       color: #070707;
@@ -123,11 +136,14 @@ const Inner = styled.div`
   color: black;
 `;
 
-export default ({ content, id, dataType }) => {
+export default ({ content, id, dataType, difficulty }) => {
   // const [content, id] = props;
-  const { deleteTempSpec, deleteTempPrice, deleteTempTask } = useContext(
-    PlanContext
-  );
+  const {
+    deleteTempSpec,
+    deleteTempPrice,
+    deleteTempTask,
+    deleteTempSinglePlanTask
+  } = useContext(PlanContext);
 
   const deleteData = () => {
     switch (dataType) {
@@ -137,12 +153,23 @@ export default ({ content, id, dataType }) => {
         deleteTempPrice(id);
       case 'task':
         deleteTempTask(id);
+      case 'job':
+        deleteTempSinglePlanTask(id);
     }
   };
+
+  const fire = [];
+
+  if (difficulty) {
+    for (let i = 0; i < difficulty; i++) {
+      fire.push(<img src="/fire.png" alt={'black fire'} />);
+    }
+  }
 
   return (
     <Descriptor>
       <span onClick={deleteData}>&#x2715;</span>
+      {difficulty && <span className="difficulty">{fire}</span>}
       <Inner>{content}</Inner>
     </Descriptor>
   );

@@ -151,6 +151,9 @@ export default props => {
     setDailyTasks,
     setDeadline,
 
+    planJobs,
+    setPlanJobs,
+
     updatePlan,
 
     dispatch,
@@ -175,6 +178,10 @@ export default props => {
   const [singlePrice, setSinglePrice] = useState('');
 
   const [dailyTask, setDailyTask] = useState('');
+
+  const [singlePlanJob, setSinglePlanJob] = useState('');
+  const [singlePlanJobDifficulty, setSinglePlanJobDifficulty] = useState(1);
+
   // const [dailyTasks, setDailyTasks] = useState([]);
 
   // const [deadline, setDeadline] = useState(null);
@@ -209,12 +216,15 @@ export default props => {
         db.ref(`users/${currentUser.uid}/plans/${key}/dailyTasks`).set(
           dailyTasks
         );
+
+        db.ref(`users/${currentUser.uid}/plans/${key}/planJobs`).set(planJobs);
       })
 
       .then(() => {
         const specificatorsDb = [];
         const pricesDb = [];
         const dailyTasksDb = [];
+        const planJobsDb = [];
 
         db.ref(`users/${currentUser.uid}/plans/${key}/specificators`)
           .once('value')
@@ -249,13 +259,25 @@ export default props => {
             });
           });
 
+        db.ref(`users/${currentUser.uid}/plans/${key}/planJobs`)
+          .once('value')
+          .then(childchildSnapshot => {
+            childchildSnapshot.forEach(planJob => {
+              planJobsDb.push(
+                // id: task.key,
+                planJob.val()
+              );
+            });
+          });
+
         return {
           id: key,
           goal: newPlan.goal,
           deadline: newPlan.deadline,
           specificators: specificatorsDb,
           prices: pricesDb,
-          dailyTasks: dailyTasksDb
+          dailyTasks: dailyTasksDb,
+          planJobs: planJobsDb
         };
       })
       .then(data => {
@@ -271,6 +293,7 @@ export default props => {
         setPrices([]);
         setDeadline('');
         setDailyTasks([]);
+        setPlanJobs([]);
         setIsActive('');
         setStep(1);
       });
@@ -299,71 +322,21 @@ export default props => {
     setDailyTask('');
   };
 
-  // const updateSpecificators = (idPlan, idSpec, content) => {
-  //   db.ref(`plans/${idPlan}/specificators/${idSpec}`).update(content);
+  const addSinglePlanJob = () => {
+    const id = uuid();
+    setPlanJobs([
+      ...planJobs,
+      {
+        singlePlanJob,
+        completed: false,
+        difficulty: singlePlanJobDifficulty,
+        id
+      }
+    ]);
 
-  //   const updatedSpecs = specificators.map(spec => {
-  //     if (spec.id === id) {
-  //       return {
-  //         singleSpec: content,
-  //         id: spec.id
-  //       };
-  //     } else {
-  //       return spec;
-  //     }
-  //   });
-  //   setSpecificators(updatedSpecs);
-  // };
-
-  // const updatePrices = (id, content) => {
-  //   const updatedPrices = prices.map(price => {
-  //     if (price.id === id) {
-  //       return {
-  //         singlePrice: content,
-  //         id: price.id
-  //       };
-  //     } else {
-  //       return price;
-  //     }
-  //   });
-
-  //   setPrices(updatedPrices);
-  // };
-
-  // const updateDailyTasks = (id, content) => {
-  //   const updatedDailyTasks = dailyTasks.map(dailyTask => {
-  //     if (dailyTask.id === id) {
-  //       return {
-  //         dailyTask: content,
-  //         id: dailyTask.id
-  //       };
-  //     } else {
-  //       return dailyTask;
-  //     }
-  //   });
-  //   setDailyTasks(updatedDailyTasks);
-  // };
-
-  // const updatePlan = id => {
-  //   const updatedPlan = {
-  //     goal,
-  //     specificators,
-  //     prices,
-  //     dailyTasks,
-  //     deadline,
-  //     id
-  //   };
-  //   db.ref(`users/${currentUser.uid}/plans/${id}`).update(updatedPlan);
-
-  //   const updatedPlans = plans.map(plan => {
-  //     if (plan.id === id) {
-  //       return updatedPlan;
-  //     } else {
-  //       return plan;
-  //     }
-  //   });
-  //   dispatch({ type: 'UPDATE_PLAN', updatedPlans });
-  // };
+    setSinglePlanJob('');
+    setSinglePlanJobDifficulty(1);
+  };
 
   const deleteTempPrice = id => {
     const filteredPrices = prices.filter(price => {
@@ -384,6 +357,13 @@ export default props => {
       return task.id !== id;
     });
     setDailyTasks(filteredTasks);
+  };
+
+  const deleteTempSinglePlanTask = id => {
+    const filteredPlanJobs = planJobs.filter(planJob => {
+      return planJob.id !== id;
+    });
+    setPlanJobs(filteredPlanJobs);
   };
 
   const nextStep = () => {
@@ -477,13 +457,26 @@ export default props => {
           );
         });
 
+        const planJobsDb = [];
+        const planJobRef = db.ref(
+          `users/${currentUser.uid}/plans/${childSnapshot.key}/planJobs`
+        );
+        const planJobSnapshot = await planJobRef.once('value');
+        planJobSnapshot.forEach(planJob => {
+          planJobsDb.push(
+            // id: task.key,
+            planJob.val()
+          );
+        });
+
         plansDb.push({
           id: idDb,
           goal: goalDb,
           deadline: deadlineDb,
           specificators: specificatorsDb,
           prices: pricesDb,
-          dailyTasks: dailyTasksDb
+          dailyTasks: dailyTasksDb,
+          planJobs: planJobsDb
         });
 
         console.log('LENGTHof PansDB: ', plansDb.length);
@@ -525,7 +518,14 @@ export default props => {
         dailyTask,
         setDailyTask,
         addTask,
-        deleteTempTask
+        deleteTempTask,
+        //
+        singlePlanJob,
+        setSinglePlanJob,
+        addSinglePlanJob,
+        deleteTempSinglePlanTask,
+        singlePlanJobDifficulty,
+        setSinglePlanJobDifficulty
       }}
     >
       <Navbar />
@@ -622,7 +622,6 @@ export default props => {
               delete
             </button> */}
             <Modal />
-
             {/* <div>daily Tasks: {JSON.stringify(dailyTasks)}</div> */}
             {/* <Button
               content="Create new plan"
