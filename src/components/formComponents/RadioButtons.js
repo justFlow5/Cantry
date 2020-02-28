@@ -54,26 +54,6 @@ const RadioButtons = ({
   checkedValueThree,
   setCheckedValueThree
 }) => {
-  //   const [checkedValueOne, setCheckedValueOne] = useState(true);
-  //   const [checkedValueTwo, setCheckedValueTwo] = useState(false);
-  //   const [checkedValueThree, setCheckedValueThree] = useState(false);
-
-  const handleChange = () => {
-    // if (checkedValueOne) {
-    //   setCheckedValueTwo(false);
-    //   setCheckedValueThree(false);
-    // } else if (checkedValueTwo) {
-    //   setCheckedValueOne(false);
-    //   setCheckedValueThree(false);
-    // } else if (checkedValueThree) {
-    //   setCheckedValueOne(false);
-    //   setCheckedValueTwo(false);
-    // }
-    setCheckedValueOne(true);
-    setCheckedValueTwo(false);
-    setCheckedValueThree(false);
-  };
-
   return (
     <>
       <Form>

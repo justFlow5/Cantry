@@ -6,10 +6,12 @@ import NavBar from './Navbar';
 import ProgressBar from './ProgressBar';
 import Correct from './icons/Correct';
 import uuid from 'uuid';
+import { FuncContext } from './contexts/FunctionsProvider';
+
+import Confetti from 'react-confetti';
+
 import InputFieldJobs from './formComponents/InputFieldJobs';
 import RadioButtons from './formComponents/RadioButtonsEdit';
-
-import { FuncContext } from './contexts/FunctionsProvider';
 
 // import correctIcon from '../images/correct.svg';
 import correctIcon from '../images/correct.svg';
@@ -176,7 +178,7 @@ const TaskContainer = styled.div`
     display: flex;
 
     & .radioGroup {
-      margin: 0 0 30px auto;
+      margin: 0 0 15px auto;
       position: relative;
     }
   }
@@ -422,8 +424,8 @@ const PopupFeedback = styled.div`
 `;
 
 const ProgressBarContainer = styled.div`
-  width: 30%;
-  margin: 40px auto;
+  width: 40%;
+  margin: 0px auto;
   position: relative;
 `;
 
@@ -438,13 +440,15 @@ const Strategy = ({ location }) => {
   //   } = useContext(PlanContext);
   //   const planJobsEdit = location.state.planJobs;
 
+  const { planJobs, setPlanJobs, updatePlanJobs } = useContext(FuncContext);
+
   const [planJobsEdit, setPlanJobsEdit] = useState(location.state.planJobs);
+  const [deadline, setDeadline] = useState(location.state.deadline);
+  const [id, setId] = useState(location.state.id);
 
   const editButton = useRef(null);
 
   const [buttonText, setButtonText] = useState('edit');
-
-  // const { updatePlan, removePlan } = useContext(FuncContext);
 
   const [isEditible, setIsEditible] = useState(false);
 
@@ -454,6 +458,10 @@ const Strategy = ({ location }) => {
   const [newId, setNewId] = useState(uuid());
 
   const [isDisabled, setIsDisabled] = useState(false);
+
+  //   CONFETTI
+  //   const size = useWindowSize();
+  const [isGoalAccomplished, setIsGoalAccomplished] = useState(false);
 
   const isFieldsFilled = fields => {
     fields.every(planJob => {
@@ -492,8 +500,8 @@ const Strategy = ({ location }) => {
     } else if (!isEditible) {
       //   editButton.current.innerText = 'Edit';
       if (!isDataSaved && buttonText === 'Save Changes') {
-        setButtonText('Edit');
         setIsDataSaved(true);
+        setButtonText('Edit');
 
         //   if (!isDataSaved && buttonText === 'Save Changes') setIsDataSaved(true);
       }
@@ -507,12 +515,14 @@ const Strategy = ({ location }) => {
           planJob.singlePlanJob = updatedContent.content;
         } else if (updatedContent.type === 'difficulty') {
           planJob.difficulty = updatedContent.content;
+        } else if (updatedContent.type === 'completed') {
+          planJob.completed = updatedContent.content;
         }
       }
       return planJob;
     });
 
-    setPlanJobsEdit(updatedPlanJobs);
+    updatePlanJobs(id, updatedPlanJobs);
     // if (isFieldsFilled(updatedPlanJobs)) {
     //   setPlanJobsEdit(updatedPlanJobs);
     //   if (isDisabled) {
@@ -580,6 +590,19 @@ const Strategy = ({ location }) => {
     return Math.floor((nominator / denominator) * 100);
   };
 
+  const checkPlan = () => {
+    const isAccomplished = planJobsEdit.every(planJob => {
+      return planJob.completed;
+    });
+    setIsGoalAccomplished(isAccomplished);
+  };
+
+  const handleDisabled = () => {
+    return planJobsEdit.every(planJob => {
+      return planJob.length > 0 && planJob.difficulty;
+    });
+  };
+
   return (
     <>
       <NavBar />
@@ -622,6 +645,8 @@ const Strategy = ({ location }) => {
                     onClick={() => {
                       item.completed = !item.completed;
                       setPlanJobsEdit([...planJobsEdit]);
+                      editPlanJobs();
+                      checkPlan(item.id, item.completed);
                     }}
                   >
                     <div
@@ -655,14 +680,18 @@ const Strategy = ({ location }) => {
 
           {!isEditible && (
             <ProgressBarContainer>
-              <ProgressBar progress={currentProgress()} />
+              <ProgressBar progress={currentProgress()} deadline={deadline} />
             </ProgressBarContainer>
           )}
           <ButtonContainer>
             <EditButton
+              disabled={!handleDisabled()}
               ref={editButton}
               onClick={() => {
                 setIsEditible(!isEditible);
+                if (isDataSaved) {
+                  setPlanJobs(planJobsEdit);
+                }
               }}
               disabled={isDisabled}
             >
@@ -670,6 +699,15 @@ const Strategy = ({ location }) => {
             </EditButton>
           </ButtonContainer>
         </TaskContainer>{' '}
+        {/* CONFETTI */}
+        {isGoalAccomplished && (
+          <Confetti
+            width={document.documentElement.scrollWidth}
+            // height={size.height}
+            height={document.documentElement.scrollHeight}
+            numberOfPieces={350}
+          />
+        )}
       </Container>
     </>
   );

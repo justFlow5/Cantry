@@ -93,6 +93,20 @@ const BelowLine = styled.div`
   /* margin-right: 70px; */
 `;
 
+const SpaceForNoQuote = styled.div`
+  margin-top: 150px;
+  & img {
+  }
+`;
+
+const LoaderContainer = styled.div`
+  /* margin-top: 80px; */
+  text-align: center;
+  margin: 80px auto;
+  position: relative;
+  right: 40px;
+`;
+
 export default () => {
   const { quoteOption, singleQuoteDb, quotesDb } = useContext(FuncContext);
 
@@ -138,27 +152,38 @@ export default () => {
     }
   };
   return (
-    <Quote>
-      <QuoteContainer>
-        <UpperLine />
-        {!isLoaded && <Loader />}
-        <QuoteContent>
-          {qStatus ? quote.quote : quote.text}
-          {/* {quote.quote} */}
-          <footer>
-            {/* &mdash; */}
-            {qStatus ? (
-              <cite> {quote.author === null ? '' : quote.author}</cite>
-            ) : (
-              <cite>
-                {' '}
-                {quote.author === null ? ' Author Unknown' : quote.author}
-              </cite>
-            )}
-          </footer>
-        </QuoteContent>
-        <BelowLine />
-      </QuoteContainer>
-    </Quote>
+    <>
+      {!isLoaded && (
+        <LoaderContainer>
+          <Loader />
+        </LoaderContainer>
+      )}
+      {quote ? (
+        <Quote>
+          <QuoteContainer>
+            <UpperLine />
+            {!isLoaded && <Loader />}
+            <QuoteContent>
+              {qStatus ? quote.quote : quote.text}
+              {/* {quote.quote} */}
+              <footer>
+                {/* &mdash; */}
+                {qStatus ? (
+                  <cite> {quote.author === null ? '' : quote.author}</cite>
+                ) : (
+                  <cite>
+                    {' '}
+                    {quote.author === null ? ' Author Unknown' : quote.author}
+                  </cite>
+                )}
+              </footer>
+            </QuoteContent>
+            <BelowLine />
+          </QuoteContainer>
+        </Quote>
+      ) : (
+        <SpaceForNoQuote>{/* <img src="/feather.jpg" /> */}</SpaceForNoQuote>
+      )}
+    </>
   );
 };

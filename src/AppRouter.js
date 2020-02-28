@@ -19,6 +19,8 @@ import PublicRoute from './components/PublicRoute';
 import Signup_Login2 from './components/pages/Signup_Login2';
 import Login_SignUp from './components/pages/Login_Signup';
 import QuoteSettings from './components/pages/QuoteSettings';
+import Organizer from './components/pages/Organizer';
+
 import Strategy from './components/Strategy';
 
 const AppRouter = () => {
@@ -48,6 +50,7 @@ const AppRouter = () => {
               path="/plan/:goal/tactic"
               component={Strategy}
             />
+            <PrivateRoute exact path="/organizer" component={Organizer} />
 
             <PrivateRoute
               exact

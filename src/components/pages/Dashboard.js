@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useReducer, useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from '@reach/router';
+// import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
+
 import uuid from 'uuid';
 import PlanContext from '../contexts/Plan-context';
 import { createGlobalStyle } from 'styled-components';
@@ -637,7 +639,7 @@ export default props => {
             </Button> */}
 
             {/* </Link> */}
-            <Link to="/plan/">
+            <Link to="/organizer">
               <Button
                 content="Go to organizer"
                 width="285px"

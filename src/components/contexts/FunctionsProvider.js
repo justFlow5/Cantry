@@ -34,21 +34,32 @@ export const FunctionsProvider = ({ children }) => {
 
   const [quotesDb, setQuotesDb] = useState([]);
 
+  const updatePlanJobs = (id, updatedPlanJobs) => {
+    db.ref(`users/${currentUser.uid}/plans/${id}`).update({
+      planJobs: updatedPlanJobs
+    });
+
+    const updatedPlans = plans.map(plan => {
+      if (plan.id === id) {
+        let updatedPlan = plan;
+        updatedPlan.planJobs = updatedPlanJobs;
+        return updatedPlan;
+      } else {
+        return plan;
+      }
+    });
+    dispatch({ type: 'UPDATE_PLAN', updatedPlans });
+  };
+
   const updatePlan = (id, updatedPlan) => {
-    // const updatedPlan = {
-    //   id,
-    //   goal,
-    //   specificators,
-    //   prices,
-    //   dailyTasks,
-    //   deadline
-    // };
     db.ref(`users/${currentUser.uid}/plans/${id}`).update({
       goal: updatedPlan.goal,
       deadline: updatedPlan.deadline,
       specificators: updatedPlan.specificators,
       prices: updatedPlan.prices,
       dailyTasks: updatedPlan.dailyTasks,
+      //
+      //
       id: id
     });
 
@@ -146,6 +157,7 @@ export const FunctionsProvider = ({ children }) => {
         //
         planJobs,
         setPlanJobs,
+        updatePlanJobs,
 
         dispatch,
         //
