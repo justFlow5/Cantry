@@ -15,8 +15,8 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import SpecificsIcon from '../icons/SpecificsIcon';
 import PriceIcon from '../icons/PriceIcon';
 import ProgressIcon from '../icons/ProgressIcon';
+import DiagramIcon from '../icons/Diagram';
 import CheckInput from '../CheckInput';
-import FeatherIcon from '../icons/Feather';
 
 import moment from 'moment';
 
@@ -288,6 +288,14 @@ const DescriptionContainer = styled.div`
     justify-content: center;
     width: 85%;
 
+    & svg {
+      width: 25px;
+      height: 25px;
+      position: relative;
+      /* bottom: -25px; */
+      text-align: center;
+    }
+
     /* & > * {} */
     /* padding: 0px 40px 40px; */
 
@@ -379,6 +387,17 @@ const Details = styled.div`
 const Price = styled.div``;
 
 const DailyRegimen = styled.div``;
+
+const Statistics = styled.div`
+  &.descriptor {
+    margin-top: 40px;
+  }
+
+  & h4 {
+    position: relative;
+    top: -10px;
+  }
+`;
 
 const PlanStage = styled.div`
   margin-top: 30px;
@@ -483,6 +502,26 @@ const PlanTemplate = ({ location }) => {
                     })}
                   </ul>
                 </DailyRegimen>
+                <Statistics className="descriptor">
+                  {' '}
+                  <span>
+                    <DiagramIcon className="descriptorIcon" />{' '}
+                  </span>
+                  <h4>Statistics</h4>
+                  <ul>
+                    {plan.dailyTasks.map(({ dailyTask, id }) => {
+                      return (
+                        <li key={id} className="task">
+                          <CheckInput
+                            dailyTask={dailyTask}
+                            id={id}
+                            key={id}
+                          ></CheckInput>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </Statistics>
               </DescriptionContainer>
               <PlanStage>
                 <Graph />

@@ -201,7 +201,7 @@ const ListOfTasksContainer = styled.ul`
 
 const ListOfTasksItem = styled.li`
   /* padding: 10px 10px; */
-  padding: 20px 10px 10px;
+  padding: 30px 10px 5px;
   /* margin-left: 30px; */
   font-size: 17px;
   font-weight: 600;
@@ -306,6 +306,10 @@ const ListOfTasksItem = styled.li`
     margin: 0 10px 0 15px;
     word-wrap: break-word;
     position: relative;
+    padding-left: 25px;
+    align-self: flex-start;
+    top: -30px;
+    margin-bottom: -30px;
     /* word-break: break-all; */
 
     & span {
