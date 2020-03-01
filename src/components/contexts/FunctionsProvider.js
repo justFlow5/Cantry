@@ -62,7 +62,7 @@ export const FunctionsProvider = ({ children }) => {
       //
       id: id
     });
-
+    console.log('UPDATE PLANA', updatedPlan);
     const updatedPlans = plans.map(plan => {
       if (plan.id === id) {
         return updatedPlan;
@@ -70,6 +70,7 @@ export const FunctionsProvider = ({ children }) => {
         return plan;
       }
     });
+    localStorage.setItem('plans', JSON.stringify(updatedPlans));
     dispatch({ type: 'UPDATE_PLAN', updatedPlans });
   };
 

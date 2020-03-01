@@ -235,6 +235,7 @@ const QuoteSettings = () => {
 
   const [temporaryQuote, setTemporaryQuote] = useState('');
   const [temporaryAuthor, setTemporaryAuthor] = useState('');
+  const [isAddClicked, setIsAddClicked] = useState(false);
 
   const options = [
     //   for random generation value is null
@@ -411,6 +412,8 @@ const QuoteSettings = () => {
                   action={setTemporaryQuote}
                   title="Quote"
                   autoComplete="false"
+                  isAddClicked={isAddClicked}
+                  setIsAddClicked={setIsAddClicked}
                 />
                 <InputInfo>Type author: </InputInfo>
                 <InputField
@@ -420,6 +423,8 @@ const QuoteSettings = () => {
                   action={setTemporaryAuthor}
                   title="Author"
                   autoComplete="false"
+                  isAddClicked={isAddClicked}
+                  setIsAddClicked={setIsAddClicked}
                 />
                 <AddButton
                   onClick={() => {

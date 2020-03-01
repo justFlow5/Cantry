@@ -381,10 +381,15 @@ const Organizer = () => {
     });
 
     setToDoList(updatedToDo);
+    localStorage.setItem('todo', JSON.stringify(updatedToDo));
+
+    db.ref(`users/${currentUser.uid}/todo`).update(updatedToDo);
   };
 
   const handleIsHidden = () => {
     if (!isHidden) setIsHidden('isHidden');
+    // else if (JSON.parse(localStorage.getItem('todo')).length > 0)
+    //   setIsHidden('');
   };
 
   const deleteTask = id => {
@@ -438,6 +443,7 @@ const Organizer = () => {
               onClick={() => {
                 setInitClicked(true);
                 setIsEditible(true);
+                setIsPadding('');
                 if (isHidden) setIsHidden('');
               }}
             >
@@ -480,7 +486,7 @@ const Organizer = () => {
                     ) : (
                       <Roomtaker />
                     )}
-                    {!isSaveClicked && (
+                    {!isSaveClicked && isEditible && (
                       <small
                         className="deleteField"
                         onClick={e => {
@@ -496,11 +502,11 @@ const Organizer = () => {
               );
             })}
           </TaskList>
-          {toDoList.length === 0 && (
+          {/* {toDoList.length === 0 && (
             <Roomtaker>
               <div></div>
             </Roomtaker>
-          )}
+          )} */}
           {(toDoList.length > 0 || initClicked) && isEditible && (
             <InputContainer className={isHidden}>
               <Label>Type Task</Label>

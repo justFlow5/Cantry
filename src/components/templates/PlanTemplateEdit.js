@@ -938,6 +938,7 @@ const PlanTemplateEdit = ({ location }) => {
                 onClick={() => {
                   handleEdit();
                   setIsEditClicked(true);
+                  // updatePlan()
                 }}
               >
                 Save Changes

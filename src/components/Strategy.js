@@ -201,7 +201,7 @@ const ListOfTasksContainer = styled.ul`
 
 const ListOfTasksItem = styled.li`
   /* padding: 10px 10px; */
-  padding: 20px 10px;
+  padding: 20px 10px 10px;
   /* margin-left: 30px; */
   font-size: 17px;
   font-weight: 600;
@@ -210,9 +210,29 @@ const ListOfTasksItem = styled.li`
   display: flex;
   flex-direction: row;
   align-items: center;
+  position: relative;
   border-radius: 5px;
   border: 1px solid transparent;
+  flex-wrap: wrap;
+
   transition: all 0.3s;
+
+
+  /* &:last-child {
+    justify-content: column;
+  } */
+
+  & hr {
+    border: 0;
+    height: 1px;
+    /* background-image: linear-gradient(90deg, #8c8b8b, #585858, #8c8b8b); */
+    background-image: linear-gradient(90deg, #C8C8C8, #585858, #C8C8C8);
+    margin-top: 5px;
+    position: relative;
+    margin-top: 15px;
+    width: 100%;
+   
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.54);
@@ -282,7 +302,7 @@ const ListOfTasksItem = styled.li`
   & .taskText {
     font-size: 17px;
     color: #3c3232;
-    /* margin-left: 15px; */
+    padding-top: 2px;
     margin: 0 10px 0 15px;
     word-wrap: break-word;
     position: relative;
@@ -597,11 +617,15 @@ const Strategy = ({ location }) => {
     setIsGoalAccomplished(isAccomplished);
   };
 
-  const handleDisabled = () => {
-    return planJobsEdit.every(planJob => {
-      return planJob.length > 0 && planJob.difficulty;
-    });
-  };
+  // const handleDisabled = () => {
+  //   const isFilled = planJobsEdit.every(planJob => {
+  //     return planJob.length > 0 && planJob.difficulty;
+  //   });
+
+  //   if (buttonText === 'save changes') {
+  //     return isFilled;
+  //   }
+  // };
 
   return (
     <>
@@ -662,6 +686,8 @@ const Strategy = ({ location }) => {
                       {/* HERE IS THE PLACE FOR FIREEEE - absolute fire hehe */}
                       <span className="difficulty">{fire}</span>
                     </p>
+
+                    <hr />
                   </ListOfTasksItem>
                 );
               }
@@ -685,7 +711,7 @@ const Strategy = ({ location }) => {
           )}
           <ButtonContainer>
             <EditButton
-              disabled={!handleDisabled()}
+              // disabled={!handleDisabled()}
               ref={editButton}
               onClick={() => {
                 setIsEditible(!isEditible);

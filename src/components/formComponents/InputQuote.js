@@ -95,6 +95,8 @@ const InputQuote = props => {
   const [isActive, setIsActive] = useState('');
   const [isFilled, setIsFilled] = useState('');
 
+  const [isClickedProps, setIsClickedProps] = useState(props.isAddClicked);
+
   //   const [setHeight, setHeightState] = useState('80px');
 
   const content = useRef(null);
@@ -126,6 +128,12 @@ const InputQuote = props => {
   useEffect(() => {
     autoGrow(content);
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      autoGrow(content);
+    }, 100);
+  }, [isClickedProps]);
 
   return (
     <>

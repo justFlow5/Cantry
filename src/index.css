@@ -1,6 +1,7 @@
 html {
   font-family: 'Muli', sans-serif;
   scroll-behavior: smooth;
+
 }
 
 *,
@@ -24,10 +25,19 @@ body {
   height: 100vh;
 }
 
-body > div {
+body>div {
   height: 100%;
   width: 100%;
 }
+
+::selection {
+  /* background: #737979; */
+  /* color: rgba(244, 244, 244, 0.7); */
+  /* background: rgba(0, 0, 0, 0.65); */
+  background: #565b5b;
+  color: white;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
