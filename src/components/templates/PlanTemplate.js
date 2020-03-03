@@ -1,4 +1,14 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { FuncContext } from '../contexts/FunctionsProvider';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend
+} from 'recharts';
 
 import 'react-dates/initialize';
 // import '../formComponents/_datepicker_custom.css';
@@ -135,7 +145,7 @@ const PlanTitle = styled.h3`
     position: absolute;
     top: -18%;
     right: 1%;
-    & svg {
+    & .descriptorIcon {
       width: 25px;
       height: 25px;
     }
@@ -288,18 +298,21 @@ const DescriptionContainer = styled.div`
     justify-content: center;
     width: 85%;
 
-    & svg {
+    /* & svg {
       width: 25px;
       height: 25px;
       position: relative;
-      /* bottom: -25px; */
       text-align: center;
-    }
+    } */
 
     /* & > * {} */
     /* padding: 0px 40px 40px; */
 
     /* flex: 1 1 0; */
+
+    &:last-child {
+      border-bottom: unset;
+    }
 
     h4 {
       font-size: 22px;
@@ -352,7 +365,7 @@ const DescriptionContainer = styled.div`
             padding: 10px;
           } */
         }
-        & span {
+        & .spanIcon {
           display: inline-block;
           position: absolute;
           top: 3%;
@@ -360,6 +373,7 @@ const DescriptionContainer = styled.div`
           right: 1%;
           width: 20px;
           height: 20px;
+
           /* bottom: 0; */
           /* z-index: -1; */
           & svg {
@@ -391,16 +405,56 @@ const DailyRegimen = styled.div``;
 const Statistics = styled.div`
   &.descriptor {
     margin-top: 40px;
+    marign-bottom: 40px;
   }
 
   & h4 {
     position: relative;
     top: -10px;
   }
+
+  & ul {
+    position: relative;
+  }
+
+  & .series {
+    font-size: 17px;
+    text-align: center;
+    margin: 10px auto 0;
+
+    & .seriesResult {
+      font-weight: 600;
+    }
+  }
+`;
+const LineChartContainer = styled.div`
+  word-break: keep-all;
+  position: relative;
+  margin-top: 50px;
+
+  & .recharts-legend-item-text {
+    word-break: unset;
+    /* width: 50px; */
+  }
+`;
+
+const StatData = styled.div`
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 10px 15px;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 14px;
+  /* margin-bottom: 20px; */
+
+  & .singleDataResult {
+    font-weight: 600;
+  }
 `;
 
 const PlanStage = styled.div`
-  margin-top: 30px;
+  margin-top: 70px;
   width: 80%;
 `;
 
@@ -429,9 +483,89 @@ const GoToPlan = styled.div`
 const PlanTemplate = ({ location }) => {
   const { plan } = location.state;
 
-  console.log('location.state: ', location.state.plan);
+  const { checkData, plans } = useContext(FuncContext);
 
-  const [isEditible, setIsEditible] = useState(false);
+  const thePlan = plans.find(singlePlan => {
+    return singlePlan.id === plan.id;
+  });
+
+  const dataPlan = thePlan.dailyTask.history;
+
+  let trueCounter = 0;
+  let falseCounter = 0;
+
+  // const newData = [
+  //   { '02-03-2020': true },
+  //   { '03-03-2020': true },
+  //   { '04-03-2020': true },
+  //   { '04-03-2020': false },
+  //   { '05-03-2020': true },
+  //   { '06-03-2020': true },
+  //   { '07-03-2020': true },
+  //   { '08-03-2020': true },
+  //   { '09-03-2020': true },
+  //   { '10-03-2020': false }
+  // { '11-03-2020': true },
+  // { '12-03-2020': true },
+  // { '13-03-2020': true },
+  // { '14-03-2020': true },
+  // { '15-03-2020': true },
+  // { '16-03-2020': true },
+  // { '17-03-2020': true },
+  // { '18-03-2020': true },
+  // { '19-03-2020': true },
+  // { '20-03-2020': false },
+  // { '21-03-2020': true }
+  // ];
+
+  let endDate = thePlan.deadline;
+  // let firstDate = newData[0];
+  let firstDate = dataPlan[0];
+
+  let startDate = Object.keys(firstDate)[0];
+
+  let occurencess = [];
+  let counter = 0;
+
+  let timeLeft = moment(endDate).diff(moment(startDate), 'days');
+  console.log('TIME LEEEEFT: ', timeLeft);
+
+  const modifiedData = dataPlan.map(date => {
+    // const modifiedData = newData.map(date => {
+    let propertyName = Object.keys(date)[0];
+    if (date[propertyName] === true) {
+      trueCounter++;
+      counter++;
+
+      // let name = date[Object.keys(date)[0]]
+      return { name: propertyName, 'daily task': trueCounter };
+    } else {
+      let occurance = counter;
+      console.log('occurencess: ', occurencess);
+      occurencess.push(occurance);
+      counter = 0;
+      return { name: propertyName, 'daily task': trueCounter };
+    }
+    // if there is no false value at the end of array
+  });
+  occurencess.push(counter);
+  let maxValue = Math.max(...occurencess);
+  // console.log('modifiedData', modifiedData);
+
+  useEffect(() => {
+    checkData(thePlan.id);
+  }, [thePlan]);
+
+  // const isAnotherDay = () => {
+  //   const start = moment(plan.dailyTask.startedAt).dayOfYear();
+  //   const current = moment().dayOfYear();
+  //   if (start === current) {
+  //     //  return nothing
+
+  //   } else
+  // }
+
+  // };
 
   const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
 
@@ -442,22 +576,22 @@ const PlanTemplate = ({ location }) => {
         <Box>
           <div className="innerBox">
             <PlanContent>
-              <PlanTitle>{plan.goal}</PlanTitle>
+              <PlanTitle>{thePlan.goal}</PlanTitle>
               <Deadline>
                 <span>Deadline:</span>{' '}
-                {moment(plan.deadline)
+                {moment(thePlan.deadline)
                   .format('DD MMM YYYY')
                   .toString()}
               </Deadline>
 
               <DescriptionContainer>
                 <Details className="descriptor">
-                  <span>
+                  <span className="spanIcon">
                     <SpecificsIcon width="25px" className="descriptorIcon" />{' '}
                   </span>
                   <h4> Make it specific:</h4>{' '}
                   <ul>
-                    {plan.specificators.map(({ singleSpec, id }) => {
+                    {thePlan.specificators.map(({ singleSpec, id }) => {
                       return (
                         <li key={id} id={id} className="verticalBorder">
                           {singleSpec}
@@ -467,12 +601,12 @@ const PlanTemplate = ({ location }) => {
                   </ul>
                 </Details>
                 <Price className="descriptor">
-                  <span>
+                  <span className="spanIcon">
                     <PriceIcon width="25px" className="descriptorIcon" />{' '}
                   </span>
                   <h4> Price to pay:</h4>
                   <ul>
-                    {plan.prices.map(({ singlePrice, id }) => {
+                    {thePlan.prices.map(({ singlePrice, id }) => {
                       return (
                         <li key={id} id={id} className="verticalBorder">
                           {singlePrice}
@@ -484,22 +618,21 @@ const PlanTemplate = ({ location }) => {
                 <div className="break"></div>
                 <DailyRegimen className="descriptor">
                   {' '}
-                  <span>
+                  <span className="spanIcon">
                     <ProgressIcon width="25px" className="descriptorIcon" />{' '}
                   </span>
                   <h4>Daily regimen</h4>
                   <ul>
-                    {plan.dailyTasks.map(({ dailyTask, id }) => {
-                      return (
-                        <li key={id} className="task">
-                          <CheckInput
-                            dailyTask={dailyTask}
-                            id={id}
-                            key={id}
-                          ></CheckInput>
-                        </li>
-                      );
-                    })}
+                    <li key={thePlan.dailyTask.id} className="task">
+                      <CheckInput
+                        dailyTask={plan.dailyTask.dailyTask}
+                        id={thePlan.dailyTask.id}
+                        key={thePlan.dailyTask.id}
+                        // editTask={editTask}
+                        planId={thePlan.id}
+                        isChecked={thePlan.dailyTask.completed}
+                      ></CheckInput>
+                    </li>
                   </ul>
                 </DailyRegimen>
                 <Statistics className="descriptor">
@@ -509,27 +642,83 @@ const PlanTemplate = ({ location }) => {
                   </span>
                   <h4>Statistics</h4>
                   <ul>
-                    {plan.dailyTasks.map(({ dailyTask, id }) => {
-                      return (
-                        <li key={id} className="task">
-                          <CheckInput
-                            dailyTask={dailyTask}
-                            id={id}
-                            key={id}
-                          ></CheckInput>
-                        </li>
-                      );
-                    })}
+                    <StatData>
+                      <p className="singleData">
+                        Started at:{' '}
+                        <span className="singleDataResult">{startDate}</span>{' '}
+                      </p>
+                      <p className="singleData">
+                        Planned deadline:{' '}
+                        <span className="singleDataResult">
+                          {' '}
+                          {moment(thePlan.deadline).format('DD-MM-YYYY')}
+                        </span>
+                      </p>
+                      <p className="singleData">
+                        Time left:{' '}
+                        <span className="singleDataResult">
+                          {moment(thePlan.deadline).diff(moment(), 'days') + 1}{' '}
+                          days
+                        </span>
+                      </p>
+                    </StatData>
+                    <LineChartContainer>
+                      <LineChart
+                        width={400}
+                        height={200}
+                        data={modifiedData}
+                        margin={{ top: 45, right: 20, left: 10, bottom: 0 }}
+                      >
+                        <XAxis
+                          dataKey="name"
+                          tick={{ fontSize: 14, fill: '#3b444b' }}
+                        />
+                        <YAxis
+                          type="number"
+                          domain={[0, timeLeft]}
+                          tick={{ fontSize: 14, fill: '#3b444b' }}
+                        />
+                        <Tooltip />
+                        {/* <CartesianGrid stroke="#62696e" /> */}
+                        <CartesianGrid strokeDasharray="3 3" stroke="#b0b4b7" />
+                        <Line
+                          type="monotone"
+                          dataKey="daily task"
+                          stroke="#3b444b"
+                          yAxisId={0}
+                          strokeWidth={3}
+                          dot={false}
+                        />
+                        {/* <Legend wrapperStyle={{ fontSize: '18px' }} /> */}
+
+                        {/* <Line type="monotone" dataKey="pv" strokeOpacity={opacity.pv} stroke="#8884d8" activeDot={{r: 8}}/>
+         <Line type="monotone" dataKey={this.state.vis ? 'uv' : 'uv_'} strokeOpacity={opacity.uv} 
+         strokeWidth={4} stroke="#82ca9d" /> */}
+
+                        {/* <Line
+                        type="monotone"
+                        dataKey="pv"
+                        stroke="#387908"
+                        yAxisId={1}
+                      /> */}
+                      </LineChart>
+                    </LineChartContainer>
+
+                    <p className="series">
+                      The best series:{' '}
+                      <span className="seriesResult">
+                        {' '}
+                        {maxValue} {maxValue === 1 ? 'day' : 'days'}
+                      </span>
+                    </p>
                   </ul>
                 </Statistics>
               </DescriptionContainer>
               <PlanStage>
-                <Graph />
-                <StatText>You are on 20 day stroke.</StatText>
                 <GoToPlan>
                   <Link
                     to={{
-                      pathname: `/plan/${formatGoal(plan.goal)}/edit`,
+                      pathname: `/plan/${formatGoal(thePlan.goal)}/edit`,
                       state: location.state
                     }}
                   >

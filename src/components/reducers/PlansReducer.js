@@ -2,16 +2,6 @@ import React, { useReducer } from 'react';
 import moment from 'moment';
 // import db from '../firebase/firebase';
 
-// setPlans([...plans, { goal, specificators, deadline, prices, dailyTasks }]);
-// db.ref('plans').once('value').then((snapshot) => {
-//   const plans = [];
-//   snapshot.forEach(childSnapshot => {
-//     plans.push({
-//       id: childSnapshot.key,
-//       ...childSnapshot.val()
-//     })
-//   })
-// })
 const plansReducer = (state, action) => {
   // const deadline = moment(action.deadline)
   // console.log('state goal: ', action.goal);
@@ -28,7 +18,8 @@ const plansReducer = (state, action) => {
           specificators: action.specificators,
           deadline: action.deadline,
           prices: action.prices,
-          dailyTasks: action.dailyTasks
+          dailyTask: action.dailyTask,
+          planJobs: action.planJobs
         }
       ];
 

@@ -29,7 +29,7 @@ const AddButton = styled.button`
   &[disabled]:hover,
   &[disabled]:focus,
   &[disabled]:active {
-    cursor: default;
+    cursor: not-allowed;
     /* background-color: #D0D0D0; */
     text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
     box-shadow: none;

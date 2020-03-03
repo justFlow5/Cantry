@@ -527,25 +527,31 @@ const PopupFeedback = styled.div`
 const PlanTemplateEdit = ({ location }) => {
   const { plan } = location.state;
 
-  const { updatePlan, removePlan } = useContext(FuncContext);
+  const { updatePlan, removePlan, plans } = useContext(FuncContext);
+
+  const thePlan = plans.find(singlePlan => {
+    return singlePlan.id === plan.id;
+  });
 
   const [isEditClicked, setIsEditClicked] = useState(false);
 
   // setSpecificators(plan.specificators);
   // setPrices(plan.prices);
   // setDailyTasks(plan.dailyTasks);
-  const [goalEdit, setGoalEdit] = useState(plan.goal);
+  const [goalEdit, setGoalEdit] = useState(thePlan.goal);
   // console.log('plan.deadline', plan.deadline);
 
-  const [planId, setPlanId] = useState(plan.id);
+  const [planId, setPlanId] = useState(thePlan.id);
 
-  const [deadlineEdit, setDeadlineEdit] = useState(plan.deadline);
+  const [deadlineEdit, setDeadlineEdit] = useState(thePlan.deadline);
 
   const [specificatorsEdit, setSpecificatorsEdit] = useState(
     plan.specificators
   );
-  const [pricesEdit, setPricesEdit] = useState(plan.prices);
-  const [tasksEdit, setTasksEdit] = useState(plan.dailyTasks);
+  const [pricesEdit, setPricesEdit] = useState(thePlan.prices);
+  const [taskEdit, setTaskEdit] = useState(thePlan.dailyTask);
+
+  // const [tempTaskEdit, setTaskEdit] = useState(plan.dailyTask);
 
   //ADD NEW POSITION TO THE SPECS/PRICES/DAILY-TASKS
   const [field, setField] = useState('');
@@ -571,27 +577,12 @@ const PlanTemplateEdit = ({ location }) => {
     } else if (fieldType === 'prices') {
       const newPrice = { singlePrice: field, id };
       setPricesEdit([...pricesEdit, newPrice]);
-    } else if (fieldType === 'dailyTasks') {
-      const newTask = { dailyTask: field, id };
-      setTasksEdit([...tasksEdit, newTask]);
     }
+    // else if (fieldType === 'dailyTask') {
+    //   const newTask = { dailyTask: field, id };
+    //   setTasksEdit([...tasksEdit, newTask]);
+    // }
   };
-
-  // const addField = (type, content) => {
-  //   const id = uuid();
-
-  //   if (type === 'specs') {
-  //     const newField = { singleSpec: content, id };
-
-  //     setSpecificatorsEdit([...specificatorsEdit, newField]);
-  //   } else if (type === 'prices') {
-  //     const newField = { singlePrice: content, id };
-  //     setPricesEdit([...pricesEdit, newField]);
-  //   } else if (type === 'dailyTasks') {
-  //     const newField = { dailyTask: content, id };
-  //     setTasksEdit([...tasksEdit, newField]);
-  //   }
-  // };
 
   const deleteSpec = specId => {
     const updatedSpecs = specificatorsEdit.filter(spec => {
@@ -607,37 +598,24 @@ const PlanTemplateEdit = ({ location }) => {
     setPricesEdit(updatedPrices);
   };
 
-  const deleteDailyTask = dailyTaskId => {
-    const updatedDailyTasks = tasksEdit.filter(dailyTask => {
-      return dailyTask.id !== dailyTaskId;
-    });
-    setTasksEdit(updatedDailyTasks);
-  };
-
   const handleEdit = () => {
     updatePlan(planId, {
       goal: goalEdit,
       deadline: deadlineEdit.valueOf(), // VALUE OF ???
       specificators: specificatorsEdit,
       prices: pricesEdit,
-      dailyTasks: tasksEdit,
+      dailyTask: taskEdit,
       id: planId
     });
   };
 
-  const [verticalBorder, setVerticalBorder] = useState('');
-
   const [clickedInputId, setClickedInputId] = useState('');
-
-  const [superNewDeadline, setSuperNewDeadline] = useState('');
 
   const [isClicked, setIsClicked] = useState(false);
 
   const [focused, setFocused] = useState(null);
 
   const [showModal, setShowModal] = useState('');
-
-  const buttonContent = useRef(null);
 
   const showCalendar = () => {
     if (!isClicked) setIsClicked(true);
@@ -657,16 +635,6 @@ const PlanTemplateEdit = ({ location }) => {
     setClickedInputId(e.target.id);
     // console.log();
   };
-
-  // const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
-
-  // const editSpec = (idSpec, updatedContent) => {
-  //   specificatorsEdit.forEach(spec => {
-  //     if (spec.id === idSpec) {
-  //       spec.singleSpec = updatedContent;
-  //     }
-  //   });
-  // };
 
   const editSpec = (idSpec, updatedContent) => {
     const updatedSpecs = specificatorsEdit.map(spec => {
@@ -690,15 +658,12 @@ const PlanTemplateEdit = ({ location }) => {
     setPricesEdit(updatedPrices);
   };
 
-  const editDailyTasks = (idDailyTask, updatedContent) => {
-    const updatedDailyTasks = tasksEdit.map(task => {
-      if (task.id === idDailyTask) {
-        task.dailyTask = updatedContent;
-      }
-      return task;
-    });
-
-    setTasksEdit(updatedDailyTasks);
+  const editDailyTask = (idDailyTask, updatedContent) => {
+    // let uptask = taskEdit.dailyTask;
+    // uptask = updatedContent
+    let uptask = { dailyTask: updatedContent };
+    // const taskEdit.dailyTask = updatedContent;
+    setTaskEdit({ ...taskEdit, ...uptask });
   };
 
   return (
@@ -739,20 +704,6 @@ const PlanTemplateEdit = ({ location }) => {
                   openDirection="down"
                   hideKeyboardShortcutsPanel={true}
                 />
-
-                {/* <div>
-                  {specificatorsEdit.map(spec =>
-                    JSON.stringify(spec.singleSpec)
-                  )}
-                </div> */}
-                {/* // ) : (
-                //   <InputFieldEdit */}
-                {/* //     textarea
-                //     value={moment(deadline).format('DD MMM YYYY')}
-                //     name="deadline"
-                //     style={{ display: 'inline-block' }}
-                //   />
-                // )} */}
               </Deadline>
               <DescriptionContainer>
                 <Details className="descriptor">
@@ -868,52 +819,31 @@ const PlanTemplateEdit = ({ location }) => {
                   </span>
                   <h4>Daily regimen</h4>
                   <ul>
-                    {tasksEdit.map(({ dailyTask, id }) => {
-                      // const newId = `check${Date.now()}${id}`;
-                      // console.log(newId);
-                      return (
-                        <li
-                          key={id}
-                          id={id}
-                          // className={`thinBorder ${verticalBorder}`}
-                          className={
-                            clickedInputId === id ? 'thickBorder' : 'thinBorder'
-                          }
-                          onClick={getId}
-                          onBlur={() => {
-                            setClickedInputId('');
-                          }}
-                          spellcheck="false"
-                        >
-                          <InputFieldEdit
-                            value={dailyTask}
-                            id={id}
-                            name="dailyTasks"
-                            textarea
-                            action={editDailyTasks}
-                            setIsEditClicked={setIsEditClicked}
-                            isEditClicked={isEditClicked}
-                          />
-                          <span
-                            className="deleteField"
-                            onClick={() => {
-                              deleteDailyTask(id);
-                            }}
-                          >
-                            &#x2715;
-                          </span>
-                        </li>
-                      );
-                    })}
-                    {/* ADD NEW FIELD */}
-                    <NewField
-                      name="dailyTasks"
-                      onClick={e => {
-                        newFieldGenerator(e.target.name);
+                    <li
+                      key={taskEdit.id}
+                      id={taskEdit.id}
+                      // className={`thinBorder ${verticalBorder}`}
+                      className={
+                        clickedInputId === taskEdit.id
+                          ? 'thickBorder'
+                          : 'thinBorder'
+                      }
+                      onClick={getId}
+                      onBlur={() => {
+                        setClickedInputId('');
                       }}
+                      spellcheck="false"
                     >
-                      <span>&#43;</span> add new task
-                    </NewField>
+                      <InputFieldEdit
+                        value={taskEdit.dailyTask}
+                        id={taskEdit.id}
+                        name="dailyTask"
+                        textarea
+                        action={editDailyTask}
+                        setIsEditClicked={setIsEditClicked}
+                        isEditClicked={isEditClicked}
+                      />
+                    </li>
                   </ul>
                 </DailyRegimen>
               </DescriptionContainer>

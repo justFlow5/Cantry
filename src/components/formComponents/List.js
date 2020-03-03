@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import PlanContext from '../contexts/Plan-context';
 import fire from '../../images/fire.png';
+import { FuncContext } from '../contexts/FunctionsProvider';
+
 // import { FuncContext } from '../contexts/FunctionsProvider';
 
 const Descriptor = styled.div`
@@ -145,6 +147,8 @@ export default ({ content, id, dataType, difficulty }) => {
     deleteTempSinglePlanTask
   } = useContext(PlanContext);
 
+  const { setDailyTask } = useContext(FuncContext);
+
   const deleteData = () => {
     switch (dataType) {
       case 'spec':
@@ -152,7 +156,7 @@ export default ({ content, id, dataType, difficulty }) => {
       case 'price':
         deleteTempPrice(id);
       case 'task':
-        deleteTempTask(id);
+        setDailyTask('');
       case 'job':
         deleteTempSinglePlanTask(id);
     }

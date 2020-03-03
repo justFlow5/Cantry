@@ -3,8 +3,31 @@ import { AuthContext } from './Auth';
 
 import db from '../../firebase/Firebase';
 import plansReducer from '../reducers/PlansReducer';
+import moment from 'moment';
+import uuid from 'uuid';
 
 export const FuncContext = React.createContext();
+
+const size = {
+  mobileS: '320px',
+  mobileM: '375px',
+  mobileL: '425px',
+  tablet: '768px',
+  laptop: '1024px',
+  laptopL: '1440px',
+  desktop: '2560px'
+};
+
+export const device = {
+  mobileS: `(min-width: ${size.mobileS})`,
+  mobileM: `(min-width: ${size.mobileM})`,
+  mobileL: `(min-width: ${size.mobileL})`,
+  tablet: `(min-width: ${size.tablet})`,
+  laptop: `(min-width: ${size.laptop})`,
+  laptopL: `(min-width: ${size.laptopL})`,
+  desktop: `(min-width: ${size.desktop})`,
+  desktopL: `(min-width: ${size.desktop})`
+};
 
 export const FunctionsProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
@@ -12,7 +35,7 @@ export const FunctionsProvider = ({ children }) => {
   const [plans, dispatch] = useReducer(plansReducer, [], () => {
     const localPlans = localStorage.getItem('plans');
     if (localPlans) {
-      console.log('LOCAL PLANS', localPlans);
+      // console.log('LOCAL PLANS', localPlans);
       return JSON.parse(localPlans);
     } else {
       return [];
@@ -22,7 +45,8 @@ export const FunctionsProvider = ({ children }) => {
   const [goal, setGoal] = useState('');
   const [specificators, setSpecificators] = useState([]);
   const [prices, setPrices] = useState([]);
-  const [dailyTasks, setDailyTasks] = useState([]);
+  const [dailyTask, setDailyTask] = useState('');
+
   const [planJobs, setPlanJobs] = useState([]);
 
   const [deadline, setDeadline] = useState(null);
@@ -33,6 +57,8 @@ export const FunctionsProvider = ({ children }) => {
   const [singleQuoteDb, setSingleQuoteDb] = useState('');
 
   const [quotesDb, setQuotesDb] = useState([]);
+
+  const [tempDailyTask, setTempDailyTask] = useState('');
 
   const updatePlanJobs = (id, updatedPlanJobs) => {
     db.ref(`users/${currentUser.uid}/plans/${id}`).update({
@@ -57,7 +83,8 @@ export const FunctionsProvider = ({ children }) => {
       deadline: updatedPlan.deadline,
       specificators: updatedPlan.specificators,
       prices: updatedPlan.prices,
-      dailyTasks: updatedPlan.dailyTasks,
+      dailyTask: updatedPlan.dailyTask,
+
       //
       //
       id: id
@@ -127,17 +154,108 @@ export const FunctionsProvider = ({ children }) => {
       });
   };
 
-  // console.log(quoteOption);
+  const addTask = () => {
+    const id = uuid();
+    // const startedAt = moment().valueOf();
+    const startedAt = moment().valueOf();
+
+    const now = moment().format('DD-MM-YYYY');
+
+    setDailyTask({
+      dailyTask: tempDailyTask,
+      id,
+      startedAt,
+      history: [{ [now]: false }],
+      completed: false
+    });
+
+    setTempDailyTask('');
+
+    // setDailyTask('');
+  };
+
+  const editTask = (planId, updatedTask) => {
+    // console.log('planId, updatedTask', planId, updatedTask);
+    plans.forEach(plan => {
+      if (plan.id === planId) {
+        let tempPlan = plan;
+
+        tempPlan.dailyTask.completed = updatedTask;
+
+        let stringifiedData = moment()
+          .format('DD-MM-YYYY')
+          .toString();
+
+        // updatePlan(planId, tempPlan);
+        // console.log('stringifiedData', stringifiedData);
+
+        // let id = uuid()
+
+        let isDate = tempPlan.dailyTask.history.some(date => {
+          if (Object.keys(date)[0] === stringifiedData) {
+            let thisDate = Object.keys(date)[0];
+            // if (updatedTask) {
+            tempPlan.dailyTask.history.forEach(ddate => {
+              // if (Object.keys(date)[0] === thisDate)
+              if (thisDate in ddate) ddate[thisDate] = updatedTask;
+            });
+            // }
+            return Object.keys(date)[0] === stringifiedData;
+          }
+        });
+
+        let newData = { [stringifiedData]: updatedTask };
+
+        console.log('ISS DATEEE:, ', isDate);
+
+        if (isDate) {
+          updatePlan(planId, tempPlan);
+        } else {
+          tempPlan.dailyTask.history.push(newData);
+
+          updatePlan(planId, tempPlan);
+        }
+      }
+    });
+  };
+
+  const checkData = id => {
+    var isToggled;
+    var dataDb;
+    db.ref(`users/${currentUser.uid}/plans/${id}/dailyTask/completed`)
+      .once('value')
+      .then(snapshot => {
+        isToggled = snapshot.val();
+      });
+
+    db.ref(`users/${currentUser.uid}/plans/${id}/dailyTask/startedAt`)
+      .once('value')
+      .then(snapshot => {
+        dataDb = snapshot.val();
+        // var newUpDate = { [dataDb]: isToggled };
+
+        const now = moment().valueOf();
+
+        const nextDay = moment(now).isAfter(dataDb, 'day');
+
+        console.log('NEXT DAY', nextDay);
+
+        if (nextDay) {
+          db.ref(
+            `users/${currentUser.uid}/plans/${id}/dailyTask/completed`
+          ).set(false);
+
+          db.ref(
+            `users/${currentUser.uid}/plans/${id}/dailyTask/startedAt`
+          ).set(now);
+        }
+      });
+  };
 
   useEffect(() => {
     currentUser && getQuotes();
   }, [currentUser]);
 
-  {
-    // console.log('QUOTES: ', quotes);
-    // console.log()
-    // console.log()
-  }
   return (
     <FuncContext.Provider
       value={{
@@ -145,15 +263,20 @@ export const FunctionsProvider = ({ children }) => {
         goal,
         specificators,
         prices,
-        dailyTasks,
+        dailyTask,
+        addTask,
         deadline,
         setGoal,
         setSpecificators,
         setPrices,
-        setDailyTasks,
+        setDailyTask,
         setDeadline,
         updatePlan,
         removePlan,
+
+        tempDailyTask,
+        setTempDailyTask,
+        editTask,
 
         //
         planJobs,
@@ -168,7 +291,9 @@ export const FunctionsProvider = ({ children }) => {
         singleQuoteDb,
         setSingleQuoteDb,
         quotesDb,
-        setQuotesDb
+        setQuotesDb,
+
+        checkData
       }}
     >
       {children}

@@ -18,7 +18,7 @@ export default props => {
   const { nextStep } = useContext(PlanContext);
   const { goal, setGoal } = useContext(FuncContext);
 
-  const [inputFilled, setInputFilled] = useState(false);
+  // const [inputFilled, setInputFilled] = useState(false);
 
   return (
     <>

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import { FuncContext } from './contexts/FunctionsProvider';
 
 const Input = styled.input`
   &.check {
@@ -98,36 +99,32 @@ const LabelText = styled.label`
   }
 `;
 
-const CheckInput = ({
-  dailyTask,
-  id,
-  isEditible,
-  editField,
-  setIsEditActive,
-  isEditActive
-}) => {
+// const CheckInput = ({ dailyTask, id, planId, isChecked }) => {
+const CheckInput = props => {
+  // console.log('DAILY FROM CHECK INPUT: ', dailyTask.dailyTask);
+  const { editTask } = useContext(FuncContext);
+
+  console.log('FORM INPUT: ', props.dailyTask);
+
   return (
     <>
-      <Input type="checkbox" id={id} className="check" />
-      <LabelBox htmlFor={id}>
+      <Input
+        type="checkbox"
+        id={props.id}
+        className="check"
+        defaultChecked={props.isChecked}
+        onChange={e => {
+          editTask(props.planId, e.target.checked);
+        }}
+      />
+      <LabelBox htmlFor={props.id}>
         <svg viewBox="0,0,50,50">
           <path d="M5 30 L 20 45 L 45 5"></path>
         </svg>
 
         {/* <span className="taskText"> 30 min per day on programming</span> */}
       </LabelBox>
-      <LabelText
-        id={id}
-        className={isEditActive === id ? 'activeTask' : ''}
-        contentEditable={isEditible}
-        htmlFor={isEditible ? 'u' : id}
-        onClick={isEditible && editField}
-        onBlur={() => {
-          setIsEditActive('');
-        }}
-      >
-        {dailyTask}
-      </LabelText>
+      <LabelText htmlFor={props.id}>{props.dailyTask}</LabelText>
       <div className="horizontalLine"></div>
     </>
   );

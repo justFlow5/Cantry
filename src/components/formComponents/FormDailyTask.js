@@ -36,11 +36,11 @@ const ListContainer = styled.div`
 `;
 
 export default () => {
-  const { nextStep, prevStep, dailyTask, setDailyTask, addTask } = useContext(
-    PlanContext
-  );
+  const { nextStep, prevStep } = useContext(PlanContext);
 
-  const { dailyTasks } = useContext(FuncContext);
+  const { dailyTask, tempDailyTask, setTempDailyTask, addTask } = useContext(
+    FuncContext
+  );
 
   return (
     <>
@@ -53,17 +53,17 @@ export default () => {
         repeated over time will get you closer to achieving your goal: "
       ></Request>
       <InputField
-        value={dailyTask}
+        value={tempDailyTask}
         id="dailyTask"
         name="singleTask"
-        action={setDailyTask}
+        action={setTempDailyTask}
         title="Task"
         // setInputLength={setInputLength}
       />
 
       <AddButton
         addField={addTask}
-        disabled={dailyTask.length > 5 ? false : true}
+        disabled={tempDailyTask.length > 5 && !dailyTask ? false : true}
       ></AddButton>
       <br></br>
 
@@ -71,7 +71,7 @@ export default () => {
         <NavigationArrow
           nextContent="Develop Your Strategy"
           nextStep={nextStep}
-          disabled={dailyTasks.length > 0 ? false : true}
+          disabled={dailyTask.dailyTask ? false : true}
           arrowDirection="right"
         />
       </ButtonNextContainer>
@@ -83,11 +83,14 @@ export default () => {
         />
       </ButtonBackContainer>
       <ListContainer>
-        {dailyTasks.map(({ dailyTask, id }) => {
-          return (
-            <List content={dailyTask} key={id} id={id} dataType="task"></List>
-          );
-        })}
+        {dailyTask.dailyTask && (
+          <List
+            content={dailyTask.dailyTask}
+            key={dailyTask.id}
+            id={dailyTask.id}
+            dataType="task"
+          ></List>
+        )}
       </ListContainer>
     </>
   );

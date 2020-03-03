@@ -156,9 +156,8 @@ const SinglePlan = props => {
   const [setHeight, setHeightState] = useState('0px');
   const [setRotate, setRotateState] = useState('accordionIcon');
 
-  const { goal, dailyTasks, deadline } = props.plan;
+  const { goal, dailyTask, deadline } = props.plan;
   const { plan } = props;
-  console.log('THE PLAN', plan);
 
   const content = useRef(null);
 
@@ -172,6 +171,7 @@ const SinglePlan = props => {
 
   const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
   // const classess = ['editIcon', 'tooltip'];
+  console.log('HEERE IS PLAN dailyTask: ', dailyTask);
 
   return (
     <>
@@ -181,7 +181,13 @@ const SinglePlan = props => {
       </Accordion>
       <AccordionContent ref={content} style={{ maxHeight: `${setHeight}` }}>
         {/* {props.children} */}
-        <PlanContent deadline={deadline} dailyTasks={dailyTasks} />
+
+        <PlanContent
+          deadline={deadline}
+          dailyTask={plan.dailyTask}
+          idPlan={plan.id}
+        />
+
         <LinkSection>
           <LinkContainer>
             <Link

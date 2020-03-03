@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer, useContext } from 'react';
 import styled from 'styled-components';
 // import { Link } from '@reach/router';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 import uuid from 'uuid';
 import PlanContext from '../contexts/Plan-context';
@@ -19,7 +20,7 @@ import Loader from '../Loader';
 import Modal from '../Modal2';
 import db from '../../firebase/Firebase';
 import { AuthContext } from '../contexts/Auth';
-import { FuncContext } from '../contexts/FunctionsProvider';
+import { FuncContext, device } from '../contexts/FunctionsProvider';
 
 // const GlobalStyles = createGlobalStyle`
 // @import url(https://fonts.googleapis.com/css?family=Lora);
@@ -145,12 +146,12 @@ export default props => {
     goal,
     specificators,
     prices,
-    dailyTasks,
+    dailyTask,
     deadline,
     setGoal,
     setSpecificators,
     setPrices,
-    setDailyTasks,
+    setDailyTask,
     setDeadline,
 
     planJobs,
@@ -159,6 +160,7 @@ export default props => {
     updatePlan,
 
     dispatch,
+    checkData,
 
     deleteSpec
   } = useContext(FuncContext);
@@ -179,7 +181,7 @@ export default props => {
   // const [prices, setPrices] = useState([]);
   const [singlePrice, setSinglePrice] = useState('');
 
-  const [dailyTask, setDailyTask] = useState('');
+  // const [dailyTask, setDailyTask] = useState('');
 
   const [singlePlanJob, setSinglePlanJob] = useState('');
   const [singlePlanJobDifficulty, setSinglePlanJobDifficulty] = useState(1);
@@ -206,6 +208,24 @@ export default props => {
       .push(newPlan)
       .then(snap => {
         key = snap.key;
+
+        let newnewPlans = {
+          id: key,
+          goal,
+          deadline: deadline.valueOf(),
+          specificators,
+          prices,
+          dailyTask,
+          planJobs
+        };
+
+        dispatch({
+          type: 'ADD_PLAN',
+          plans,
+          ...newnewPlans
+        });
+        const upPlans = [...plans, newnewPlans];
+        localStorage.setItem('plans', JSON.stringify(upPlans));
       })
 
       .then(() => {
@@ -215,8 +235,8 @@ export default props => {
 
         db.ref(`users/${currentUser.uid}/plans/${key}/prices`).set(prices);
 
-        db.ref(`users/${currentUser.uid}/plans/${key}/dailyTasks`).set(
-          dailyTasks
+        db.ref(`users/${currentUser.uid}/plans/${key}/dailyTask`).set(
+          dailyTask
         );
 
         db.ref(`users/${currentUser.uid}/plans/${key}/planJobs`).set(planJobs);
@@ -225,7 +245,7 @@ export default props => {
       .then(() => {
         const specificatorsDb = [];
         const pricesDb = [];
-        const dailyTasksDb = [];
+        var dailyTaskDb;
         const planJobsDb = [];
 
         db.ref(`users/${currentUser.uid}/plans/${key}/specificators`)
@@ -250,15 +270,10 @@ export default props => {
             });
           });
 
-        db.ref(`users/${currentUser.uid}/plans/${key}/dailyTasks`)
+        db.ref(`users/${currentUser.uid}/plans/${key}/dailyTask`)
           .once('value')
           .then(childchildSnapshot => {
-            childchildSnapshot.forEach(task => {
-              dailyTasksDb.push(
-                // id: task.key,
-                task.val()
-              );
-            });
+            dailyTaskDb = childchildSnapshot.val();
           });
 
         db.ref(`users/${currentUser.uid}/plans/${key}/planJobs`)
@@ -278,23 +293,23 @@ export default props => {
           deadline: newPlan.deadline,
           specificators: specificatorsDb,
           prices: pricesDb,
-          dailyTasks: dailyTasksDb,
+          dailyTask: dailyTaskDb,
           planJobs: planJobsDb
         };
       })
-      .then(data => {
-        dispatch({
-          type: 'ADD_PLAN',
-          plans,
-          ...data
-        });
-      })
+      // .then(data => {
+      //   dispatch({
+      //     type: 'ADD_PLAN',
+      //     plans,
+      //     ...data
+      //   });
+      // })
       .then(() => {
         setGoal('');
         setSpecificators([]);
         setPrices([]);
         setDeadline('');
-        setDailyTasks([]);
+        setDailyTask('');
         setPlanJobs([]);
         setIsActive('');
         setStep(1);
@@ -315,13 +330,6 @@ export default props => {
     const id = uuid();
     setPrices([...prices, { singlePrice, id }]); //temporary specificator -- no need for stable/secure id]);
     setSinglePrice('');
-  };
-
-  const addTask = () => {
-    const id = uuid();
-    setDailyTasks([...dailyTasks, { dailyTask, id }]);
-
-    setDailyTask('');
   };
 
   const addSinglePlanJob = () => {
@@ -354,12 +362,12 @@ export default props => {
     setSpecificators(filteredSpecs);
   };
 
-  const deleteTempTask = id => {
-    const filteredTasks = dailyTasks.filter(task => {
-      return task.id !== id;
-    });
-    setDailyTasks(filteredTasks);
-  };
+  // const deleteTempTask = id => {
+  //   const filteredTasks = dailyTasks.filter(task => {
+  //     return task.id !== id;
+  //   });
+  //   setDailyTasks(filteredTasks);
+  // };
 
   const deleteTempSinglePlanTask = id => {
     const filteredPlanJobs = planJobs.filter(planJob => {
@@ -379,6 +387,10 @@ export default props => {
   useEffect(() => {
     getDataFromDb();
   }, []);
+
+  // useEffect(() => {
+  //   getDataFromDb();
+  // }, [checkData]);
 
   const getDataFromDb = async () => {
     // console.log('DB FROM FUNCTION: ', db);
@@ -447,17 +459,13 @@ export default props => {
           );
         });
 
-        const dailyTasksDb = [];
-        const dailyTasksRef = db.ref(
-          `users/${currentUser.uid}/plans/${childSnapshot.key}/dailyTasks`
+        let dailyTaskDb;
+        const dailyTaskRef = db.ref(
+          `users/${currentUser.uid}/plans/${childSnapshot.key}/dailyTask`
         );
-        const dailyTasksSnapshot = await dailyTasksRef.once('value');
-        dailyTasksSnapshot.forEach(task => {
-          dailyTasksDb.push(
-            // id: task.key,
-            task.val()
-          );
-        });
+        const dailyTaskSnapshot = await dailyTaskRef.once('value');
+
+        dailyTaskDb = dailyTaskSnapshot.val();
 
         const planJobsDb = [];
         const planJobRef = db.ref(
@@ -477,20 +485,22 @@ export default props => {
           deadline: deadlineDb,
           specificators: specificatorsDb,
           prices: pricesDb,
-          dailyTasks: dailyTasksDb,
+          dailyTask: dailyTaskDb,
           planJobs: planJobsDb
         });
-
-        console.log('LENGTHof PansDB: ', plansDb.length);
+        dispatch({ type: 'LOAD_DB_PLANS', plansDb });
+        // console.log('LENGTHof PansDB: ', plansDb.length);
         if (plansDb.length === plansLength) {
           dispatch({ type: 'LOAD_DB_PLANS', plansDb });
           setIsComplete(true);
 
           //save data in local storage
 
-          localStorage.setItem('plans', JSON.stringify(plansDb));
+          // localStorage.setItem('plans', JSON.stringify(plansDb));
         }
+        localStorage.setItem('plans', JSON.stringify(plansDb));
       })();
+      // localStorage.setItem('plans', JSON.stringify(plansDb));
     });
   };
 
@@ -519,8 +529,9 @@ export default props => {
         //
         dailyTask,
         setDailyTask,
-        addTask,
-        deleteTempTask,
+
+        // addTask,
+        // deleteTempTask,
         //
         singlePlanJob,
         setSinglePlanJob,
@@ -576,69 +587,109 @@ export default props => {
               }
             })()}
 
-            {/* <NoPlan>
-                <p>No plan created yet</p>
-
-                <SadFace>
-                  <img src={Sloth} alt="Sloth" />
-                 
-                </SadFace>
-              </NoPlan>
-            ) : (
-              <div>
-                <h3>List Of Plans</h3>
-                <hr></hr>
-              </div>
-            ) */}
-
-            {/* <Loader /> */}
             <Plan>
               {plans.map(plan => {
-                console.log('planplan: ', plan);
+                //  check if it's a new day - if so - update accordingly
+                checkData(plan.id);
                 return <Accordion plan={plan} key={plan.id} />;
               })}
             </Plan>
           </PlanContainer>
           <ButtonContainer>
-            {/* <Link to="/createPlan/"> */}
-            {/* <Button plus content="Create new plan" width="300px" mark='' /> */}
-            {/* <div>plan: {JSON.stringify(plans)}</div> */}
-            {/* <div>{JSON.stringify(specificators)}</div>
-            {console.log('specificators:::: ', specificators)} */}
+            {/*  test*/}
             {/* <button
-              style={{
-                position: 'asbolute',
-                top: '0',
-                right: '0',
-                width: '300px',
-                height: '300px',
-                cursor: 'pointer'
-              }}
+              style={{ width: '80px', height: '60px' }}
               onClick={() => {
-                deleteSpec(
-                  '-M-k8WBxBljjRF6NlVoU',
-                  '64982272-2519-4a41-a2db-856b030aeca5'
-                );
+                var id = '-M1ULZgDTGAWMGDtDy5s';
+                var dataDb;
+                var newData;
+                db.ref(
+                  `users/${currentUser.uid}/plans/${id}/dailyTask/startedAt`
+                )
+                  .once('value')
+                  .then(snapshot => {
+                    dataDb = snapshot.val();
+                    // console.log('dataDbdataDbdataDb: ', snapshot.val());
+                    return dataDb;
+                  })
+                  .then(dataDb => {
+                    console.log('dataDbdataDbdataDb: ', dataDb);
+                  })
+                  .then(() => {
+                    var b = moment(dataDb)
+                      .clone()
+                      .add(1, 'days');
+                    let newData = moment(dataDb).add(1, 'days');
+                    let ms = newData.valueOf();
+                    console.log('OLD: ', newData);
+                    // console.log('NEWWWW DATA ', newData);
+                    // console.log('?????????????: ', b.valueOf());
+                    console.log(
+                      'BEFORE ADDING: ',
+                      moment(dataDb).format('DD-MM-YYYY')
+                    );
+                    console.log(
+                      'ms&&&&&&&&&&&&&&&L ',
+                      moment(ms).format('DD-MM-YYYY')
+                    );
+                    db.ref(
+                      `users/${currentUser.uid}/plans/${id}/dailyTask/startedAt`
+                    ).set(ms);
+                    checkData(id);
+                    getDataFromDb();
+                  });
               }}
             >
-              delete
-            </button> */}
-            <Modal />
-            {/* <div>daily Tasks: {JSON.stringify(dailyTasks)}</div> */}
-            {/* <Button
-              content="Create new plan"
-              width="300px"
-              mark="\002B"
-              scale="1.6"
-              // onClick={showForm ? null : setShowForm(true)}
-              displayForm={displayForm}
-              // toggleModal={toggleModal}
-              onClick={toggleModal}
+              ADD DAY
+            </button>
+            <button
+              style={{ width: '80px', height: '60px' }}
+              onClick={() => {
+                var id = '-M1ULZgDTGAWMGDtDy5s';
+                var dataDb;
+                var newData;
+                db.ref(
+                  `users/${currentUser.uid}/plans/${id}/dailyTask/startedAt`
+                )
+                  .once('value')
+                  .then(snapshot => {
+                    dataDb = snapshot.val();
+                    // console.log('dataDbdataDbdataDb: ', snapshot.val());
+                    return dataDb;
+                  })
+                  .then(dataDb => {
+                    console.log('dataDbdataDbdataDb: ', dataDb);
+                  })
+                  .then(() => {
+                    var b = moment(dataDb)
+                      .clone()
+                      .add(1, 'days');
+                    let newData = moment(dataDb).subtract(1, 'days');
+                    let ms = newData.valueOf();
+                    console.log('OLD: ', newData);
+                    // console.log('NEWWWW DATA ', newData);
+                    console.log('?????????????: ', b.valueOf());
+                    console.log(
+                      'BEFORE ADDING: ',
+                      moment(dataDb).format('DD-MM-YYYY')
+                    );
+                    console.log(
+                      'ms&&&&&&&&&&&&&&&L ',
+                      moment(ms).format('DD-MM-YYYY')
+                    );
+                    db.ref(
+                      `users/${currentUser.uid}/plans/${id}/dailyTask/startedAt`
+                    ).set(ms);
+                    checkData(id);
+                    getDataFromDb();
+                  });
+              }}
             >
+              SUBTRACT DAY
+            </button> */}
+            {/*  */}
+            <Modal />
 
-            </Button> */}
-
-            {/* </Link> */}
             <Link to="/organizer">
               <Button
                 content="Go to organizer"

@@ -396,11 +396,13 @@ const Organizer = () => {
     const updatedToDoList = toDoList.filter(singleToDo => {
       return singleToDo.id !== id;
     });
+    db.ref(`users/${currentUser.uid}/todo`).set(updatedToDoList);
     setToDoList([...updatedToDoList], updatedToDoList);
   };
 
   const handleSave = () => {
-    db.ref(`users/${currentUser.uid}/todo`).update(toDoList);
+    db.ref(`users/${currentUser.uid}/todo`).set(toDoList);
+    localStorage.setItem('todo', JSON.stringify(toDoList));
   };
 
   const handleClear = () => {
@@ -437,6 +439,7 @@ const Organizer = () => {
       <NavBar />
       <Wrapper>
         <Container>
+          {/* <div>{JSON.stringify(toDoList)}</div> */}
           <Header>{toDoList.length === 0 ? noTaskInfo : yesTaskInfo}</Header>
           {!initClicked && toDoList.length === 0 && (
             <Init

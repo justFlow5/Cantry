@@ -34,12 +34,14 @@ const TaskContainer = styled.div`
   width: 75%;
 `;
 
-export default ({ deadline, dailyTasks }) => {
+export default props => {
   const timeLeft = () => {
-    let time = moment(deadline).diff(moment(), 'days');
+    let time = moment(props.deadline).diff(moment(), 'days');
     const prefix = time > 1 ? 'days' : 'day';
     return `${time} ${prefix}`;
   };
+  // const dailyTaskProps = dailyTask;
+  console.log('props.dailyTaskprops.dailyTask: ', props.dailyTask);
 
   return (
     <>
@@ -47,7 +49,7 @@ export default ({ deadline, dailyTasks }) => {
         <p className="deadlineTag">
           deadline:
           <span>
-            {moment(deadline)
+            {moment(props.deadline)
               .format('DD MMM YYYY')
               .toString()}
           </span>
@@ -57,13 +59,13 @@ export default ({ deadline, dailyTasks }) => {
         </p>
       </Deadline>
       <TaskContainer>
-        {dailyTasks.map(({ dailyTask, id }) => {
-          // const newId = `check${Date.now()}${id}`;
-          // console.log(newId);
-          return (
-            <CheckInput dailyTask={dailyTask} id={id} key={id}></CheckInput>
-          );
-        })}
+        <CheckInput
+          dailyTask={props.dailyTask.dailyTask}
+          id={props.dailyTask.id}
+          // key={dailyTask.id}
+          planId={props.idPlan}
+          isChecked={props.dailyTask.completed}
+        ></CheckInput>
       </TaskContainer>
     </>
   );
