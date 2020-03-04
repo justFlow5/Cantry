@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { FuncContext } from '../contexts/FunctionsProvider';
+import { FuncContext, device } from '../contexts/FunctionsProvider';
 import {
   LineChart,
   Line,
@@ -31,55 +31,40 @@ import CheckInput from '../CheckInput';
 import moment from 'moment';
 
 const PlanContainer = styled.div`
-  display: flex;
-  width: 80%;
-  margin: 70px auto;
-  align-items: center;
-  justify-content: center;
-  /* border: 1px solid black; */
-  position: relative;
-  /* background-color: #7d7d7d; */
-  /* top: 350px; */
+  @media ${device.mobileS} {
+    width: 100%;
+    display: flex;
+    width: 100%;
+    margin: 70px auto;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid black; */
+    position: relative;
+    overflow: hidden;
+  }
+  @media ${device.tablet} {
+    width: 80%;
+  }
 `;
 const Box = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* top: 50%;
+  /* @media ${device.mobileS} {
+    width: 70%;
+    border-radius: 8px;
+  } */
+
+  @media ${device.tablet} {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0); */
-  background-color: rgba(#000, 0.5);
-  width: 100%;
-  max-width: 800px;
-  padding: 5px;
-  border: 2px solid black;
-  &:before,
-  &:after {
-    content: '•';
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    font-size: 14px;
-    color: black;
+    background-color: rgba(#000, 0.5);
+    width: 100%;
+    max-width: 800px;
+    padding: 5px;
     border: 2px solid black;
-    line-height: 12px;
-    top: 5px;
-    text-align: center;
-  }
-  &:before {
-    left: 5px;
-  }
-  &:after {
-    right: 5px;
-  }
-
-  .innerBox {
-    position: relative;
-    border: 2px solid black;
-    /* padding: 53px; */
-    padding: 7px;
-
     &:before,
     &:after {
       content: '•';
@@ -90,14 +75,42 @@ const Box = styled.div`
       color: black;
       border: 2px solid black;
       line-height: 12px;
-      bottom: -2px;
+      top: 5px;
       text-align: center;
     }
     &:before {
-      left: -2px;
+      left: 5px;
     }
     &:after {
-      right: -2px;
+      right: 5px;
+    }
+  
+
+  .innerBox {
+      position: relative;
+      border: 2px solid black;
+      /* padding: 53px; */
+      padding: 7px;
+
+      &:before,
+      &:after {
+        content: '•';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        color: black;
+        border: 2px solid black;
+        line-height: 12px;
+        bottom: -2px;
+        text-align: center;
+      }
+      &:before {
+        left: -2px;
+      }
+      &:after {
+        right: -2px;
+      }
     }
   }
 `;
@@ -126,13 +139,37 @@ const PlanContent = styled.div`
 //   }
 // `;
 const PlanTitle = styled.h3`
-  color: black;
-  font-size: 42px;
-  font-weight: 500;
-  position: relative;
-  outline: 0;
-  padding: 10px 30px;
-  transition: all 0.3s;
+  @media ${device.mobileS} {
+    color: black;
+    font-size: 42px;
+    font-weight: 500;
+    position: relative;
+    outline: 0;
+    padding: 10px 30px;
+    transition: all 0.3s;
+    text-align: center;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 35px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 38px;
+    height: 50px;
+  }
+
+  @media ${device.laptop} {
+    font-size: 40px;
+  }
+
+  @media ${device.laptopL} {
+    font-size: 42px;
+    height: 60px;
+  }
+
+  @media ${device.desktop} {
+  }
 
   &.activeTitle {
     background: #d6d7d8;
@@ -243,29 +280,48 @@ margin-bottom: 20px;
   }
 `;
 const Deadline = styled.p`
-  font-size: 17px;
-  /* width: 100%; */
+  /* padding-top: 15px; */
   text-align: center;
-  font-weight: 300;
-  /* display: inline; */
+  /* font-weight: 300; */
+  /* margin: 30px 0 15px; */
+  /* display: inline-block; */
+
   transition: all 0.3s;
 
-  &.activeDeadline {
-    background: #d6d7d8;
-    border: 1px solid #858689;
-    box-shadow: 0 0 10px;
+  @media ${device.tablet} {
+    font-size: 19px;
+    /* margin: 30px 0 15px; */
+    padding-top: 25px;
   }
-
-  & .spanIcon {
-    display: inline-block;
-
-    position: absolute;
-    top: -18%;
-    right: 1%;
-    & svg {
-      width: 25px;
-      height: 25px;
+  & > span {
+    @media ${device.mobileS} {
+      font-weight: 700;
+      position: relative;
+      /* bottom: 8px; */
+      font-size: 19px;
+      line-height: 1.2;
     }
+
+    @media ${device.mobileL} {
+    }
+
+    @media ${device.tablet} {
+      font-size: 19px;
+      margin: 30px 0 15px;
+      padding-top: 15px;
+    }
+
+    @media ${device.laptop} {
+      font-size: 19px;
+    }
+
+    @media ${device.laptopL} {
+    }
+
+    @media ${device.desktop} {
+    }
+
+    /* margin-right: 5px; */
   }
 `;
 
@@ -273,6 +329,8 @@ const DescriptionContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 
   /* & > .container */
   & > .break {
@@ -288,16 +346,41 @@ const DescriptionContainer = styled.div`
   }
 
   & > .descriptor {
-    /* padding: 10px; */
-    /* box-sizing: content-box; */
-    display: flex;
-    margin: 30px auto 0;
-    /* width: 100%; */
-    border-bottom: 1px solid #8e8e8e;
-    padding: 0px 20px 40px;
-    justify-content: center;
-    width: 85%;
+    @media ${device.mobileS} {
+      padding: 20px 0;
+      display: flex;
+      width: 90%;
+      border-bottom: 1px solid #8e8e8e;
+    }
 
+    @media ${device.tablet} {
+      width: 100%;
+      padding: 40px;
+
+      &:first-child {
+        padding-top: 25px;
+      }
+    }
+
+    & .spanIcon {
+      @media ${device.mobileS} {
+        padding-left: 120px;
+      }
+      @media ${device.mobileM} {
+        padding-left: 100px;
+      }
+
+      @media ${device.mobileL} {
+        padding-left: 30px;
+      }
+
+      @media ${device.tablet} {
+        padding-left: unset;
+      }
+      @media ${device.mobileS} {
+        padding-bottom: 15px;
+      }
+    }
     /* & svg {
       width: 25px;
       height: 25px;
@@ -319,14 +402,40 @@ const DescriptionContainer = styled.div`
       padding: 10px;
       display: inline-block;
       width: 20%;
+      text-align: center;
+
       /* margin-right: 20px; */
       /* text-align: center; */
     }
 
     ul {
-      padding: 5px 5px 0;
-      list-style-type: none;
-      width: 80%;
+      @media ${device.mobileS} {
+        /* padding: 5px 5px 0; */
+        list-style-type: none;
+        width: 80%;
+        padding-right: 115px;
+      }
+
+      @media ${device.mobileM} {
+        padding-right: 90px;
+      }
+
+      @media ${device.mobileL} {
+        padding-right: 30px;
+      }
+
+      @media ${device.tablet} {
+        padding: 5px 5px 0;
+      }
+
+      @media ${device.laptop} {
+      }
+
+      @media ${device.laptopL} {
+      }
+
+      @media ${device.desktop} {
+      }
 
       li {
         padding: 0px 15px;
@@ -339,7 +448,6 @@ const DescriptionContainer = styled.div`
         padding: 10px;
         padding-right: 20px;
         position: relative;
-        word-break: break-all;
 
         &.task {
           margin-top: 0;
@@ -366,25 +474,35 @@ const DescriptionContainer = styled.div`
           } */
         }
         & .spanIcon {
-          display: inline-block;
+          /* display: inline-block;
           position: absolute;
           top: 3%;
-          /* left: 0; */
           right: 1%;
           width: 20px;
-          height: 20px;
+          height: 20px; */
+
+          @media ${device.mobileS} {
+            padding-left: 85px;
+          }
+          @media ${device.mobileM} {
+            padding-left: 75px;
+          }
+
+          @media ${device.mobileL} {
+            padding-left: 65px;
+          }
+
+          @media ${device.tablet} {
+            padding-left: unset;
+          }
 
           /* bottom: 0; */
           /* z-index: -1; */
           & svg {
             position: absolute;
-            /* top: -13%;
-            right: 4%; */
-            z-index: 2;
-            /* padding-top: 5px; */
 
-            /* width: 25px;
-            height: 25px; */
+            z-index: 2;
+
             width: 100%;
             height: 100%;
           }
@@ -589,7 +707,10 @@ const PlanTemplate = ({ location }) => {
                   <span className="spanIcon">
                     <SpecificsIcon width="25px" className="descriptorIcon" />{' '}
                   </span>
-                  <h4> Make it specific:</h4>{' '}
+                  <h4>
+                    {' '}
+                    Make <br /> it specific:
+                  </h4>{' '}
                   <ul>
                     {thePlan.specificators.map(({ singleSpec, id }) => {
                       return (

@@ -12,6 +12,8 @@ import db from '../../firebase/Firebase';
 
 import { AuthContext } from '../contexts/Auth';
 
+import { device } from '../contexts/FunctionsProvider';
+
 const pulse = keyframes`
 to {box-shadow: 0 0 0 25px rgba(232, 76, 61, 0);}}
 `;
@@ -21,17 +23,28 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 const Container = styled.div`
-  position: relative;
-  margin: 100px auto;
-  width: 40%;
-  padding-bottom: 20px;
-  background: #dadada;
-  border-radius: 14px;
-  min-height: 520px;
-  text-align: center;
-  -webkit-box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.75);
+  @media ${device.mobileS} {
+    position: relative;
+    margin: 80px auto 60px;
+    width: 85%;
+    padding-bottom: 20px;
+    background: #dadada;
+    border-radius: 14px;
+    min-height: 520px;
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.75);
+  }
+
+  @media ${device.mobileL} {
+    width: 65%;
+  }
+
+  @media ${device.tablet} {
+    width: 40%;
+    margin: 100px auto;
+  }
 
   & .form-field__control {
     margin: 0;

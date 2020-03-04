@@ -2,33 +2,24 @@ import React, { useState, useEffect, useContext } from 'react';
 import { FuncContext } from './contexts/FunctionsProvider';
 import styled from 'styled-components';
 import Loader from './LoaderQuote';
+import { device } from './contexts/FunctionsProvider';
 
 import axios from 'axios';
 
 const Quote = styled.section`
   /* max-width: 600px; */
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 70px;
-  align-items: center;
-  /* align-items: center; */
-  /* margin: 70px auto 30px;
-  background-position: center;
-  background-size: cover; */
-  /* background-color: red; */
 
-  /* img {
-    width: 90%;
-    height: 100%;
-    opacity: 0.4;
-    position: absolute;
-    z-index: -1;
-    left: 200px;
-    top: 0;
-    right: 100px;
-    overflow: hidden;
-  } */
+  @media ${device.mobileS} {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 50px;
+    align-items: center;
+  }
+
+  @media ${device.laptop} {
+    margin-top: 70px;
+  }
 `;
 
 const QuoteContainer = styled.div`
@@ -42,55 +33,125 @@ const QuoteContainer = styled.div`
 
 const QuoteContent = styled.blockquote`
   /* border: 2em solid transparent; */
-  font-size: 20px;
-  /* font-family: 'Great Vibes', cursive; */
-  font-style: italic;
-  line-height: 1.3;
-  letter-spacing: 1.5px;
-  width: 85%;
-  text-align: center;
-  font-family: 'Gentium Basic', serif;
 
-  margin: 5px 0;
+  @media ${device.mobileS} {
+    font-size: 16px;
+
+    font-style: italic;
+    line-height: 1.3;
+    letter-spacing: 1.5px;
+    width: 85%;
+    text-align: center;
+    font-family: 'Gentium Basic', serif;
+
+    margin: 5px auto;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 18px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 19px;
+  }
+
+  @media ${device.laptop} {
+    font-size: 21px;
+  }
+
+  @media ${device.laptopL} {
+    font-size: 21px;
+  }
+
+  @media ${device.desktop} {
+    font-size: 23px;
+  }
 
   footer {
     padding-top: 10px;
+    font-style: normal;
+    font-weight: bold;
+    white-space: nowrap;
 
     & cite {
-      font-style: normal;
-      font-size: 22px;
-      font-weight: bold;
-      white-space: nowrap;
+      @media ${device.mobileS} {
+        font-size: 19px;
+      }
+
+      @media ${device.mobileL} {
+        font-size: 20px;
+      }
+
+      @media ${device.tablet} {
+        font-size: 20px;
+      }
+
+      @media ${device.laptop} {
+        font-size: 21px;
+      }
+
+      @media ${device.laptopL} {
+        font-size: 23px;
+      }
+
+      @media ${device.desktop} {
+        font-size: 25px;
+      }
     }
   }
 `;
 
 const UpperLine = styled.div`
-  position: absolute;
-  top: 0;
+  @media ${device.mobileS} {
+    position: absolute;
+    top: 0;
 
-  width: 20%;
-  top: -30%;
-  right: 48%;
-  height: 2px;
+    width: 20%;
+    top: -20%;
+    right: 40%;
+    height: 2px;
 
-  background: #1d2122;
+    background: #1d2122;
 
-  margin-top: 15px;
+    margin-top: 15px;
+  }
+
+  @media ${device.mobileL} {
+    top: -25%;
+    height: 2px;
+  }
+
+  @media ${device.laptop} {
+    top: -30%;
+    height: 2px;
+  }
 `;
 
 const BelowLine = styled.div`
-  position: absolute;
-  bottom: -30%;
-  right: 48%;
-  margin: 0 auto;
-  width: 20%;
-  height: 2px;
-  /* width: 100px; */
-  /* height: 2margin: 0 auto;px; */
-  background: #1d2122;
-  margin-bottom: 12px;
-  /* margin-right: 70px; */
+  @media ${device.mobileS} {
+    position: absolute;
+    bottom: -20%;
+    right: 40%;
+    margin: 0 auto;
+    width: 20%;
+    height: 2px;
+    /* width: 100px; */
+    /* height: 2margin: 0 auto;px; */
+    background: #1d2122;
+    margin-bottom: 12px;
+    /* margin-right: 70px; */
+  }
+
+  @media ${device.mobileM} {
+    bottom: -25%;
+
+    height: 2px;
+  }
+
+  @media ${device.laptop} {
+    bottom: -30%;
+    height: 2px;
+  }
 `;
 
 const SpaceForNoQuote = styled.div`

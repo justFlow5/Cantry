@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { device } from './contexts/FunctionsProvider';
 
 const Button = styled.button`
   padding: 10px 15px;
@@ -8,30 +9,29 @@ const Button = styled.button`
   border: 1.5px solid #1F1C23;
   outline: none;
   color: #1F1C23;
-  /* background-color: transparent; */
   margin: 40px;
   white-space: nowrap;
 
   letter-spacing: 2px;
   background: 0 0;
   text-transform: uppercase;
-  /* float: right; */
+
   text-align: center;
   font-weight: 500;
 
   border-radius: 4px;
   font-size: 18px;
-  /* padding: 5px; */
-  /* width: 300px; */
+
   width: ${props => props.width};
   transition: all 0.3s;
-  /* cursor: pointer; */
-  /* margin: 5px;
-  margin-bottom: 20px; */
+
   margin: 0px 5px 40px;
  
 
   box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+
 
   
   span {

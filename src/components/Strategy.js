@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { device } from './contexts/FunctionsProvider';
+
 import styled, { keyframes } from 'styled-components';
 import PlanContext from './contexts/Plan-context';
 import NavBar from './Navbar';
@@ -36,7 +38,7 @@ const popupAppear = keyframes`
 `;
 
 const Container = styled.div`
-  width: 95%;
+  /* width: 95%; */
   /* height: 100%; */
   /* margin: calc(50px + 20px) 5%; */
   margin-top: 70px;
@@ -46,157 +48,204 @@ const Container = styled.div`
 `;
 
 const TaskContainer = styled.div`
-  margin: 0 auto;
-  padding: 55px 20px;
-  position: relative;
-  width: 550px;
-  min-height: 550px;
-  /* min-height: au; */
-  background: #dadada;
-  border: 1px solid #c0c0c0;
-  border-radius: 15px;
-  color: #3c3232;
-  margin-bottom: 100px;
-  display: flex;
-  flex-direction: column;
+  @media ${device.mobileS} {
+    margin: 0 auto;
+    padding: 20px 20px 50px;
 
+    position: relative;
+    width: 90%;
+    /* height: 100%; */
+    /* height: 80%; */
+    min-height: 460px;
+    background: #dadada;
+    border: 1px solid #c0c0c0;
+    border-radius: 15px;
+    color: #3c3232;
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media ${device.mobileL} {
+    width: 400px;
+    min-height: 550px;
+  }
   /* -webkit-box-shadow: 0px 10px 40px -11px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 10px 40px -11px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 10px 40px -11px rgba(0, 0, 0, 0.75); */
-  clip-path: polygon(
-    3% 0,
-    7% 1%,
-    11% 0%,
-    16% 2%,
-    20% 0,
-    23% 2%,
-    28% 2%,
-    32% 1%,
-    35% 1%,
-    39% 3%,
-    41% 1%,
-    45% 0%,
-    47% 2%,
-    50% 2%,
-    53% 0,
-    58% 2%,
-    60% 2%,
-    63% 1%,
-    65% 0%,
-    67% 2%,
-    69% 2%,
-    73% 1%,
-    76% 1%,
-    79% 0,
-    82% 1%,
-    85% 0,
-    87% 1%,
-    89% 0,
-    92% 1%,
-    96% 0,
-    98% 3%,
-    99% 3%,
-    99% 6%,
-    100% 11%,
-    98% 15%,
-    100% 21%,
-    99% 28%,
-    100% 32%,
-    99% 35%,
-    99% 40%,
-    100% 43%,
-    99% 48%,
-    100% 53%,
-    100% 57%,
-    99% 60%,
-    100% 64%,
-    100% 68%,
-    99% 72%,
-    100% 75%,
-    100% 79%,
-    99% 83%,
-    100% 86%,
-    100% 90%,
-    99% 94%,
-    99% 98%,
-    95% 99%,
-    92% 99%,
-    89% 100%,
-    86% 99%,
-    83% 100%,
-    77% 99%,
-    72% 100%,
-    66% 98%,
-    62% 100%,
-    59% 99%,
-    54% 99%,
-    49% 100%,
-    46% 98%,
-    43% 100%,
-    40% 98%,
-    38% 100%,
-    35% 99%,
-    31% 100%,
-    28% 99%,
-    25% 99%,
-    22% 100%,
-    19% 99%,
-    16% 100%,
-    13% 99%,
-    10% 99%,
-    7% 100%,
-    4% 99%,
-    2% 97%,
-    1% 97%,
-    0% 94%,
-    1% 89%,
-    0% 84%,
-    1% 81%,
-    0 76%,
-    0 71%,
-    1% 66%,
-    0% 64%,
-    0% 61%,
-    0% 59%,
-    1% 54%,
-    0% 49%,
-    1% 45%,
-    0% 40%,
-    1% 37%,
-    0% 34%,
-    1% 29%,
-    0% 23%,
-    2% 20%,
-    1% 17%,
-    1% 13%,
-    0 10%,
-    1% 6%,
-    1% 3%
-  );
+
+  @media ${device.tablet} {
+    margin-bottom: 100px;
+    width: 550px;
+    padding: 55px 20px;
+
+    clip-path: polygon(
+      3% 0,
+      7% 1%,
+      11% 0%,
+      16% 2%,
+      20% 0,
+      23% 2%,
+      28% 2%,
+      32% 1%,
+      35% 1%,
+      39% 3%,
+      41% 1%,
+      45% 0%,
+      47% 2%,
+      50% 2%,
+      53% 0,
+      58% 2%,
+      60% 2%,
+      63% 1%,
+      65% 0%,
+      67% 2%,
+      69% 2%,
+      73% 1%,
+      76% 1%,
+      79% 0,
+      82% 1%,
+      85% 0,
+      87% 1%,
+      89% 0,
+      92% 1%,
+      96% 0,
+      98% 3%,
+      99% 3%,
+      99% 6%,
+      100% 11%,
+      98% 15%,
+      100% 21%,
+      99% 28%,
+      100% 32%,
+      99% 35%,
+      99% 40%,
+      100% 43%,
+      99% 48%,
+      100% 53%,
+      100% 57%,
+      99% 60%,
+      100% 64%,
+      100% 68%,
+      99% 72%,
+      100% 75%,
+      100% 79%,
+      99% 83%,
+      100% 86%,
+      100% 90%,
+      99% 94%,
+      99% 98%,
+      95% 99%,
+      92% 99%,
+      89% 100%,
+      86% 99%,
+      83% 100%,
+      77% 99%,
+      72% 100%,
+      66% 98%,
+      62% 100%,
+      59% 99%,
+      54% 99%,
+      49% 100%,
+      46% 98%,
+      43% 100%,
+      40% 98%,
+      38% 100%,
+      35% 99%,
+      31% 100%,
+      28% 99%,
+      25% 99%,
+      22% 100%,
+      19% 99%,
+      16% 100%,
+      13% 99%,
+      10% 99%,
+      7% 100%,
+      4% 99%,
+      2% 97%,
+      1% 97%,
+      0% 94%,
+      1% 89%,
+      0% 84%,
+      1% 81%,
+      0 76%,
+      0 71%,
+      1% 66%,
+      0% 64%,
+      0% 61%,
+      0% 59%,
+      1% 54%,
+      0% 49%,
+      1% 45%,
+      0% 40%,
+      1% 37%,
+      0% 34%,
+      1% 29%,
+      0% 23%,
+      2% 20%,
+      1% 17%,
+      1% 13%,
+      0 10%,
+      1% 6%,
+      1% 3%
+    );
+  }
 
   & form {
     display: flex;
 
     & .radioGroup {
-      margin: 0 0 15px auto;
-      position: relative;
+      @media ${device.mobileS} {
+        margin: 0 auto 15px;
+        position: relative;
+      }
+
+      @media ${device.mobileL} {
+        margin: 0 0 15px auto;
+      }
     }
   }
 `;
 
 const Header = styled.h3`
-  margin: 0 auto;
-  color: #3c3232;
-  letter-spacing: 0.5px;
-  font-size: 28px;
-  width: 90%;
-  text-align: center;
+  @media ${device.mobileS} {
+    margin: 0 auto;
+    color: #3c3232;
+    letter-spacing: 0.5px;
+    font-size: 25px;
+    width: 90%;
+    text-align: center;
+  }
+  @media ${device.mobileL} {
+    font-size: 28px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 32px;
+  }
+  @media ${device.laptop} {
+    font-size: 35px;
+  }
+
+  @media ${device.laptopL} {
+    font-size: 38px;
+  }
+
+  @media ${device.desktop} {
+    font-size: 42px;
+  }
 `;
 
 const ListOfTasksContainer = styled.ul`
-  margin: 20px 50px;
-  list-style-type: none;
-  position: relative;
+  @media ${device.mobileS} {
+    margin: 20px 0px;
+    list-style-type: none;
+    position: relative;
+  }
+
+  @media ${device.tablet} {
+    margin: 20px 50px;
+  }
 `;
 
 const ListOfTasksItem = styled.li`
@@ -251,7 +300,9 @@ const ListOfTasksItem = styled.li`
     padding: 11px;
     position: relative;
     box-shadow: 0 0 0 0px rgba(69, 253, 77, 0.4);
-
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     /* background: #8cff1a; */
     /* background: #43a047; */
   
@@ -262,11 +313,14 @@ const ListOfTasksItem = styled.li`
         box-shadow: 0 0 0 15px rgba(69, 253, 77, 0);
         background: #45fd4d;
     border: 2px solid #45fd4d;
+   
+    
     }
     
 
     & > svg {
         position: absolute;
+
     padding: 1px;
     width: 19px;
     left: 1px;
@@ -300,7 +354,9 @@ const ListOfTasksItem = styled.li`
   }
 
   & .taskText {
-    font-size: 17px;
+
+    @media ${device.mobileS} {
+      font-size: 14px;
     color: #3c3232;
     padding-top: 2px;
     margin: 0 10px 0 15px;
@@ -308,9 +364,33 @@ const ListOfTasksItem = styled.li`
     position: relative;
     padding-left: 25px;
     align-self: flex-start;
-    top: -30px;
-    margin-bottom: -30px;
-    /* word-break: break-all; */
+}
+
+@media ${device.mobileL} {
+  font-size: 15px;
+  }
+
+  @media ${device.tablet} {
+  font-size: 16px;
+  }
+
+  
+  @media ${device.laptop} {
+  font-size: 17px;
+  }
+
+  @media ${device.laptopL} {
+  font-size: 18px;
+  }
+
+  
+  @media ${device.desktop} {
+  font-size: 20px;
+  }
+
+
+    /* top: -30px; */
+    /* margin-bottom: -30px; */
 
     & span {
         position: absolute;
@@ -333,58 +413,76 @@ const ListOfTasksItem = styled.li`
 `;
 
 const ButtonContainer = styled.div`
-  margin-top: auto;
+  @media ${device.mobileS} {
+    margin-top: auto;
 
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 116%;
+  }
+
+  @media ${device.tablet} {
+    width: 100%;
+    justify-content: flex-end;
+  }
 `;
 
 const EditButton = styled.button`
-  width: 170px;
-  height: 40px;
-  /* color: #e2e2e2; */
-  color: #eaeff0;
-  border: 1px solid #1d2122;
-  border-radius: 4px;
-  background-color: #1d2122;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 17px;
-  /* letter-spacing: 0.34px; */
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  text-transform: uppercase;
-  position: relative;
-  bottom: -20px;
-  right: 20px;
-  justify-self: end;
-
-  transition: all 0.3s;
-
-  &[disabled],
-  &[disabled]:hover,
-  &[disabled]:focus,
-  &[disabled]:active {
-    /* pointer-events: none; */
-    cursor: not-allowed;
+  @media ${device.mobileS} {
+    width: 170px;
+    height: 40px;
+    /* color: #e2e2e2; */
     color: #eaeff0;
-    box-shadow: none;
+    border: 1px solid #1d2122;
+    border-radius: 4px;
+    background-color: #1d2122;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    /* letter-spacing: 0.34px; */
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    position: relative;
+    bottom: -20px;
+    right: 20px;
+    justify-self: end;
 
-    /* color: #eaeff0; */
+    transition: all 0.3s;
+
+    &[disabled],
+    &[disabled]:hover,
+    &[disabled]:focus,
+    &[disabled]:active {
+      /* pointer-events: none; */
+      cursor: not-allowed;
+      color: #eaeff0;
+      box-shadow: none;
+
+      /* color: #eaeff0; */
+    }
+
+    &:hover {
+      color: #b1b1b1;
+      border: 1px solid black;
+      box-shadow: 0 10px 10px -5px;
+    }
+  }
+  @media ${device.mobileL} {
+    font-size: 16px;
   }
 
-  &:hover {
-    color: #b1b1b1;
-    border: 1px solid black;
-    box-shadow: 0 10px 10px -5px;
+  @media ${device.tablet} {
+    font-size: 17px;
   }
 `;
 
 const NewField = styled.button`
-  width: 200px;
+
+
+  @media ${device.mobileS} {
   display: inline-block;
   /* margin: 0px auto; */
   /* background-color:  */
@@ -403,8 +501,28 @@ const NewField = styled.button`
   cursor: pointer;
   font-weight: 500;
   margin-bottom: 60px;
-
+  width: 60%;
+    margin: 20px auto 50px;
+    left: 50%;
+    transform: translateX(-50%);
   transition: all 0.3s;
+
+  color: black;
+    border: 1px solid black;
+}
+
+/* @media ${device.mobileS} {
+
+} */
+@media ${device.mobileL} {
+  width: 60%;
+}
+
+@media ${device.laptop} {
+ font-weight: 700;
+ color: #666666;
+ border: 1px solid #666666;
+}
 
   & > span {
     font-size: 16px;

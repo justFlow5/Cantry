@@ -15,21 +15,48 @@ import PreviewIcon from './icons/Preview';
 
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
-const Accordion = styled.li`
-  position: relative;
-  z-index: 5;
-  font-size: 17px;
-  color: #3c3c3c;
+import { device } from './contexts/FunctionsProvider';
 
-  border: 1px solid #bbbbbb;
-  padding: 15px 20px;
-  outline: none;
-  border-radius: 10px;
-  margin-top: 3px;
-  cursor: pointer;
-  font-weight: 400;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
-  transition: font-weight 0.2s color 0.3s, background 0.3s;
+const Accordion = styled.li`
+  @media ${device.mobileS} {
+    position: relative;
+    z-index: 5;
+    font-size: 14px;
+    color: #3c3c3c;
+
+    border: 1px solid #bbbbbb;
+    padding: 10px 10px;
+    outline: none;
+    border-radius: 10px;
+    margin-top: 3px;
+    cursor: pointer;
+    font-weight: 400;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+    transition: font-weight 0.2s color 0.3s, background 0.3s;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 17px;
+    padding: 14px 10px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 19px;
+    padding: 15px 10px;
+  }
+
+  @media ${device.laptop} {
+    /* font-size: 30px; */
+  }
+
+  @media ${device.laptopL} {
+    /* font-size: 32px; */
+    padding: 15px 20px;
+  }
+
+  @media ${device.desktop} {
+    /* font-size: 45px; */
+  }
 
   :hover,
   &.active {
@@ -40,19 +67,35 @@ const Accordion = styled.li`
   }
 
   .accordionIcon {
-    position: absolute;
-    right: 15px;
-    top: 20px;
-    /* margin-left: auto; */
-    transition: transform 0.6s ease;
+    @media ${device.mobileS} {
+      position: absolute;
+      right: 15px;
+      top: 12px;
+      /* margin-left: auto; */
+      transition: transform 0.6s ease;
+    }
+
+    @media ${device.mobileL} {
+      position: absolute;
+      right: 15px;
+      top: 20px;
+      /* margin-left: auto; */
+      transition: transform 0.6s ease;
+    }
   }
   .rotate {
-    position: absolute;
-    right: 15px;
-    top: 20px;
-    /* margin-left: auto; */
-    transform: rotate(90deg);
-    transition: transform 0.6s ease;
+    @media ${device.mobileS} {
+      position: absolute;
+      right: 15px;
+      top: 12px;
+      /* margin-left: auto; */
+      transform: rotate(90deg);
+      transition: transform 0.6s ease;
+    }
+
+    @media ${device.mobileL} {
+      top: 20px;
+    }
   }
 `;
 
@@ -80,17 +123,28 @@ const LinkContainer = styled.div`
   bottom: 5px;
   right: 5px;
 
+  @media ${device.mobileL} {
+    bottom: 5px;
+  }
+
   & a {
-    width: 37px;
-    height: 37px;
-    margin: 0 2px;
-    position: relative;
-    bottom: -4px;
-    right: 0;
-    background-color: rgba(244, 244, 244, 0.7);
-    display: inline-block;
-    z-index: 10;
-    border-radius: 50%;
+    @media ${device.mobileS} {
+      width: 33px;
+      height: 33px;
+      margin: 0 2px;
+      position: relative;
+      bottom: -4px;
+      right: 0;
+      background-color: rgba(244, 244, 244, 0.7);
+      display: inline-block;
+      z-index: 10;
+      border-radius: 50%;
+    }
+
+    @media ${device.tablet} {
+      width: 37px;
+      height: 37px;
+    }
 
     &:hover .tooltipText {
       opacity: 1;
@@ -132,17 +186,24 @@ const LinkContainer = styled.div`
     }
 
     & svg {
-      border: 1.5px solid #232b2b;
-      border-radius: 50%;
-      /* padding: 1px; */
-      position: relative;
-      z-index: 9;
-      width: 37px;
-      height: 37px;
-      fill: #232b2b;
-      box-shadow: 0 7px 7px -5px black;
-      /* strokewidth: '20'; */
-      transition: all 0.4s;
+      @media ${device.mobileS} {
+        border: 1.5px solid #232b2b;
+        border-radius: 50%;
+        /* padding: 1px; */
+        position: relative;
+        z-index: 9;
+        width: 33px;
+        height: 33px;
+        fill: #232b2b;
+        box-shadow: 0 7px 7px -5px black;
+        /* strokewidth: '20'; */
+        transition: all 0.4s;
+      }
+
+      @media ${device.laptop} {
+        width: 37px;
+        height: 37px;
+      }
 
       &:hover {
         fill: #f7f7f7;

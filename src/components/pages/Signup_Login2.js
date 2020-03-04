@@ -6,6 +6,8 @@ import { firebase, googleAuthProvider } from '../../firebase/Firebase';
 import { AuthContext } from '../contexts/Auth';
 import BgImg from '../../images/bgImg2.jpg';
 
+import { device } from '../contexts/FunctionsProvider';
+
 const overshadowing_dx = keyframes`
 0%{
 		z-index:2;
@@ -71,40 +73,71 @@ const foregrounding_sx = keyframes`
 `;
 
 const LoginPage = styled.div`
-  position: relative;
-  /* bottom: 20px; */
-  /* width: 100vw;
+  @media ${device.mobileL} {
+    position: relative;
+    /* bottom: 20px; */
+    /* width: 100vw;
   height: 100vh; */
-  width: 100%;
-  height: 100%;
-  /* position: fixed; */
-  background-image: url(${BgImg});
-  background-repeat: no-repeat;
-  /* background-attachment: fixed; */
-  background-position: center;
-  background-size: cover;
+    width: 100%;
+    height: 100%;
+    /* position: fixed; */
+    background-image: url(${BgImg});
+    background-repeat: no-repeat;
+    /* background-attachment: fixed; */
+    background-position: center;
+    background-size: cover;
+  }
 
   /* background-size: 100% 100%; */
 `;
 
 const Form = styled.form`
-  position: absolute;
-  right: 25%;
-  top: 5%;
-  text-align: center;
-  background: #fff;
-  width: 310px;
-  height: 470px;
-  border-radius: 5px;
-  padding: 30px 20px 0 20px;
-  box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
+  @media ${device.mobileS} {
+    position: absolute;
+    right: 19%;
+    top: 5%;
+    text-align: center;
+    background: #fff;
+
+    width: 250px;
+    height: 350px;
+
+    border-radius: 5px;
+    padding: 30px 20px 0 20px;
+    box-shadow: 0 10px 50px 0 rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+  }
+
+  @media ${device.laptop} {
+    width: 310px;
+    height: 470px;
+    right: 25%;
+  }
 
   & > h3 {
-    font-size: 35px;
-    text-transform: uppercase;
-    color: #353839;
-    margin-bottom: 30px;
+    @media ${device.mobileS} {
+      font-size: 22px;
+      text-transform: uppercase;
+      color: #353839;
+      margin-bottom: 15px;
+    }
+
+    @media ${device.mobileL} {
+      font-size: 25px;
+    }
+
+    @media ${device.tablet} {
+      font-size: 29px;
+      margin-bottom: 30px;
+    }
+
+    @media ${device.laptop} {
+      font-size: 35px;
+    }
+
+    @media ${device.desktop} {
+      font-size: 40px;
+    }
   }
 
   &.signIn {
@@ -149,12 +182,29 @@ const Form = styled.form`
 `;
 
 const Headline = styled.p`
-  font-weight: 100;
-  text-transform: uppercase;
-  font-size: 12px;
-  color: #353839;
-  margin-bottom: 40px;
+  @media ${device.mobileS} {
+    font-weight: 200;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: #353839;
+    margin-bottom: 15px;
+  }
 
+  @media ${device.mobileL} {
+  }
+
+  @media ${device.tablet} {
+    margin-bottom: 40px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
   & > span {
     padding-top: 3px;
     display: block;
@@ -164,20 +214,42 @@ const Headline = styled.p`
 `;
 
 const FbButton = styled.button`
-  border: none;
-  background: #1d2122;
+  @media ${device.mobileS} {
+    border: none;
+    background: #1d2122;
+    width: 120px;
+    height: 25px;
+    font-size: 10px;
+    color: #fff;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: 1px solid #1d2122;
+    cursor: pointer;
+    margin-bottom: 5px;
+    transition: all 0.3s linear;
+  }
 
-  width: 160px;
-  height: 25px;
-  font-size: 12px;
-  color: #fff;
-  text-transform: uppercase;
-  border-radius: 4px;
-  border: 1px solid #1d2122;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: all 0.3s linear;
-  /* padding: 15px; */
+  @media ${device.mobileL} {
+    width: 140px;
+    font-size: 11px;
+  }
+
+  @media ${device.tablet} {
+    width: 150px;
+    font-size: 12px;
+  }
+
+  @media ${device.laptop} {
+    width: 160px;
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 
   &:hover {
     background: #fff;
@@ -188,14 +260,37 @@ const FbButton = styled.button`
 `;
 
 const ButtonFormBtn = styled.button`
-  position: absolute;
-  width: 50%;
-  height: 60px;
-  bottom: 0;
-  border: 0;
-  font-size: 24px;
-  text-transform: uppercase;
-  cursor: pointer;
+  @media ${device.mobileS} {
+    position: absolute;
+    width: 50%;
+    height: 45px;
+    bottom: 0;
+    border: 0;
+    font-size: 17px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 18px;
+    height: 50px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 20px;
+    height: 55px;
+  }
+
+  @media ${device.laptop} {
+    font-size: 24px;
+    height: 60px;
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 
   &.sx {
     left: 0;
@@ -244,15 +339,38 @@ const ButtonFormBtn = styled.button`
 `;
 
 const Input = styled.input`
-  border: none;
-  border-bottom: 1px solid #c0c0c0;
-  width: 85%;
-  color: #545c5d;
-  text-align: left;
-  font-size: 21px;
-  font-weight: 100;
-  margin-bottom: 25px;
-  transition: all 0.3s;
+  @media ${device.mobileS} {
+    border: none;
+    /* border-bottom: 1px solid #414a4c; */
+    border-bottom: 1px solid #c0c0c0;
+
+    width: 85%;
+    /* color: #545c5d; */
+    color: #1d2122;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 100;
+    margin-bottom: 25px;
+
+    transition: all 0.3s;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 18px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 21px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 
   &:focus {
     /* border-bottom: 1px solid #d3d3d3; */

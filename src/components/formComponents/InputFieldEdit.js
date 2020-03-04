@@ -185,9 +185,9 @@ const InputFieldEdit = props => {
               onFocus={() => setActive(true)}
               style={{
                 fontSize: 'inherit',
-                paddingBottom: '10px',
-                height: 'inherit',
-                lineHeight: '1.3',
+                // paddingBottom: '25px',
+                // height: 'inherit',
+                // lineHeight: '1',
                 textAlign: 'center'
               }}
               spellCheck="false"

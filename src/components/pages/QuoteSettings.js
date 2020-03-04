@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { FuncContext } from '../contexts/FunctionsProvider';
 import { AuthContext } from '../contexts/Auth';
 
+import { device } from '../contexts/FunctionsProvider';
+
 import db from '../../firebase/Firebase';
 
 import { Link } from 'react-router-dom';
@@ -12,45 +14,91 @@ import InputField from '../formComponents/InputQuote';
 import uuid from 'uuid';
 
 const Container = styled.div`
-  width: 95%;
-  height: 100%;
-  margin: calc(50px + 20px) 5%;
-  position: relative;
-  display: flex;
+  @media ${device.mobileS} {
+    width: 95%;
+    min-height: 100%;
+    margin: calc(50px + 20px) 5% 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  @media ${device.laptop} {
+    margin: calc(50px + 20px) 5%;
+    flex-direction: row;
+    justify-content: unset;
+  }
 `;
 
 const QuoteSettingsContainer = styled.div`
-  width: 50%;
-  height: 100%;
-  margin: 0 30px 0 70px;
-  position: relative;
-  /* text-align: center; */
+  @media ${device.mobileS} {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  @media ${device.laptop} {
+    width: 50%;
+    margin: 0 30px 0 70px;
+  }
 `;
 
 const QuoteListingContainer = styled.div`
-  margin-top: 10%;
-  width: 50%;
-  height: 100%;
+  @media ${device.mobileS} {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin: 30px auto;
+    /* padding-top: 75px 10px 0px; */
+  }
 
-  /* margin: calc(50px + 20px) 0 0 10%; */
-
-  position: relative;
+  @media ${device.laptop} {
+    width: 50%;
+    /* margin: 0 30px 0 70px; */
+    margin-top: 10%;
+  }
 `;
 
 const QuoteList = styled.ul`
-  margin-right: 150px;
+  @media ${device.mobileS} {
+    margin: 0 15%;
+  }
+
+  @media ${device.laptop} {
+    margin-right: 150px;
+  }
 `;
 const QuoteItem = styled.ul`
-  font-size: 18px;
-  font-family: 'Gentium Basic', serif;
+  @media ${device.mobileS} {
+    font-size: 15px;
+    font-family: 'Gentium Basic', serif;
 
-  margin-bottom: 14px;
-  color: black;
-  position: relative;
-  border-radius: 4px;
-  word-wrap: break-word;
-  border: 1px solid black;
-  padding: 20px 10px 35px;
+    margin-bottom: 14px;
+    color: black;
+    position: relative;
+    border-radius: 4px;
+    word-wrap: break-word;
+    border: 1px solid black;
+    padding: 20px 10px 35px;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 16px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 17px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 18px;
+  }
+
+  @media ${device.desktop} {
+    font-size: 20px;
+  }
 
   & span {
     position: absolute;
@@ -81,11 +129,32 @@ const QuotesListHeader = styled.h3`
 `;
 
 const QuoteHeader = styled.h2`
-  position: relative;
-  margin-top: 20px;
-  font-size: 50px;
-  letter-spacing: 1.2px;
-  color: #404040;
+  @media ${device.mobileS} {
+    position: relative;
+    /* margin-top: 20px; */
+    font-size: 30px;
+    letter-spacing: 1.2px;
+    color: #404040;
+  }
+  @media ${device.mobileL} {
+    margin-top: 5px;
+    font-size: 35px;
+  }
+
+  @media ${device.tablet} {
+    margin-top: 10px;
+    font-size: 40px;
+  }
+
+  @media ${device.laptop} {
+    margin-top: 20px;
+    font-size: 50px;
+  }
+
+  @media ${device.desktop} {
+    margin-top: 20px;
+    font-size: 55px;
+  }
 `;
 
 const Content = styled.div`
@@ -95,37 +164,93 @@ const Content = styled.div`
 `;
 
 const QuoteSubtext = styled.p`
-  font-size: 18px;
-  margin: 15px 20px;
-  /* letter-spacing: 0.2px; */
-  font-weight: 500;
-  width: 100%;
+  @media ${device.mobileS} {
+    font-size: 15px;
+    margin: 10px 10px;
+
+    /* letter-spacing: 0.2px; */
+    font-weight: 500;
+    width: 100%;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 16px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 17px;
+    margin: 15px 20px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+    font-size: 18px;
+    margin: 15px 20px;
+  }
+
+  @media ${device.desktop} {
+  }
 `;
 
 const SelectOptions = styled.ul`
-  list-style-type: circle;
-  margin-left: 50px;
-  margin-top: 15px;
-  /* margin-bottom: 20px; */
-  list-style-position: outside;
+  @media ${device.mobileS} {
+    list-style-type: circle;
+    margin-left: 0px;
+    margin-top: 15px;
+    list-style-position: outside;
+  }
 
-  /* margin: 15px 20px; */
-  /* letter-spacing: 0.2px; */
-  /* font-weight: 500; */
-  /* width: 50%; */
+  @media ${device.mobileL} {
+  }
+
+  @media ${device.tablet} {
+    margin-left: 20px;
+  }
+
+  @media ${device.laptop} {
+    margin-left: 30px;
+  }
+
+  @media ${device.laptopL} {
+    margin-left: 35px;
+  }
+
+  @media ${device.desktop} {
+  }
 `;
 
 const SelectItem = styled.li`
-  margin-bottom: 15px;
-  font-size: 16px;
-  width: 95%;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  background: #f0f0f0;
-  padding: 0px 15px;
-  border-radius: 5px;
+  @media ${device.mobileS} {
+    margin-bottom: 15px;
+    font-size: 16px;
+    width: 95%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: #f0f0f0;
+    padding: 0px;
+    border-radius: 5px;
+  }
+
+  @media ${device.mobileL} {
+  }
+
+  @media ${device.tablet} {
+    padding: 0px 15px;
+    width: 70%;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 
   & > span:first-child {
     font-weight: 700;
@@ -134,27 +259,64 @@ const SelectItem = styled.li`
     margin-right: 15px;
     text-align: center;
     line-height: 1.2;
-    font-size: 16.5px;
+    /* font-size: 14px; */
     border-right: 2px solid black;
     padding: 8px 15px 8px 0;
     width: 63px;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* padding: 5px; */
+  }
+
+  @media ${device.tablet} {
+    font-size: 16px;
   }
 
   & span:last-child {
-    font-weight: 500;
-    display: inline-block;
-    padding: 8px 0px 8px;
-    /* width: 80%; */
+    @media ${device.mobileS} {
+      font-weight: 500;
+      display: inline-block;
+      padding: 8px 2px 8px;
+      font-size: 12px;
+    }
+
+    @media ${device.mobileL} {
+      font-size: 13px;
+    }
+
+    @media ${device.tablet} {
+      font-size: 14px;
+    }
+
+    @media ${device.laptop} {
+      font-size: 15px;
+    }
+
+    @media ${device.laptopL} {
+    }
+
+    @media ${device.desktop} {
+    }
   }
 `;
 
 const FormSelect = styled.div`
   /* width: 80%; */
-  margin: 40px auto;
-  width: 45%;
+
+  @media ${device.mobileS} {
+    width: 100%;
+    margin: 40px auto;
+  }
+
+  @media ${device.mobileL} {
+    max-width: 220px;
+  }
+
+  @media ${device.tablet} {
+    /* margin: 40px auto; */
+    width: 45%;
+  }
 `;
 
 // const InputContainer = styled.div`
@@ -166,31 +328,63 @@ const FormSelect = styled.div`
 // `;
 
 const InputInfo = styled.p`
-  font-size: 18px;
-  color: #404040;
-  margin: 0 auto;
-  display: inline-block;
-  margin-left: 15%;
-  margin-bottom: 3px;
+  @media ${device.mobileS} {
+    font-size: 18px;
+    color: #404040;
+    margin: 0 auto;
+    display: inline-block;
+    margin-left: 0%;
+    margin-bottom: 3px;
+  }
+  @media ${device.mobileL} {
+    margin-left: 10%;
+  }
+
+  @media ${device.tablet} {
+    margin-left: 15%;
+  }
 `;
 
 const AddButton = styled.button`
-  width: 190px;
-  height: 50px;
-  /* color: #e2e2e2; */
-  color: #eaeff0;
-  border: 1px solid #1d2122;
-  border-radius: 4px;
-  background-color: #1d2122;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 17px;
-  letter-spacing: 0.6px;
-  letter-spacing: 1.5px;
-  cursor: pointer;
-  text-transform: uppercase;
-  margin: 25px auto;
+  @media ${device.mobileS} {
+    width: 160px;
+    height: 40px;
+    /* color: #e2e2e2; */
+    color: #eaeff0;
+    border: 1px solid #1d2122;
+    border-radius: 4px;
+    background-color: #1d2122;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    letter-spacing: 0.6px;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin: 25px auto;
+  }
+
+  @media ${device.mobileL} {
+    width: 175px;
+    height: 45px;
+    font-size: 15px;
+  }
+
+  @media ${device.tablet} {
+    width: 190px;
+    height: 50px;
+    font-size: 17px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 
   transition: all 0.3s;
 

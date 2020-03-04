@@ -38,38 +38,120 @@ import { FuncContext, device } from '../contexts/FunctionsProvider';
 
 // import Navbar from "../components/navbar"
 const ContentContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-left: 200px;
-  /* position: relative; */
-  /* left: 200px; */
+  @media ${device.mobileS} {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  @media ${device.laptop} {
+    margin-left: 200px;
+    /* position: relative; */
+    /* left: 200px; */
+  }
 `;
 
 const PlanContainer = styled.section`
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 50%;
-  align-self: flex-start;
-  margin-left: 270px;
-  margin-bottom: 50px;
+  @media ${device.mobileS} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 85%;
+    font-size: 24px;
+    align-self: flex-start;
+    margin: 10px auto; /* margin-bottom: 50px; */
+  }
 
+  @media ${device.mobileM} {
+    font-size: 24px;
+    margin: 20px auto;
+    width: 80%;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 25px;
+    margin: 20px auto;
+    width: 70%;
+  }
+
+  @media ${device.tablet} {
+    font-size: 27px;
+    width: 55%;
+  }
+
+  @media ${device.laptop} {
+    width: 50%;
+    margin: 30px auto 50px;
+  }
+
+  @media ${device.laptopL} {
+    width: 45%;
+  }
+
+  @media ${device.desktop} {
+  }
   h3 {
-    font-size: 30px;
-    font-weight: 400;
-    letter-spacing: 0.9px;
-    margin-bottom: 10px;
+    @media ${device.mobileS} {
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: 0.9px;
+      margin-bottom: 10px;
+    }
+
+    @media ${device.mobileL} {
+      font-size: 25px;
+    }
+
+    @media ${device.tablet} {
+      font-size: 27px;
+    }
+
+    @media ${device.laptop} {
+      font-size: 30px;
+    }
+
+    @media ${device.laptopL} {
+      font-size: 32px;
+    }
+
+    @media ${device.desktop} {
+      font-size: 45px;
+    }
   }
 
   hr {
-    width: 13%;
-    position: relative;
-    background: #1d2122;
-    margin: 0;
-    height: 4px;
-    top: -3px;
+    @media ${device.mobileS} {
+      width: 30%;
+      position: relative;
+      background: #1d2122;
+      margin: 0;
+      height: 4px;
+      top: -3px;
+    }
+
+    @media ${device.mobileL} {
+      width: 20%;
+    }
+
+    @media ${device.tablet} {
+      width: 16%;
+    }
+
+    @media ${device.laptop} {
+      width: 13%;
+    }
+
+    @media ${device.laptopL} {
+      width: 13%;
+    }
+
+    @media ${device.desktop} {
+    }
   }
 `;
 
@@ -90,6 +172,7 @@ const ButtonContainer = styled.section`
   flex-direction: row;
   justify-content: space-around;
   width: 100%;
+  padding: 0px 10%;
 `;
 
 const DashBoard = styled.main`
@@ -693,7 +776,7 @@ export default props => {
             <Link to="/organizer">
               <Button
                 content="Go to organizer"
-                width="285px"
+                // width="285px"
                 mark="\00bb"
                 scale="1.6"
               />

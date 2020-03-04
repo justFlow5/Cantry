@@ -6,17 +6,61 @@ import {
 } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import moment from 'moment';
+import { device } from './contexts/FunctionsProvider';
 
 const Procent = styled.h3`
-  font-size: 28px;
-  /* margin-top: -50px; */
-  font-weight: 600;
+  @media ${device.mobileS} {
+    font-size: 23px;
+    font-weight: 600;
+  }
+  @media ${device.mobileM} {
+    font-size: 24px;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 27px;
+  }
+/* 
+  @media ${device.tablet} {
+    font-size: 26px;
+  } */
+
+  @media ${device.laptopL} {
+    font-size: 28px;
+  }
+  @media ${device.desktop} {
+    font-size: 32px;
+  }
 `;
 
 const Deadline = styled.p`
-  font-size: 16px;
+  /* font-size: 16px;
   margin-top: 5px;
-  font-weight: 500;
+  font-weight: 500; */
+
+  @media ${device.mobileS} {
+    font-size: 13px;
+    margin-top: 0px;
+    font-weight: 500;
+  }
+  @media ${device.mobileM} {
+    font-size: 14px;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 16px;
+  }
+
+  @media ${device.tablet} {
+    margin-top: 5px;
+  }
+
+  @media ${device.laptopL} {
+    font-size: 17px;
+  }
+  @media ${device.desktop} {
+    font-size: 20px;
+  }
 `;
 
 const ProgressBar = ({ progress, deadline }) => {

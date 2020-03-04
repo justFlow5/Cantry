@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { FuncContext } from './contexts/FunctionsProvider';
+import { device } from './contexts/FunctionsProvider';
 
 const Input = styled.input`
   &.check {
@@ -18,19 +19,29 @@ const Input = styled.input`
   }
 `;
 const LabelBox = styled.label`
-  display: inline-block;
-  border: 2px solid #333;
-  width: 25px;
-  height: 25px;
-  border-radius: 2px !important;
-  outline: 0;
-  cursor: pointer;
-  margin-left: 7px;
-  margin-bottom: 5px;
-  margin-top: 20px;
+  @media ${device.mobileS} {
+    display: inline-block;
+    border: 2px solid #333;
+    width: 20px;
+    height: 20px;
+    border-radius: 1px !important;
+    outline: 0;
+    cursor: pointer;
+    margin-left: 7px;
+    margin-bottom: 5px;
+    margin-top: 20px;
 
-  /* margin-right: 10px; */
-  transition: all 0.2s ease;
+    /* margin-right: 10px; */
+    transition: all 0.2s ease;
+  }
+
+  @media ${device.tablet} {
+    width: 25px;
+    height: 25px;
+  }
+
+  @media ${device.laptop} {
+  }
 
   &:active {
     transform: scale(1.05);
@@ -38,6 +49,16 @@ const LabelBox = styled.label`
   }
   svg {
     pointer-events: none;
+
+    @media ${device.mobileS} {
+      position: relative;
+      top: -8px;
+    }
+
+    @media ${device.tablet} {
+      position: relative;
+      top: -6px;
+    }
     path {
       fill: none;
       stroke: #333;
@@ -52,17 +73,39 @@ const LabelBox = styled.label`
 `;
 
 const LabelText = styled.label`
-  position: relative;
-  bottom: 5px;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 5px 5px 5px 10px;
-  color: #303030;
-  color: #606060;
-  color: #505050;
-  letter-spacing: 0.1px;
-  display: inline-block;
-  transition: all 0.2s;
+  @media ${device.mobileS} {
+    position: relative;
+    bottom: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 5px 5px 5px 10px;
+    color: #303030;
+    color: #606060;
+    color: #505050;
+    letter-spacing: 0.1px;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+
+  @media ${device.mobileL} {
+    padding: 5px 5px 5px 10px;
+    font-size: 19px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 19px;
+  }
+
+  @media ${device.laptop} {
+    padding: 5px 5px 5px 10px;
+    font-size: 19px;
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 
   &.activeTask {
     background: #d6d7d8;
@@ -84,10 +127,22 @@ const LabelText = styled.label`
   } */
 
   & + .horizontalLine {
-    width: 80%;
-    height: 1px;
-    margin-top: 7px;
-    background: #d8d8d8;
+    @media ${device.mobileS} {
+      width: 70%;
+      height: 1px;
+      margin-top: 0px;
+      background: #d8d8d8;
+    }
+
+    @media ${device.tablet} {
+      margin-top: 7px;
+      width: 60%;
+    }
+
+    @media ${device.laptop} {
+      margin-top: 7px;
+      width: 60%;
+    }
   }
 
   &:hover {

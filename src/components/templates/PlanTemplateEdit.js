@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext } from 'react';
 import { Link } from '@reach/router';
 import uuid from 'uuid';
+import { device } from '../contexts/FunctionsProvider';
 
 import 'react-dates/initialize';
 // import '../formComponents/_datepicker_custom.css';
@@ -44,53 +45,39 @@ const popupAppear = keyframes`
 `;
 
 const PlanContainer = styled.div`
-  display: flex;
-  width: 80%;
-  margin: 70px auto;
-  align-items: center;
-  justify-content: center;
-  /* border: 1px solid black; */
-  position: relative;
+  @media ${device.mobileS} {
+    width: 100%;
+    display: flex;
+    width: 100%;
+    margin: 70px auto;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid black; */
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media ${device.tablet} {
+    width: 80%;
+  }
   /* background-color: #7d7d7d; */
   /* top: 350px; */
 `;
 const Box = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* top: 50%;
+  @media ${device.tablet} {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0); */
-  background-color: rgba(#000, 0.5);
-  width: 100%;
-  max-width: 800px;
-  padding: 5px;
-  border: 2px solid black;
-  &:before,
-  &:after {
-    content: '•';
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    font-size: 14px;
-    color: black;
+    background-color: rgba(#000, 0.5);
+    width: 100%;
+    max-width: 800px;
+    padding: 5px;
     border: 2px solid black;
-    line-height: 12px;
-    top: 5px;
-    text-align: center;
-  }
-  &:before {
-    left: 5px;
-  }
-  &:after {
-    right: 5px;
-  }
-
-  .innerBox {
-    position: relative;
-    border: 2px solid black;
-    padding: 53px;
     &:before,
     &:after {
       content: '•';
@@ -101,14 +88,39 @@ const Box = styled.div`
       color: black;
       border: 2px solid black;
       line-height: 12px;
-      bottom: -2px;
+      top: 5px;
       text-align: center;
     }
     &:before {
-      left: -2px;
+      left: 5px;
     }
     &:after {
-      right: -2px;
+      right: 5px;
+    }
+
+    .innerBox {
+      position: relative;
+      border: 2px solid black;
+      padding: 53px;
+      &:before,
+      &:after {
+        content: '•';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        color: black;
+        border: 2px solid black;
+        line-height: 12px;
+        bottom: -2px;
+        text-align: center;
+      }
+      &:before {
+        left: -2px;
+      }
+      &:after {
+        right: -2px;
+      }
     }
   }
 `;
@@ -122,15 +134,38 @@ const PlanContent = styled.div`
 `;
 
 const PlanTitle = styled.h3`
-  color: black;
-  font-size: 42px;
-  font-weight: 500;
-  position: relative;
-  outline: 0;
-  padding: 15px 30px 0px;
-  height: 60px;
-  text-align: center;
-  transition: all 0.3s;
+  @media ${device.mobileS} {
+    color: black;
+    font-size: 30px;
+    font-weight: 500;
+    position: relative;
+    outline: 0;
+    padding: 15px 30px 0px;
+    height: 40px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 35px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 38px;
+    height: 50px;
+  }
+
+  @media ${device.laptop} {
+    font-size: 40px;
+  }
+
+  @media ${device.laptopL} {
+    font-size: 42px;
+    height: 60px;
+  }
+
+  @media ${device.desktop} {
+  }
 
   & span {
     display: inline-block;
@@ -146,8 +181,7 @@ const PlanTitle = styled.h3`
 `;
 
 const Deadline = styled.p`
-  /* font-size: 17px; */
-  /* width: 100%; */
+  padding-top: 15px;
   text-align: center;
   /* font-weight: 300; */
   margin: 30px 0 15px;
@@ -155,12 +189,32 @@ const Deadline = styled.p`
 
   transition: all 0.3s;
   & > span {
+    @media ${device.mobileS} {
+      font-weight: 700;
+      position: relative;
+      /* bottom: 8px; */
+      font-size: 19px;
+      line-height: 1.2;
+    }
+
+    @media ${device.mobileL} {
+    }
+
+    @media ${device.tablet} {
+      font-size: 19px;
+    }
+
+    @media ${device.laptop} {
+      font-size: 19px;
+    }
+
+    @media ${device.laptopL} {
+    }
+
+    @media ${device.desktop} {
+    }
+
     /* margin-right: 5px; */
-    font-weight: 500;
-    position: relative;
-    /* bottom: 8px; */
-    font-size: 19px;
-    line-height: 1.2;
   }
   & textarea {
     padding-bottom: 0px;
@@ -181,6 +235,7 @@ const DescriptionContainer = styled.div`
   flex-wrap: wrap;
   justify-self: center;
   align-items: center;
+  justify-content: center;
 
   /* & > .container */
   & > .break {
@@ -195,17 +250,21 @@ const DescriptionContainer = styled.div`
   }
 
   & > .descriptor {
-    padding: 40px;
-    display: flex;
-    width: 100%;
-    border-bottom: 1px solid #8e8e8e;
+    @media ${device.mobileS} {
+      padding: 20px 0;
+      display: flex;
+      width: 90%;
+      border-bottom: 1px solid #8e8e8e;
+    }
 
-    /* &:last-child {
-      border-bottom: none;
-    } */
-    /* margin: 30px auto 0; */
+    @media ${device.tablet} {
+      width: 100%;
+      padding: 40px;
 
-    /* flex: 1 1 0; */
+      &:first-child {
+        padding-top: 5px;
+      }
+    }
 
     & .deleteField {
       position: absolute;
@@ -359,24 +418,49 @@ const StatText = styled.p`
 // `;
 
 const NewField = styled.button`
-  width: 200px;
-  display: inline-block;
-  /* margin: 0px auto; */
-  /* background-color:  */
-  color: #c2c2c2;
-  background-color: rgba(247, 247, 247, 1);
-  position: relative;
-  /* top: -5px; */
-  left: 15px;
-  letter-spacing: 1.5px;
-  font-size: 11px;
-  text-transform: uppercase;
-  transition: all 0.3s;
-  border: 1px solid #c2c2c2;
-  border-radius: 10px;
-  padding: 10px 15px 10px 20px;
-  text-align: left;
-  cursor: pointer;
+  @media ${device.mobileS} {
+    width: 150px;
+    display: inline-block;
+    /* margin: 0px auto; */
+    /* background-color:  */
+    color: #c2c2c2;
+    background-color: rgba(247, 247, 247, 1);
+    position: relative;
+    /* top: -5px; */
+    left: 15px;
+    letter-spacing: 1.5px;
+    font-size: 10px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    border: 1px solid #c2c2c2;
+    border-radius: 10px;
+    padding: 7px 11px 7px 16px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+    @media ${device.mobileL} {
+      width: 170px;
+      font-size: 10px;
+     
+    }
+
+    @media ${device.tablet} {
+      font-size: 12px;
+      left: 15px;
+      width: 200px;
+      padding: 10px 15px 10px 20px;
+    }
+
+    @media ${device.laptop} {
+    }
+
+    @media ${device.laptopL} {
+    }
+
+    @media ${device.desktop} {
+    }
+  }
 
   & > span {
     font-size: 16px;
@@ -392,10 +476,43 @@ const NewField = styled.button`
 `;
 
 const ButtonContainer = styled.div`
-  margin-top: 110px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  @media ${device.mobileS} {
+    margin-top: 45px;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+
+    align-items: center;
+  }
+  & button:first-child {
+    @media ${device.mobileS} {
+      margin-top: 10px;
+    }
+    @media ${device.mobileL} {
+      margin-top: unset;
+    }
+  }
+
+  @media ${device.mobileL} {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  @media ${device.tablet} {
+    margin-top: 45px;
+
+    justify-content: space-between;
+  }
+
+  @media ${device.laptop} {
+    margin-top: 60px;
+
+    justify-content: space-around;
+  }
 `;
 
 const EditButton = styled.button`
@@ -538,18 +655,18 @@ const PlanTemplateEdit = ({ location }) => {
   // setSpecificators(plan.specificators);
   // setPrices(plan.prices);
   // setDailyTasks(plan.dailyTasks);
-  const [goalEdit, setGoalEdit] = useState(thePlan.goal);
+  const [goalEdit, setGoalEdit] = useState(plan.goal);
   // console.log('plan.deadline', plan.deadline);
 
-  const [planId, setPlanId] = useState(thePlan.id);
+  const [planId, setPlanId] = useState(plan.id);
 
-  const [deadlineEdit, setDeadlineEdit] = useState(thePlan.deadline);
+  const [deadlineEdit, setDeadlineEdit] = useState(plan.deadline);
 
   const [specificatorsEdit, setSpecificatorsEdit] = useState(
     plan.specificators
   );
-  const [pricesEdit, setPricesEdit] = useState(thePlan.prices);
-  const [taskEdit, setTaskEdit] = useState(thePlan.dailyTask);
+  const [pricesEdit, setPricesEdit] = useState(plan.prices);
+  const [taskEdit, setTaskEdit] = useState(plan.dailyTask);
 
   // const [tempTaskEdit, setTaskEdit] = useState(plan.dailyTask);
 

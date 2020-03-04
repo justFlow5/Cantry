@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { device } from '../contexts/FunctionsProvider';
 
 const FormField = styled.div`
   display: block;
@@ -50,14 +51,24 @@ const Label = styled.label`
 `;
 
 const Control = styled.div`
-  background: #eee;
-  border-radius: 8px 8px 0 0;
-  overflow: hidden;
-  position: relative;
-  width: 50%;
-  width: 70%;
+  @media ${device.mobileS} {
+    background: #eee;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    position: relative;
+    width: 50%;
+    width: 100%;
 
-  margin: 5px auto 0px;
+    margin: 5px auto 0px;
+  }
+
+  @media ${device.mobileL} {
+    width: 80%;
+  }
+
+  @media ${device.tablet} {
+    width: 70%;
+  }
 
   &::after {
     border-bottom: 2px solid black;

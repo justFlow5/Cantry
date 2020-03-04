@@ -1,47 +1,89 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { device } from './contexts/FunctionsProvider';
+
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 import { firebase } from '../firebase/Firebase';
 
 const NavBar = styled.nav`
-  position: fixed;
-  top: 0;
-  margin: 0;
-  /* z-index: 888; */
-  background-color: #d1ccc0;
-  background-color: #cad3c8;
-  background-color: rgba(202, 211, 200, 1);
-  background-color: #44474b;
-  background-color: rgb(102, 102, 102);
-  background-color: rgba(0, 0, 0, 0.65);
-  height: 50px;
-  width: 100%;
+  @media ${device.mobileS} {
+    height: 35px;
+    position: fixed;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    width: 100%;
+    top: 0;
 
-  -webkit-box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
-  -moz-box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
-  box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
-  /* z-index: 3; */
-  /* width: 100%; */
-  display: flex;
-  align-items: center;
-  z-index: 9;
+    -webkit-box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
+    -moz-box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
+    box-shadow: 0px 1px 2px 0px rgba(61, 57, 61, 1);
+    /* z-index: 3; */
+    /* width: 100%; */
+    display: flex;
+    align-items: center;
+    z-index: 9;
+  }
+
+  @media ${device.mobileL} {
+    height: 40px;
+  }
+
+  @media ${device.tablet} {
+    height: 45px;
+  }
+
+
+ 
+
+  @media ${device.laptop} {
+    height: 50px;
+  }
 
   a {
-    color: #fff;
-    color: #e0e0e0;
-    /* color: rgba(255, 255, 255, 0.5); */
-    text-decoration: none;
-    font-size: 20px;
-    margin: 0 10px;
-    padding: 5px 10px;
-    position: relative;
-    font-weight: 400;
+    @media ${device.mobileS} {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 0 10px;
+      padding: 0px;
+      position: relative;
+      font-weight: 400;
 
-    cursor: pointer;
-    display: inline-block;
-    /* transform: scale(1); */
-    transition: all 0.2s;
+      cursor: pointer;
+      display: inline-block;
+      /* transform: scale(1); */
+      transition: all 0.2s;
+    }
+
+
+
+      @media ${device.mobileL} {
+        font-size: 16px;
+      }
+
+      @media ${device.tablet} {
+        font-size: 18px;
+      }
+
+      @media ${device.laptop} {
+        color: #fff;
+      color: #e0e0e0;
+      font-size: 21px;
+      margin: 0 10px;
+      padding: 5px 10px;
+    }
+      }
+
+      @media ${device.laptopL} {
+        font-size: 23px;
+      }
+
+      @media ${device.desktop} {
+        font-size: 24px;
+      }
+
+
   }
 
   a:last-child {

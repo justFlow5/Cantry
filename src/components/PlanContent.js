@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import { device } from './contexts/FunctionsProvider';
 
 import CheckInput from './CheckInput';
 
@@ -11,27 +12,103 @@ const Deadline = styled.div`
   text-align: center;
 
   .deadlineTag {
-    text-align: center;
-    font-size: 20px;
-    color: black;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-top: 10px;
+    @media ${device.mobileS} {
+      text-align: center;
+      font-size: 14px;
+      color: black;
+      /* letter-spacing: 0.5px; */
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+
+    @media ${device.mobileM} {
+      font-size: 15px;
+    }
+
+    @media ${device.mobileL} {
+      font-size: 16px;
+    }
+
+    @media ${device.tablet} {
+      font-size: 18px;
+    }
+
+    @media ${device.laptop} {
+      font-size: 19px;
+    }
+
+    @media ${device.laptopL} {
+      font-size: 20px;
+    }
+
+    @media ${device.desktop} {
+      font-size: 22px;
+    }
 
     span {
       font-weight: 600;
     }
   }
-  .timeLeft {
-    font-size: 15px;
-    text-align: center;
-    /* display: ; */
+  & .timeLeft {
+    font-size: 13px;
+    margin-top: 5px;
+
+    @media ${device.mobileM} {
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media ${device.mobileL} {
+      font-size: 14px;
+    }
+
+    @media ${device.tablet} {
+      font-size: 15px;
+    }
+
+    @media ${device.laptop} {
+      font-size: 16px;
+    }
+
+    @media ${device.laptopL} {
+      font-size: 17px;
+    }
+
+    @media ${device.desktop} {
+      font-size: 19px;
+    }
+
+    & span {
+      font-weight: 600;
+    }
   }
 `;
 
 const TaskContainer = styled.div`
-  margin: 20px auto 5px 5px;
-  width: 75%;
+  @media ${device.mobileM} {
+    margin: 0px auto 5px 5px;
+  }
+
+  @media ${device.mobileL} {
+    /* font-size: 14px; */
+  }
+
+  @media ${device.tablet} {
+    /* font-size: 15px; */
+  }
+
+  @media ${device.laptop} {
+    /* font-size: 16px; */
+  }
+
+  @media ${device.laptopL} {
+    margin: 20px auto 5px 5px;
+    width: 75%;
+  }
+
+  @media ${device.desktop} {
+    font-size: 19px;
+  }
 `;
 
 export default props => {
@@ -47,7 +124,7 @@ export default props => {
     <>
       <Deadline>
         <p className="deadlineTag">
-          deadline:
+          deadline:{' '}
           <span>
             {moment(props.deadline)
               .format('DD MMM YYYY')
