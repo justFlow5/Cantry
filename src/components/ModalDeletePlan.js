@@ -37,6 +37,7 @@ const Modal = styled.div`
   /* display: flex;
   align-items: center;
   justify-content: center; */
+
   position: relative;
   margin: 0 auto;
   background-color: #f5f5f5;
@@ -77,8 +78,8 @@ const Modal = styled.div`
     -webkit-overflow-scrolling: touch;
     border-radius: 0;
     transform: scale(1.1);
-    padding: 0 !important;
-
+    /* padding: 0 !important; */
+    padding-top: 25%;
     .close-modal {
       right: 20px !important;
     }

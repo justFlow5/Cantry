@@ -37,7 +37,7 @@ const PlanContainer = styled.div`
     width: 100%;
     display: flex;
     width: 100%;
-    margin: 70px auto;
+    margin: 70px auto 30px;
     align-items: center;
     justify-content: center;
     /* border: 1px solid black; */
@@ -400,6 +400,10 @@ const DescriptionContainer = styled.div`
       width: 90%;
       border-bottom: 1px solid #8e8e8e;
       position: relative;
+
+      &:first-child {
+        padding-top: 25px;
+      }
     }
 
     @media ${device.tablet} {
@@ -545,6 +549,7 @@ const DescriptionContainer = styled.div`
         padding: 10px;
         padding-right: 20px;
         position: relative;
+        word-wrap: break-word;
 
         &:last-child {
 
@@ -642,7 +647,7 @@ const Statistics = styled.div`
 
   & .series {
     @media ${device.mobileS} {
-      margin: 30px auto 10px;
+      margin: 40px auto 10px;
       text-align: center;
       font-size: 17px;
       display: inline-block;

@@ -207,7 +207,7 @@ const QuoteSubtext = styled.p`
 const SelectOptions = styled.ul`
   @media ${device.mobileS} {
     list-style-type: circle;
-    margin-left: 0px;
+    margin-left: 10px;
     margin-top: 15px;
     list-style-position: outside;
   }
@@ -235,7 +235,8 @@ const SelectItem = styled.li`
   @media ${device.mobileS} {
     margin-bottom: 15px;
     font-size: 16px;
-    width: 95%;
+    font-size: 14px;
+    width: 100%;
     position: relative;
     display: flex;
     flex-direction: row;
@@ -276,6 +277,7 @@ const SelectItem = styled.li`
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-left: 10px;
     /* padding: 5px; */
   }
 

@@ -155,32 +155,18 @@ const PlanTitle = styled.h3`
     height: 40px;
     text-align: center;
     transition: all 0.3s;
+  }
+  @media ${device.mobileL} {
+    width: 75%;
+    margin: 0 auto;
+  }
 
-    @media ${device.mobileL} {
-      width: 75%;
-      margin: 0 auto;
-    }
-
-    & input {
-      font-size: 32px;
-    }
-
-    /* & textarea {
-      font-size: 17px;
-    } */
+  & input {
+    font-size: 32px;
   }
 
   @media ${device.mobileL} {
     font-size: 22px;
-  }
-
-  @media ${device.tablet} {
-    /* font-size: 38px; */
-    /* height: 50px; */
-  }
-
-  @media ${device.laptop} {
-    /* font-size: 34px; */
   }
 
   @media ${device.laptopL} {
@@ -348,7 +334,7 @@ const DescriptionContainer = styled.div`
       padding: 2px 2px 2px 4px;
       /* margin-left: 5px; */
       /* padding: 3px; */
-      z-index: 12;
+      /* z-index: 12; */
       font-weight: 400;
 
       transition: color 0.3s, font-weight 0.1s linear, background-color 0.3s;
@@ -421,6 +407,7 @@ const DescriptionContainer = styled.div`
         /* padding-right: 20px; */
         position: relative;
         width: 100%;
+        word-wrap: break-word;
 
         & textarea {
           @media ${device.mobileS} {
@@ -491,27 +478,6 @@ const Price = styled.div``;
 
 const DailyRegimen = styled.div``;
 
-const PlanStage = styled.div`
-  margin-top: 30px;
-  width: 80%;
-`;
-
-const Graph = styled.div`
-  width: 50px;
-  height: 50px;
-  border: 2px solid black;
-  border-radius: 50%;
-  background-color: grey;
-  display: inline-block;
-`;
-
-const StatText = styled.p`
-  display: inline-block;
-  font-size: 20px;
-  color: black;
-  margin-bottom: 80px;
-`;
-
 // const EditPopUp = styled.div`
 //   position: fixed;
 //   width: 150px;
@@ -564,6 +530,10 @@ const NewField = styled.button`
 
     color: #1d2122;
     border: 1px solid #1d2122;
+
+    & .breakPlus {
+      display: block;
+    }
   }
 
   @media ${device.mobileL} {
@@ -578,6 +548,10 @@ const NewField = styled.button`
     left: 15px;
     width: 200px;
     padding: 10px 15px 10px 20px;
+
+    & .breakPlus {
+      display: inline;
+    }
   }
 
   @media ${device.laptop} {

@@ -128,7 +128,7 @@ const LabelText = styled.label`
 
   & + .horizontalLine {
     @media ${device.mobileS} {
-      width: 70%;
+      width: 100%;
       height: 1px;
       margin-top: 0px;
       background: #d8d8d8;
@@ -180,7 +180,6 @@ const CheckInputEdit = props => {
         {/* <span className="taskText"> 30 min per day on programming</span> */}
       </LabelBox>
       <LabelText htmlFor={props.id}>{props.dailyTask}</LabelText>
-      <div className="horizontalLine"></div>
     </>
   );
 };

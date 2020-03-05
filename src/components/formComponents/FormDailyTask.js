@@ -33,13 +33,19 @@ const ButtonBackContainer = styled.div`
 `;
 
 const ListContainer = styled.div`
-  position: relative;
-  display: flex;
-  /* justify-content: space-between; */
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  margin-top: 17px;
+  @media ${device.mobileS} {
+    position: relative;
+    display: flex;
+    /* justify-content: space-between; */
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 45px;
+  }
+
+  @media ${device.tablet} {
+    margin-top: 17px;
+  }
 `;
 
 export default () => {
@@ -56,7 +62,7 @@ export default () => {
         title="Daily task"
         subtext="The key to success is discipline.
         The things you do every day, the things that don't look like they matter, do matter.
-        They not only make a difference - they make all the difference. Type a simple, positive action/actions that
+        They not only make a difference - they make all the difference. Type a simple, positive action that
         repeated over time will get you closer to achieving your goal: "
       ></Request>
       <InputField

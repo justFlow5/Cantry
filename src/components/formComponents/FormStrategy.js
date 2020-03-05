@@ -111,10 +111,11 @@ export default () => {
       <Request
         htmlFor="singlePlanJob"
         title="Strategy"
-        subtext='Start with a strategy. Just list all the things that need to be done before
-        crossing the finish line. So once you completed each and every one of them, you can finally claim
-        with full certainity \"I have accomplished my goal\". Think of it as listing tasks that when individually completed -
-        will get you gradually closer to achieving your goal.'
+        subtext="Start with a strategy. Just list all the things that need to be done before
+        crossing the finish line. So when each and every one of them is completed, you will be able
+         to claim without a shadow of a doubt
+         „I have accomplished my goal”. Think of it as listing all the tasks that when individually completed -
+        will get you gradually closer to achieving your goal."
       ></Request>
       <InputField
         textarea

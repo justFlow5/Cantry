@@ -24,7 +24,7 @@ body {
   height: 100vh;
 }
 
-body > div {
+body>div {
   height: 100%;
   width: 100%;
 }
@@ -152,3 +152,15 @@ sub {
 legend {
   color: #000;
 } */
+
+button:focus {
+  outline: 0;
+}
+
+*:focus {
+  outline: none
+}
+
+*:focus {
+  outline: none !important
+}

@@ -103,11 +103,19 @@ const Init = styled.button`
 `;
 
 const InputContainer = styled.div`
-  /* margin-left: 20px; */
-  /* margin: auto auto 15px; */
-  margin: auto auto 10px;
-  width: 60%;
-  position: relative;
+  @media ${device.mobileS} {
+    margin: auto auto 10px;
+    width: 70%;
+    position: relative;
+  }
+
+  @media ${device.mobileL} {
+    width: 65%;
+  }
+
+  @media ${device.tablet} {
+    width: 60%;
+  }
 
   &.isHidden {
     display: none;
@@ -184,6 +192,19 @@ const Label = styled.p`
 `;
 
 const TaskList = styled.ul`
+  @media ${device.mobileS} {
+    margin-bottom: auto;
+    width: 85%;
+
+    margin: 0 auto;
+    text-align: left;
+    list-style-type: none;
+  }
+
+  @media ${device.tablet} {
+    width: 70%;
+  }
+
   margin-bottom: auto;
   /* padding: auto auto; */
   width: 70%;
