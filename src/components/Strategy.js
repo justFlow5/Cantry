@@ -549,7 +549,7 @@ const PopupFeedback = styled.div`
   font-size: 15px;
   letter-spacing: 1.2px;
   font-weight: 500;
-
+z-index: 999;
   padding: 8px 14px;
   opacity: 0;
   position: fixed;

@@ -7,7 +7,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
+  ResponsiveContainer
 } from 'recharts';
 
 import 'react-dates/initialize';
@@ -26,7 +27,8 @@ import SpecificsIcon from '../icons/SpecificsIcon';
 import PriceIcon from '../icons/PriceIcon';
 import ProgressIcon from '../icons/ProgressIcon';
 import DiagramIcon from '../icons/Diagram';
-import CheckInput from '../CheckInput';
+import CheckInput from '../CheckInputEdit';
+import Strong from '../icons/Strong';
 
 import moment from 'moment';
 
@@ -138,10 +140,10 @@ const PlanContent = styled.div`
 //     }
 //   }
 // `;
-const PlanTitle = styled.h3`
+const PlanTitle = styled.h4`
   @media ${device.mobileS} {
     color: black;
-    font-size: 42px;
+    font-size: 36px;
     font-weight: 500;
     position: relative;
     outline: 0;
@@ -151,16 +153,16 @@ const PlanTitle = styled.h3`
   }
 
   @media ${device.mobileL} {
-    font-size: 35px;
+    font-size: 39px;
   }
 
   @media ${device.tablet} {
-    font-size: 38px;
+    font-size: 42px;
     height: 50px;
   }
 
   @media ${device.laptop} {
-    font-size: 40px;
+    font-size: 42px;
   }
 
   @media ${device.laptopL} {
@@ -182,10 +184,6 @@ const PlanTitle = styled.h3`
     position: absolute;
     top: -18%;
     right: 1%;
-    & .descriptorIcon {
-      width: 25px;
-      height: 25px;
-    }
   }
   /* margin-top: 50px; */
 
@@ -219,6 +217,8 @@ const PlanTitle = styled.h3`
   /* } */
 `;
 const EditButton = styled.button`
+
+@media ${device.mobileS} {
   padding: 10px 15px;
   cursor: pointer;
   position: relative;
@@ -242,8 +242,18 @@ margin-bottom: 20px;
   width: 200px;
   transition: all 0.3s;
 
-
   box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+}
+  @media ${device.tablet} {
+  position: absolute;
+    top: -50px;
+    right: 45px;
+  }
+
+/* @media ${device.tablet} {
+margin-top: inherit;
+
+} */
 
   
   span {
@@ -340,22 +350,64 @@ const DescriptionContainer = styled.div`
   }
 
   & .descriptorIcon {
-    position: relative;
-    bottom: -25px;
+
+    @media ${device.mobileS} {
+      width: 35px;
+  height: 35px;
+  position: relative;
+  bottom: -25px;
+
+  &.diagram {
+    bottom: -17px;
+  } 
+
+}
+
+@media ${device.tablet} {
+  
+
+  left: 10px;
+  padding-right: 3px;
+
+  &.glass {
+    bottom: -30px;
+  }
+
+  &.round {
+    bottom: -33px;
+  }
+  &.quirk {
+    bottom: -10px;
+  }
+  &.flash {
+    bottom: -20px;
+  }
+
+  &.diagram {
+    bottom: -10px;
+  } 
+}
+
     /* padding: 0 20px; */
   }
 
   & > .descriptor {
     @media ${device.mobileS} {
-      padding: 20px 0;
+     
       display: flex;
+      flex-direction: column;
+      align-items: center;
       width: 90%;
       border-bottom: 1px solid #8e8e8e;
+      position: relative;
     }
 
     @media ${device.tablet} {
       width: 100%;
+      padding: 20px 0;
       padding: 40px;
+      flex-direction: row;
+      align-items: unset;
 
       &:first-child {
         padding-top: 25px;
@@ -363,7 +415,7 @@ const DescriptionContainer = styled.div`
     }
 
     & .spanIcon {
-      @media ${device.mobileS} {
+      /* @media ${device.mobileS} {
         padding-left: 120px;
       }
       @media ${device.mobileM} {
@@ -374,12 +426,12 @@ const DescriptionContainer = styled.div`
         padding-left: 30px;
       }
 
+      */
       @media ${device.tablet} {
         padding-left: unset;
       }
-      @media ${device.mobileS} {
-        padding-bottom: 15px;
-      }
+      @media ${device.laptop} {
+      } 
     }
     /* & svg {
       width: 25px;
@@ -398,25 +450,69 @@ const DescriptionContainer = styled.div`
     }
 
     h4 {
-      font-size: 22px;
-      padding: 10px;
-      display: inline-block;
-      width: 20%;
-      text-align: center;
 
-      /* margin-right: 20px; */
-      /* text-align: center; */
+      @media ${device.mobileS} {
+        font-size: 21px;
+      display: inline-block;
+      text-align:center;
+      width: 90%;
+      padding: 30px 0 0;
+      }
+
+      @media ${device.mobileL} {
+        font-size: 24px;
+
+      }
+
+      @media ${device.tablet} {
+        font-size: 19px;
+        width: 20%;
+      text-align: center;
+      padding: 10px;
+      font-size: 22px;
+      white-space: pre-wrap;
+      margin-right: 10px;
+ 
+      & .break {
+        @media ${device.tablet} {
+          display: block;
+        }
+      }
+      }
+
+
+
     }
 
     ul {
       @media ${device.mobileS} {
-        /* padding: 5px 5px 0; */
         list-style-type: none;
-        width: 80%;
-        padding-right: 115px;
+        width: 85%;
+        padding-right: 5px;
+
+        &:last-child {
+          /* width: 100%; */
+        }
       }
 
       @media ${device.mobileM} {
+        width: 80%;
+      }
+
+      @media ${device.mobileL} {
+        width: 80%;
+      }
+
+      @media (min-width: 650px) {
+        width: 70%;
+      }
+      @media ${device.tablet} {
+        list-style-type: none;
+        padding-right: 5px;
+        width: 80%;
+      }
+
+      /* @media ${device.mobileM} {
         padding-right: 90px;
       }
 
@@ -435,9 +531,10 @@ const DescriptionContainer = styled.div`
       }
 
       @media ${device.desktop} {
-      }
+      } */
 
       li {
+       
         padding: 0px 15px;
         text-decoration: none;
         margin-top: 25px;
@@ -448,6 +545,16 @@ const DescriptionContainer = styled.div`
         padding: 10px;
         padding-right: 20px;
         position: relative;
+
+        &:last-child {
+
+        @media ${device.mobileS} {
+          margin-bottom: 20px;
+          }
+          @media ${device.tablet} {
+            margin-bottom: inherit;
+}
+        }
 
         &.task {
           margin-top: 0;
@@ -480,7 +587,7 @@ const DescriptionContainer = styled.div`
           right: 1%;
           width: 20px;
           height: 20px; */
-
+/* 
           @media ${device.mobileS} {
             padding-left: 85px;
           }
@@ -491,13 +598,11 @@ const DescriptionContainer = styled.div`
           @media ${device.mobileL} {
             padding-left: 65px;
           }
-
+*/
           @media ${device.tablet} {
-            padding-left: unset;
-          }
+            padding-right: 15px;
+          } 
 
-          /* bottom: 0; */
-          /* z-index: -1; */
           & svg {
             position: absolute;
 
@@ -522,8 +627,8 @@ const DailyRegimen = styled.div``;
 
 const Statistics = styled.div`
   &.descriptor {
-    margin-top: 40px;
-    marign-bottom: 40px;
+    /* margin-top: 40px; */
+    margin-bottom: 40px;
   }
 
   & h4 {
@@ -536,9 +641,24 @@ const Statistics = styled.div`
   }
 
   & .series {
-    font-size: 17px;
-    text-align: center;
-    margin: 10px auto 0;
+    @media ${device.mobileS} {
+      margin: 30px auto 10px;
+      text-align: center;
+      font-size: 17px;
+      display: inline-block;
+      border-bottom: 1px solid rgba(105, 105, 105, 0.45);
+      padding-bottom: 4px;
+    }
+
+    @media ${device.mobileL} {
+      margin: 80px auto 0;
+    }
+
+    @media ${device.tablet} {
+      font-size: 18px;
+      text-align: center;
+      margin: 100px auto 0;
+    }
 
     & .seriesResult {
       font-weight: 600;
@@ -546,9 +666,32 @@ const Statistics = styled.div`
   }
 `;
 const LineChartContainer = styled.div`
-  word-break: keep-all;
-  position: relative;
-  margin-top: 50px;
+  @media ${device.mobileS} {
+    word-break: keep-all;
+    position: relative;
+    margin-right: 50px;
+    width: 310px;
+    height: 200px;
+  }
+
+  @media ${device.mobileL} {
+    width: 370px;
+  }
+
+  @media (min-width: 625px) {
+    width: 380px;
+  }
+
+  @media ${device.tablet} {
+    margin: 100px 0;
+    padding-right: 60px;
+    width: 450px;
+    height: 100px;
+  }
+
+  /* margin-right: 40%; */
+  /* margin-right: 250px; */
+  /* margin-right: 200px; */
 
   & .recharts-legend-item-text {
     word-break: unset;
@@ -557,13 +700,35 @@ const LineChartContainer = styled.div`
 `;
 
 const StatData = styled.div`
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  padding: 10px 15px;
-  border: 1px solid black;
-  border-radius: 4px;
-  font-size: 14px;
+  @media ${device.mobileS} {
+    position: relative;
+    /* top: 0;
+    right: 0; */
+    padding: 5px 10px;
+    /* border: 1px solid black; */
+    border-radius: 4px;
+    font-size: 14px;
+    padding-left: 40px;
+    text-align: left;
+
+    & p {
+      margin-bottom: 3px;
+    }
+  }
+
+  @media ${device.mobileL} {
+    margin-top: 20px;
+    font-size: 15px;
+  }
+
+  @media ${device.tablet} {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 1px solid black;
+  }
   /* margin-bottom: 20px; */
 
   & .singleDataResult {
@@ -571,9 +736,24 @@ const StatData = styled.div`
   }
 `;
 
-const PlanStage = styled.div`
-  margin-top: 70px;
-  width: 80%;
+const ButtonContainer = styled.div`
+  @media ${device.mobileS} {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    position: relative;
+    width: 100%;
+  }
+
+  @media ${device.mobileL} {
+    margin-top: 0;
+  }
+
+  @media ${device.tablet} {
+    justify-content: flex-end;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
 `;
 
 const Graph = styled.div`
@@ -590,12 +770,6 @@ const StatText = styled.p`
   font-size: 20px;
   color: black;
   margin-bottom: 80px;
-`;
-
-const GoToPlan = styled.div`
-  position: absolute;
-  bottom: 5px;
-  right: 40px;
 `;
 
 const PlanTemplate = ({ location }) => {
@@ -636,16 +810,19 @@ const PlanTemplate = ({ location }) => {
   // { '21-03-2020': true }
   // ];
 
-  let endDate = thePlan.deadline;
-  // let firstDate = newData[0];
-  let firstDate = dataPlan[0];
+  let firstDate = dataPlan[2];
+  console.log('firstDate', firstDate);
+  let startDate = moment(Object.keys(firstDate)[0].valueOf());
+  console.log('startDate', startDate.format('DD-MMM-YYYY'));
 
-  let startDate = Object.keys(firstDate)[0];
-
+  let endDate = moment(thePlan.deadline);
+  console.log('endDate', endDate);
   let occurencess = [];
   let counter = 0;
 
-  let timeLeft = moment(endDate).diff(moment(startDate), 'days');
+  const timeLeft = moment(endDate).diff(moment(startDate), 'days');
+  // console.log('end Date ', moment(endDate).format('DD-MM-YYYY'));
+  console.log('startDate ', moment(startDate));
   console.log('TIME LEEEEFT: ', timeLeft);
 
   const modifiedData = dataPlan.map(date => {
@@ -674,17 +851,6 @@ const PlanTemplate = ({ location }) => {
     checkData(thePlan.id);
   }, [thePlan]);
 
-  // const isAnotherDay = () => {
-  //   const start = moment(plan.dailyTask.startedAt).dayOfYear();
-  //   const current = moment().dayOfYear();
-  //   if (start === current) {
-  //     //  return nothing
-
-  //   } else
-  // }
-
-  // };
-
   const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
 
   return (
@@ -705,11 +871,15 @@ const PlanTemplate = ({ location }) => {
               <DescriptionContainer>
                 <Details className="descriptor">
                   <span className="spanIcon">
-                    <SpecificsIcon width="25px" className="descriptorIcon" />{' '}
+                    <SpecificsIcon
+                      width="25px"
+                      className="descriptorIcon glass"
+                    />{' '}
                   </span>
                   <h4>
-                    {' '}
-                    Make <br /> it specific:
+                    <span className="break">Make </span>
+                    <span className="break">It </span>
+                    <span className="break">Specific</span>
                   </h4>{' '}
                   <ul>
                     {thePlan.specificators.map(({ singleSpec, id }) => {
@@ -723,9 +893,13 @@ const PlanTemplate = ({ location }) => {
                 </Details>
                 <Price className="descriptor">
                   <span className="spanIcon">
-                    <PriceIcon width="25px" className="descriptorIcon" />{' '}
+                    <PriceIcon width="25px" className="descriptorIcon round" />{' '}
                   </span>
-                  <h4> Price to pay:</h4>
+                  <h4>
+                    <span className="break">Price </span>
+                    <span className="break">To </span>
+                    <span className="break">Pay</span>
+                  </h4>
                   <ul>
                     {thePlan.prices.map(({ singlePrice, id }) => {
                       return (
@@ -740,9 +914,12 @@ const PlanTemplate = ({ location }) => {
                 <DailyRegimen className="descriptor">
                   {' '}
                   <span className="spanIcon">
-                    <ProgressIcon width="25px" className="descriptorIcon" />{' '}
+                    <Strong width="25px" className="descriptorIcon flash" />{' '}
                   </span>
-                  <h4>Daily regimen</h4>
+                  <h4>
+                    <span className="break">Daily </span>
+                    <span className="break">regimen</span>
+                  </h4>
                   <ul>
                     <li key={thePlan.dailyTask.id} className="task">
                       <CheckInput
@@ -758,21 +935,105 @@ const PlanTemplate = ({ location }) => {
                 </DailyRegimen>
                 <Statistics className="descriptor">
                   {' '}
-                  <span>
-                    <DiagramIcon className="descriptorIcon" />{' '}
+                  <span className="spanIcon">
+                    <DiagramIcon className="descriptorIcon diagram" />{' '}
                   </span>
-                  <h4>Statistics</h4>
-                  <ul>
-                    <StatData>
+                  <h4>
+                    <span className="break">Stats </span>
+                    <span className="break">Data</span>
+                  </h4>
+                  <div style={{ textAlign: 'center' }}>
+                    {/* <StatData>
                       <p className="singleData">
                         Started at:{' '}
-                        <span className="singleDataResult">{startDate}</span>{' '}
+                        <span className="singleDataResult">
+                          {startDate.format('DD MMM YYYY')}
+                        </span>{' '}
                       </p>
                       <p className="singleData">
                         Planned deadline:{' '}
                         <span className="singleDataResult">
                           {' '}
-                          {moment(thePlan.deadline).format('DD-MM-YYYY')}
+                          {moment(thePlan.deadline).format('DD MMM YYYY')}
+                        </span>
+                      </p>
+                      <p className="singleData">
+                        Time left:{' '}
+                        <span className="singleDataResult">
+                          {moment(thePlan.deadline).diff(moment(), 'days') + 1}{' '}
+                          days
+                        </span>
+                      </p>
+                    </StatData> */}
+                    <LineChartContainer>
+                      <ResponsiveContainer aspect={4.0 / 3.0}>
+                        <LineChart
+                          width={400}
+                          height={200}
+                          maintainAspectRatio={false}
+                          responsive={true}
+                          data={modifiedData}
+                          // margin={{ top: 45, right: 20, left: 10, bottom: 0 }}
+                        >
+                          <XAxis
+                            dataKey="name"
+                            tick={{ fontSize: 14, fill: '#3b444b' }}
+                          />
+                          <YAxis
+                            type="number"
+                            domain={[0, timeLeft]}
+                            tick={{ fontSize: 14, fill: '#3b444b' }}
+                          />
+                          <Tooltip />
+                          {/* <CartesianGrid stroke="#62696e" /> */}
+                          <CartesianGrid
+                            strokeDasharray="3 3"
+                            stroke="#b0b4b7"
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="daily task"
+                            stroke="#3b444b"
+                            yAxisId={0}
+                            strokeWidth={3}
+                            dot={false}
+                          />
+                          {/* <Legend wrapperStyle={{ fontSize: '18px' }} /> */}
+
+                          {/* <Line type="monotone" dataKey="pv" strokeOpacity={opacity.pv} stroke="#8884d8" activeDot={{r: 8}}/>
+         <Line type="monotone" dataKey={this.state.vis ? 'uv' : 'uv_'} strokeOpacity={opacity.uv} 
+         strokeWidth={4} stroke="#82ca9d" /> */}
+
+                          {/* <Line
+                        type="monotone"
+                        dataKey="pv"
+                        stroke="#387908"
+                        yAxisId={1}
+                      /> */}
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </LineChartContainer>
+
+                    <p className="series">
+                      The best series:{' '}
+                      <span className="seriesResult">
+                        {' '}
+                        {maxValue} {maxValue === 1 ? 'day' : 'days'}
+                      </span>
+                    </p>
+
+                    <StatData>
+                      <p className="singleData">
+                        Started at:{' '}
+                        <span className="singleDataResult">
+                          {startDate.format('DD MMM YYYY')}
+                        </span>{' '}
+                      </p>
+                      <p className="singleData">
+                        Planned deadline:{' '}
+                        <span className="singleDataResult">
+                          {' '}
+                          {moment(thePlan.deadline).format('DD MMM YYYY')}
                         </span>
                       </p>
                       <p className="singleData">
@@ -783,72 +1044,21 @@ const PlanTemplate = ({ location }) => {
                         </span>
                       </p>
                     </StatData>
-                    <LineChartContainer>
-                      <LineChart
-                        width={400}
-                        height={200}
-                        data={modifiedData}
-                        margin={{ top: 45, right: 20, left: 10, bottom: 0 }}
-                      >
-                        <XAxis
-                          dataKey="name"
-                          tick={{ fontSize: 14, fill: '#3b444b' }}
-                        />
-                        <YAxis
-                          type="number"
-                          domain={[0, timeLeft]}
-                          tick={{ fontSize: 14, fill: '#3b444b' }}
-                        />
-                        <Tooltip />
-                        {/* <CartesianGrid stroke="#62696e" /> */}
-                        <CartesianGrid strokeDasharray="3 3" stroke="#b0b4b7" />
-                        <Line
-                          type="monotone"
-                          dataKey="daily task"
-                          stroke="#3b444b"
-                          yAxisId={0}
-                          strokeWidth={3}
-                          dot={false}
-                        />
-                        {/* <Legend wrapperStyle={{ fontSize: '18px' }} /> */}
-
-                        {/* <Line type="monotone" dataKey="pv" strokeOpacity={opacity.pv} stroke="#8884d8" activeDot={{r: 8}}/>
-         <Line type="monotone" dataKey={this.state.vis ? 'uv' : 'uv_'} strokeOpacity={opacity.uv} 
-         strokeWidth={4} stroke="#82ca9d" /> */}
-
-                        {/* <Line
-                        type="monotone"
-                        dataKey="pv"
-                        stroke="#387908"
-                        yAxisId={1}
-                      /> */}
-                      </LineChart>
-                    </LineChartContainer>
-
-                    <p className="series">
-                      The best series:{' '}
-                      <span className="seriesResult">
-                        {' '}
-                        {maxValue} {maxValue === 1 ? 'day' : 'days'}
-                      </span>
-                    </p>
-                  </ul>
+                  </div>
                 </Statistics>
               </DescriptionContainer>
-              <PlanStage>
-                <GoToPlan>
-                  <Link
-                    to={{
-                      pathname: `/plan/${formatGoal(thePlan.goal)}/edit`,
-                      state: location.state
-                    }}
-                  >
-                    <EditButton>
-                      <span>Edit Plan</span>
-                    </EditButton>
-                  </Link>
-                </GoToPlan>
-              </PlanStage>
+              <ButtonContainer>
+                <Link
+                  to={{
+                    pathname: `/plan/${formatGoal(thePlan.goal)}/edit`,
+                    state: location.state
+                  }}
+                >
+                  <EditButton>
+                    <span>Edit Plan</span>
+                  </EditButton>
+                </Link>
+              </ButtonContainer>
             </PlanContent>
           </div>
         </Box>

@@ -103,8 +103,9 @@ const AccordionContent = styled.div`
   background-color: white;
   background-color: #f7f7f7;
   overflow: hidden;
+  /* overflow-y: hidden; */
   transition: max-height 0.6s ease;
-  position: relative;
+  position: static;
   border: 1px solid #bbbbbb;
   border-top: none;
   border-radius: 0 0 15px 15px;
@@ -170,7 +171,12 @@ const LinkContainer = styled.div`
       transition: opacity 0.3s;
 
       &.tactic {
-        left: -25px;
+        padding: 5px 10px;
+        left: -11px;
+      }
+
+      &.viewPlan {
+        left: -22px;
       }
 
       &:after {
@@ -260,7 +266,7 @@ const SinglePlan = props => {
               }}
             >
               <PreviewIcon />
-              <span className="tooltipText">View Plan</span>
+              <span className="tooltipText viewPlan">View Plan</span>
             </Link>
 
             <Link
@@ -289,7 +295,7 @@ const SinglePlan = props => {
             >
               {' '}
               <ExternalLinkIcon />{' '}
-              <span className="tooltipText tactic">View tactic</span>
+              <span className="tooltipText tactic">Tactic</span>
             </Link>
           </LinkContainer>
         </LinkSection>

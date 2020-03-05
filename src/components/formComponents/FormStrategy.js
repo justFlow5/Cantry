@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import PlanContext from '../contexts/Plan-context';
-import { FuncContext } from '../contexts/FunctionsProvider';
+import { FuncContext, device } from '../contexts/FunctionsProvider';
 
 import InputField from './InputField';
 
@@ -21,9 +21,16 @@ const ButtonNextContainer = styled.div`
 `;
 
 const ButtonBackContainer = styled.div`
-  position: fixed;
-  top: 40%;
-  left: 8%;
+  @media ${device.mobileS} {
+    position: fixed;
+
+    top: 40%;
+    left: 19%;
+  }
+  @media ${device.tablet} {
+    top: 40%;
+    left: 8%;
+  }
 `;
 
 const ListContainer = styled.div`
@@ -45,14 +52,33 @@ const RadioButtonContainer = styled.div`
 `;
 
 const Header = styled.span`
-  font-size: 14px;
-  color: #333333;
-  letter-spacing: 0.3px;
-  position: absolute;
-  right: 33px;
-  font-weight: 600;
-  /* position: absolute;
+  @media ${device.mobileS} {
+    font-size: 12px;
+    color: #333333;
+    letter-spacing: 0.3px;
+    position: absolute;
+    right: 33px;
+    font-weight: 600;
+    /* position: absolute;
   top: -10px; */
+  }
+
+  @media ${device.mobileL} {
+    font-size: 13px;
+  }
+
+  @media ${device.tablet} {
+    font-size: 12px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 `;
 
 export default () => {

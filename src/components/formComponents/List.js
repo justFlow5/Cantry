@@ -2,30 +2,48 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import PlanContext from '../contexts/Plan-context';
 import fire from '../../images/fire.png';
-import { FuncContext } from '../contexts/FunctionsProvider';
+import { FuncContext, device } from '../contexts/FunctionsProvider';
 
 // import { FuncContext } from '../contexts/FunctionsProvider';
 
 const Descriptor = styled.div`
-  font-size: 20px;
-  position: relative;
-  max-width: 300px;
-  height: 60%;
-  -webkit-font-smoothing: antialiased;
-  -webkit-filter: blur(0.000001px);
-  transform: translateZ(0);
-  transform: translate3d(0, 0, 0) !important;
-  -webkit-transform: translate3d(0, 0, 0) !important;
-  transform: perspective(1px) scale(1.1);
-  /* min-width: 250px; */
+  @media ${device.mobileS} {
+    font-size: 20px;
+    position: relative;
+    max-width: 300px;
+    height: 60%;
+    -webkit-font-smoothing: antialiased;
+    -webkit-filter: blur(0.000001px);
+    transform: translateZ(0);
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    transform: perspective(1px) scale(1.1);
+    /* min-width: 250px; */
 
-  /* width: 300px; */
-  margin: 30px;
-  -webkit-transform: rotate(1deg);
-  -moz-transform: rotate(1deg);
-  -ms-transform: rotate(1deg);
-  -o-transform: rotate(1deg);
-  transform: rotate(1deg);
+    /* width: 300px; */
+    margin: 10px;
+    -webkit-transform: rotate(1deg);
+    -moz-transform: rotate(1deg);
+    -ms-transform: rotate(1deg);
+    -o-transform: rotate(1deg);
+    transform: rotate(1deg);
+  }
+
+  @media ${device.mobileL} {
+  }
+
+  @media ${device.tablet} {
+    margin: 30px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 
   & span {
     display: inline-block;

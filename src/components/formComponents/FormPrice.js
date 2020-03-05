@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import PlanContext from '../contexts/Plan-context';
-import { FuncContext } from '../contexts/FunctionsProvider';
+import { FuncContext, device } from '../contexts/FunctionsProvider';
 
 import InputField from './InputField';
 import List from './List';
@@ -20,9 +20,16 @@ const ButtonNextContainer = styled.div`
 `;
 
 const ButtonBackContainer = styled.div`
-  position: fixed;
-  top: 40%;
-  left: 8%;
+  @media ${device.mobileS} {
+    position: fixed;
+
+    top: 40%;
+    left: 19%;
+  }
+  @media ${device.tablet} {
+    top: 40%;
+    left: 8%;
+  }
 `;
 
 const ListContainer = styled.div`

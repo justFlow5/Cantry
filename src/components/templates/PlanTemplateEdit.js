@@ -18,7 +18,7 @@ import NavBar from '../Navbar';
 
 import SpecificsIcon from '../icons/SpecificsIcon';
 import PriceIcon from '../icons/PriceIcon';
-import ProgressIcon from '../icons/ProgressIcon';
+import Strong from '../icons/Strong';
 
 import { FuncContext } from '../contexts/FunctionsProvider';
 import ModalDeletePlan from '../ModalDeletePlan';
@@ -131,12 +131,23 @@ const PlanContent = styled.div`
   width: 100%;
   align-items: center;
   /* border: 1px solid black; */
+
+  & .example {
+    width: 100%;
+
+    /* & > h3 {
+
+    } */
+  }
 `;
 
 const PlanTitle = styled.h3`
   @media ${device.mobileS} {
+    width: 100%;
+    /* margin: 0 auto; */
+
     color: black;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 500;
     position: relative;
     outline: 0;
@@ -144,27 +155,41 @@ const PlanTitle = styled.h3`
     height: 40px;
     text-align: center;
     transition: all 0.3s;
+
+    @media ${device.mobileL} {
+      width: 75%;
+      margin: 0 auto;
+    }
+
+    & input {
+      font-size: 32px;
+    }
+
+    /* & textarea {
+      font-size: 17px;
+    } */
   }
 
   @media ${device.mobileL} {
-    font-size: 35px;
+    font-size: 22px;
   }
 
   @media ${device.tablet} {
-    font-size: 38px;
-    height: 50px;
+    /* font-size: 38px; */
+    /* height: 50px; */
   }
 
   @media ${device.laptop} {
-    font-size: 40px;
+    /* font-size: 34px; */
   }
 
   @media ${device.laptopL} {
-    font-size: 42px;
+    font-size: 54px;
     height: 60px;
   }
 
   @media ${device.desktop} {
+    font-size: 40px;
   }
 
   & span {
@@ -181,20 +206,29 @@ const PlanTitle = styled.h3`
 `;
 
 const Deadline = styled.p`
-  padding-top: 15px;
-  text-align: center;
-  /* font-weight: 300; */
-  margin: 30px 0 15px;
-  /* display: inline-block; */
+  @media ${device.mobileS} {
+    padding-top: 15px;
+    text-align: center;
+    /* font-weight: 300; */
+    margin: 0;
+    /* display: inline-block; */
 
-  transition: all 0.3s;
+    transition: all 0.3s;
+  }
+
+  @media ${device.tablet} {
+    margin: 0px 0 15px;
+  }
+
   & > span {
     @media ${device.mobileS} {
       font-weight: 700;
       position: relative;
       /* bottom: 8px; */
-      font-size: 19px;
+      font-size: 18px;
       line-height: 1.2;
+      /* right: -15px;
+      z-index: 899; */
     }
 
     @media ${device.mobileL} {
@@ -247,22 +281,59 @@ const DescriptionContainer = styled.div`
   & .descriptorIcon {
     position: relative;
     bottom: -25px;
-  }
 
-  & > .descriptor {
     @media ${device.mobileS} {
-      padding: 20px 0;
-      display: flex;
-      width: 90%;
-      border-bottom: 1px solid #8e8e8e;
+      width: 35px;
+      height: 35px;
+      margin-bottom: 10px;
+    }
+
+    @media ${device.mobileL} {
+      width: 35px;
+      height: 35px;
     }
 
     @media ${device.tablet} {
+      width: 30px;
+      height: 30px;
+      right: -5px;
+      margin-bottom: initial;
+
+      &.price {
+        bottom: -40px;
+      }
+
+      &.spec {
+        bottom: -33px;
+      }
+    }
+  }
+  & > .descriptor {
+    @media ${device.mobileS} {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      border-bottom: 1px solid #8e8e8e;
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+
+    @media (min-width: 510px) {
+      width: 70%;
+    }
+    @media ${device.tablet} {
       width: 100%;
+      padding: 20px 0;
       padding: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      /* align-items: center; */
 
       &:first-child {
-        padding-top: 5px;
+        padding-top: 25px;
       }
     }
 
@@ -292,18 +363,51 @@ const DescriptionContainer = styled.div`
       }
     }
     h4 {
-      font-size: 22px;
-      padding: 10px;
-      display: inline-block;
-      width: 20%;
-      /* text-align: center; */
+      @media ${device.mobileS} {
+        font-size: 23px;
+        display: inline-block;
+        text-align: center;
+        width: 90%;
+        padding: 20px 0 0;
+      }
+
+      @media ${device.tablet} {
+        font-size: 19px;
+        width: 20%;
+        text-align: center;
+        padding: 10px;
+        font-size: 22px;
+        margin-right: 10px;
+      }
+      & .break {
+        @media ${device.tablet} {
+          display: block;
+        }
+      }
     }
 
     ul {
-      padding: 5px 10px 0 45px;
-      list-style-type: none;
-      width: 80%;
-      position: relative;
+      @media ${device.mobileS} {
+        list-style-type: none;
+        width: 90%;
+        padding-right: 5px;
+        padding-bottom: 30px;
+
+        &:last-child {
+          /* width: 100%; */
+        }
+      }
+
+      @media ${device.mobileM} {
+      }
+
+      @media ${device.mobileL} {
+      }
+      @media ${device.tablet} {
+        list-style-type: none;
+        padding-right: 5px;
+        width: 80%;
+      }
 
       li {
         padding: 0px 10px;
@@ -317,6 +421,28 @@ const DescriptionContainer = styled.div`
         /* padding-right: 20px; */
         position: relative;
         width: 100%;
+
+        & textarea {
+          @media ${device.mobileS} {
+            font-size: 16px;
+          }
+          @media (min-width: 545px) {
+            font-size: 18px;
+          }
+
+          @media ${device.desktop} {
+            font-size: 24px;
+          }
+        }
+
+        &:last-child {
+          @media ${device.mobileS} {
+            margin-bottom: 20px;
+          }
+          @media ${device.tablet} {
+            margin-bottom: inherit;
+          }
+        }
 
         &:first-child {
           margin-top: 10px;
@@ -421,12 +547,9 @@ const NewField = styled.button`
   @media ${device.mobileS} {
     width: 150px;
     display: inline-block;
-    /* margin: 0px auto; */
-    /* background-color:  */
     color: #c2c2c2;
     background-color: rgba(247, 247, 247, 1);
     position: relative;
-    /* top: -5px; */
     left: 15px;
     letter-spacing: 1.5px;
     font-size: 10px;
@@ -437,29 +560,28 @@ const NewField = styled.button`
     padding: 7px 11px 7px 16px;
     text-align: left;
     cursor: pointer;
+    font-weight: 600;
+
+    color: #1d2122;
+    border: 1px solid #1d2122;
   }
 
-    @media ${device.mobileL} {
-      width: 170px;
-      font-size: 10px;
-     
-    }
+  @media ${device.mobileL} {
+    width: 170px;
+    font-size: 10px;
+  }
 
-    @media ${device.tablet} {
-      font-size: 12px;
-      left: 15px;
-      width: 200px;
-      padding: 10px 15px 10px 20px;
-    }
+  @media ${device.tablet} {
+    border: 1px solid #c2c2c2;
+    color: #c2c2c2;
+    font-size: 11px;
+    left: 15px;
+    width: 200px;
+    padding: 10px 15px 10px 20px;
+  }
 
-    @media ${device.laptop} {
-    }
-
-    @media ${device.laptopL} {
-    }
-
-    @media ${device.desktop} {
-    }
+  @media ${device.laptop} {
+    font-size: 11px;
   }
 
   & > span {
@@ -795,6 +917,7 @@ const PlanTemplateEdit = ({ location }) => {
               <div className="example">
                 <PlanTitle>
                   <InputFieldEdit
+                    // textarea
                     value={goalEdit}
                     name="goal"
                     // handleChange={e => setGoalEdit(e.target.value)}
@@ -825,9 +948,16 @@ const PlanTemplateEdit = ({ location }) => {
               <DescriptionContainer>
                 <Details className="descriptor">
                   <span>
-                    <SpecificsIcon width="25px" className="descriptorIcon" />{' '}
+                    <SpecificsIcon
+                      width="25px"
+                      className="descriptorIcon spec"
+                    />{' '}
                   </span>
-                  <h4> Make it specific:</h4>{' '}
+                  <h4>
+                    <span className="break">Make </span>
+                    <span className="break">It </span>
+                    <span className="break">Specific</span>
+                  </h4>{' '}
                   <ul>
                     {specificatorsEdit.map(({ singleSpec, id }) => {
                       return (
@@ -877,9 +1007,13 @@ const PlanTemplateEdit = ({ location }) => {
                 </Details>
                 <Price className="descriptor">
                   <span>
-                    <PriceIcon width="25px" className="descriptorIcon" />{' '}
+                    <PriceIcon width="25px" className="descriptorIcon price" />{' '}
                   </span>
-                  <h4> Price to pay:</h4>
+                  <h4>
+                    <span className="break">Price </span>
+                    <span className="break">To </span>
+                    <span className="break">Pay</span>
+                  </h4>
                   <ul>
                     {pricesEdit.map(({ singlePrice, id }) => {
                       return (
@@ -932,9 +1066,12 @@ const PlanTemplateEdit = ({ location }) => {
                 <DailyRegimen className="descriptor">
                   {' '}
                   <span>
-                    <ProgressIcon width="25px" className="descriptorIcon" />{' '}
+                    <Strong width="25px" className="descriptorIcon" />{' '}
                   </span>
-                  <h4>Daily regimen</h4>
+                  <h4>
+                    <span className="break">Daily </span>
+                    <span className="break">regimen</span>
+                  </h4>
                   <ul>
                     <li
                       key={taskEdit.id}

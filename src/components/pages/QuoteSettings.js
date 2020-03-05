@@ -76,24 +76,34 @@ const QuoteItem = styled.ul`
     font-family: 'Gentium Basic', serif;
 
     margin-bottom: 14px;
+    margin: 0 auto 14px;
     color: black;
     position: relative;
     border-radius: 4px;
     word-wrap: break-word;
     border: 1px solid black;
     padding: 20px 10px 35px;
+
+    width: 90%;
   }
 
   @media ${device.mobileL} {
     font-size: 16px;
+    width: 90%;
   }
 
   @media ${device.tablet} {
     font-size: 17px;
   }
 
-  @media ${device.tablet} {
+  @media (min-width: 685px) {
+    font-size: 17px;
+    width: 70%;
+  }
+
+  @media ${device.laptop} {
     font-size: 18px;
+    width: unset;
   }
 
   @media ${device.desktop} {

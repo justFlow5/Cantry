@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { device } from '../contexts/FunctionsProvider';
 
 const FormField = styled.div`
   display: block;
@@ -39,10 +40,6 @@ const Control = styled.div`
   position: relative;
 
   width: 100%;
-  /* box-shadow: 0 0 10px; */
-  /* box-shadow: 0 10px 6px -6px #777; */
-
-  /* margin: 30px auto 0px; */
 
   &::after {
     border-bottom: 2px solid black;
@@ -57,24 +54,58 @@ const Control = styled.div`
     transition: all 0.5s;
     width: 1%;
   }
+  & input {
+    @media ${device.mobileM} {
+      font-size: 34px;
+    }
+    @media ${device.mobileL} {
+      font-size: 35px;
+    }
+
+    @media ${device.tablet} {
+      font-size: 36px;
+    }
+
+    @media ${device.laptop} {
+    }
+
+    @media ${device.laptopL} {
+    }
+
+    @media ${device.desktop} {
+    }
+  }
 `;
 
 const Input = styled.input`
-  appearance: none;
-  background-color: rgba(247, 247, 247, 1);
-  overflow: hidden;
-  border: 0;
-  border-bottom: 1px solid #c2c2c2;
+  @media ${device.mobileS} {
+    appearance: none;
+    background-color: rgba(247, 247, 247, 1);
+    overflow: hidden;
+    border: 0;
+    border-bottom: 1px solid #c2c2c2;
 
-  color: #c2c2c2;
-  display: block;
-  font-size: 18px;
+    color: #c2c2c2;
+    display: block;
+    /* font-size: 18px; */
 
-  outline: 0;
-  padding: 10px 12px 10px 12px;
-  width: 100%;
-  resize: none;
-  cursor: text;
+    outline: 0;
+    padding: 10px 12px 10px 12px;
+    width: 100%;
+    resize: none;
+    cursor: text;
+  }
+  @media ${device.tablet} {
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
   /* transition: all 0.3s; */
 
   &:focus {
@@ -184,7 +215,7 @@ const InputFieldEdit = props => {
               onBlur={() => setActive(false)}
               onFocus={() => setActive(true)}
               style={{
-                fontSize: 'inherit',
+                // fontSize: 'inherit',
                 // paddingBottom: '25px',
                 // height: 'inherit',
                 // lineHeight: '1',

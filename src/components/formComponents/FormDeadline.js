@@ -7,7 +7,7 @@ import 'react-dates/initialize';
 import './datepickerDeadline.css';
 
 import PlanContext from '../contexts/Plan-context';
-import { FuncContext } from '../contexts/FunctionsProvider';
+import { FuncContext, device } from '../contexts/FunctionsProvider';
 
 import InputField from './InputField';
 import Request from './Request';
@@ -21,15 +21,44 @@ import NavigationArrow from './NavigationArrow';
 // import SingleDatePicker from './singleDatePicker';
 
 const ButtonNextContainer = styled.div`
-  position: fixed;
-  bottom: 10px;
-  right: 30px;
+  @media ${device.mobileS} {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+
+  @media ${device.mobileL} {
+  }
+
+  @media ${device.tablet} {
+    transform: unset;
+    left: unset;
+    right: 30px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 `;
 
 const ButtonBackContainer = styled.div`
-  position: fixed;
-  top: 40%;
-  left: 8%;
+  @media ${device.mobileS} {
+    position: fixed;
+
+    top: 40%;
+    left: 19%;
+  }
+  @media ${device.tablet} {
+    top: 40%;
+    left: 8%;
+  }
 `;
 const CalendarContainer = styled.div`
   /* margin: 0 auto; */

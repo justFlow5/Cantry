@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import { device } from './contexts/FunctionsProvider';
 
 const Button = styled.button`
+
+@media (min-width: 320px) {
+
+
   padding: 10px 15px;
   cursor: pointer;
   position: relative;
   border: 1.5px solid #1F1C23;
   outline: none;
   color: #1F1C23;
-  margin: 40px;
   white-space: nowrap;
 
   letter-spacing: 2px;
@@ -20,20 +23,57 @@ const Button = styled.button`
   font-weight: 500;
 
   border-radius: 4px;
-  font-size: 18px;
-
-  width: ${props => props.width};
-  transition: all 0.3s;
-
-  margin: 0px 5px 40px;
  
 
+  
+  transition: all 0.3s;
+  font-size: 16px;
+width: 260px;
+  
+
+  
+  
+  
   box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
-
-
   
+  margin: 0px 5px 40px;
+
+}
+@media (min-width: 560px) {
+    font-size: 18px;
+
+  }
+
+  @media (min-width: 920px) {
+    font-size: 18px;
+    width: 285px;
+
+  }
+
+
+
+  &:first-child {
+    margin-bottom: 5px;
+    
+      @media (min-width: 365px) {
+        margin-bottom: 10px;
+    }
+
+    @media (min-width: 425px) {
+        margin-bottom: 15px;
+    }
+  }
+
+
+
+/* @media (min-width: 425px) {
+ max-width: 80%; 
+
+} */
+
+
   span {
     /* cursor: pointer; */
     display: inline-block;
@@ -46,9 +86,6 @@ const Button = styled.button`
     /* content:"${props => (props.plus ? '\\002B' : props.mark)}"; */
     content: "${props => props.mark}";
 
-
-
-     /* content: "\\002B"; */
     position: absolute;
     opacity: 0;
     top: -1px;
@@ -63,8 +100,6 @@ const Button = styled.button`
   
   :hover span {
     padding-right: 25px;
-  
-
   }
   
   :hover span:after {
@@ -85,8 +120,6 @@ const Button = styled.button`
     }
   span {
     padding-right: unset;
-  
-
   }
   
     

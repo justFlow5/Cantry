@@ -6,9 +6,11 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 import { firebase } from '../firebase/Firebase';
 
+import SettingsIcon from './icons/Settings';
+
 const NavBar = styled.nav`
   @media ${device.mobileS} {
-    height: 35px;
+    height: 45px;
     position: fixed;
     margin: 0;
     background-color: rgba(0, 0, 0, 0.65);
@@ -25,9 +27,9 @@ const NavBar = styled.nav`
     z-index: 9;
   }
 
-  @media ${device.mobileL} {
+  /* @media ${device.mobileL} {
     height: 40px;
-  }
+  } */
 
   @media ${device.tablet} {
     height: 45px;
@@ -40,11 +42,15 @@ const NavBar = styled.nav`
     height: 50px;
   }
 
+  @media ${device.desktop} {
+    height: 60px;
+  }
+
   a {
     @media ${device.mobileS} {
       color: #e0e0e0;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 16px;
       margin: 0 10px;
       padding: 0px;
       position: relative;
@@ -59,7 +65,7 @@ const NavBar = styled.nav`
 
 
       @media ${device.mobileL} {
-        font-size: 16px;
+        font-size: 17px;
       }
 
       @media ${device.tablet} {
@@ -72,8 +78,9 @@ const NavBar = styled.nav`
       font-size: 21px;
       margin: 0 10px;
       padding: 5px 10px;
+
     }
-      }
+      
 
       @media ${device.laptopL} {
         font-size: 23px;
@@ -83,11 +90,16 @@ const NavBar = styled.nav`
         font-size: 24px;
       }
 
+      
 
-  }
+
+    }
 
   a:last-child {
-    margin-left: auto;
+    margin-left: 5px;
+    @media ${device.laptop} {
+      margin-left: auto;
+      } 
   }
 
   a:hover {
@@ -95,6 +107,86 @@ const NavBar = styled.nav`
     /* transform: scale(1.1); */
     /* font-size: 17.4px; */
     /* color: hsla(0, 0%, 100%, 0.7); */
+  }
+
+
+  & .quoteOption {
+        @media ${device.mobileS} {
+    
+       
+
+
+       
+        }
+        @media ${device.laptop} {
+        display: none;
+        }
+      }
+`;
+
+const Dropdown = styled.div`
+  margin-left: auto;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  padding: 5px 0px;
+  width: 30px;
+  height: 100%;
+  margin-right: 15px;
+
+  & .quoteOption {
+    height: 30px;
+
+    &:hover {
+      fill: white;
+    }
+  }
+
+  &:hover .dropdownContent {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  & svg {
+    width: 100%;
+    height: 100%;
+  }
+`;
+const DropdownContent = styled.div`
+  opacity: 0;
+  display: hidden;
+  pointer-events: none;
+  position: absolute;
+  background-color: #f9f9f9;
+
+  left: 50%;
+  transform: translate(-50%, 0);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+  width: 150px;
+  /* bottom: -95%; */
+  transition: all 0.3s;
+
+  & > a {
+    width: 100%;
+    position: relative;
+    color: #282828;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    left: -5px;
+
+    &:hover {
+      background-color: #d8d8d8;
+      color: black;
+    }
   }
 `;
 
@@ -107,6 +199,16 @@ export default () => {
       <Link to="/about">ABOUT</Link>
 
       {/* <a onClick={handleLogout}>LOGOUT</a> */}
+      <Dropdown>
+        <SettingsIcon className="quoteOption" />
+        <DropdownContent className="dropdownContent">
+          <Link to="/dashboard/quote-settings">Quote Settings</Link>
+        </DropdownContent>
+      </Dropdown>
+
+      {/* <Link to="/quote-settings" className="quoteOption">
+        <SettingsIcon className="options" />
+      </Link> */}
 
       <a
         onClick={() => {

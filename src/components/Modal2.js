@@ -47,7 +47,7 @@ const Modal = styled.div`
   width: 1100px;
   /* max-width: 75rem; */
   min-height: 570px;
-  max-height: 590px;
+  /* max-height: 590px;  */
   padding: 1rem;
   border-radius: 3px;
   z-index: 11;
@@ -183,7 +183,6 @@ export default props => {
       <Button
         action={toggleModal}
         content="Create new plan"
-        width="285px"
         mark="\002B"
         scale="1.6"
       >

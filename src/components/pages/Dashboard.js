@@ -166,13 +166,20 @@ const Plan = styled.ul`
 `;
 
 const ButtonContainer = styled.section`
-  margin-top: auto;
-  /* margin-bottom: 50px; */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 100%;
-  padding: 0px 10%;
+  @media (min-width: 320px) {
+    flex-direction: column;
+    margin-top: auto;
+    display: flex;
+    margin: auto auto 40px;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+  @media (min-width: 560px) {
+    flex-direction: row;
+    justify-content: space-around;
+    margin: auto auto 20px;
+  }
 `;
 
 const DashBoard = styled.main`
@@ -470,10 +477,6 @@ export default props => {
   useEffect(() => {
     getDataFromDb();
   }, []);
-
-  // useEffect(() => {
-  //   getDataFromDb();
-  // }, [checkData]);
 
   const getDataFromDb = async () => {
     // console.log('DB FROM FUNCTION: ', db);

@@ -8,7 +8,7 @@ const Request = styled.label`
   text-align: center;
   .title {
     @media ${device.mobileS} {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 500;
       letter-spacing: 1px;
       text-align: center;
@@ -20,7 +20,7 @@ const Request = styled.label`
     }
 
     @media ${device.mobileL} {
-      font-size: 24px;
+      font-size: 25px;
     }
 
     @media ${device.tablet} {
@@ -44,20 +44,20 @@ const Request = styled.label`
       margin: 0px 15%;
       display: inline-block;
       text-align: left;
-      font-size: 13px;
+      font-size: 15px;
       line-height: 1.4;
     }
 
     @media ${device.mobileL} {
-      font-size: 16px;
-    }
-
-    @media ${device.tablet} {
       font-size: 17px;
     }
 
-    @media ${device.laptop} {
+    @media ${device.tablet} {
       font-size: 18px;
+    }
+
+    @media ${device.laptop} {
+      font-size: 20px;
     }
 
     @media ${device.laptopL} {

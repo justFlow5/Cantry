@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PlanContext from '../contexts/Plan-context';
 import { FuncContext } from '../contexts/FunctionsProvider';
 import InputField from './InputField';
+import { device } from '../contexts/FunctionsProvider';
 
 import Request from './Request';
 

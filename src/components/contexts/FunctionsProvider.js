@@ -159,13 +159,25 @@ export const FunctionsProvider = ({ children }) => {
     // const startedAt = moment().valueOf();
     const startedAt = moment().valueOf();
 
-    const now = moment().format('DD-MM-YYYY');
+    const now = moment().format('DD MMM YYYY');
+
+    // empty date for plot to better visualize difference
+    const emptyDate = moment()
+      .subtract(2, 'days')
+      .format('DD MMM YYYY');
+    const emptyDate2 = moment()
+      .subtract(1, 'days')
+      .format('DD MMM YYYY');
 
     setDailyTask({
       dailyTask: tempDailyTask,
       id,
       startedAt,
-      history: [{ [now]: false }],
+      history: [
+        { [emptyDate]: false },
+        { [emptyDate2]: false },
+        { [now]: false }
+      ],
       completed: false
     });
 
@@ -175,7 +187,6 @@ export const FunctionsProvider = ({ children }) => {
   };
 
   const editTask = (planId, updatedTask) => {
-    // console.log('planId, updatedTask', planId, updatedTask);
     plans.forEach(plan => {
       if (plan.id === planId) {
         let tempPlan = plan;
@@ -183,31 +194,20 @@ export const FunctionsProvider = ({ children }) => {
         tempPlan.dailyTask.completed = updatedTask;
 
         let stringifiedData = moment()
-          .format('DD-MM-YYYY')
+          .format('DD MMM YYYY')
           .toString();
-
-        // updatePlan(planId, tempPlan);
-        // console.log('stringifiedData', stringifiedData);
-
-        // let id = uuid()
 
         let isDate = tempPlan.dailyTask.history.some(date => {
           if (Object.keys(date)[0] === stringifiedData) {
             let thisDate = Object.keys(date)[0];
-            // if (updatedTask) {
             tempPlan.dailyTask.history.forEach(ddate => {
-              // if (Object.keys(date)[0] === thisDate)
               if (thisDate in ddate) ddate[thisDate] = updatedTask;
             });
-            // }
             return Object.keys(date)[0] === stringifiedData;
           }
         });
 
         let newData = { [stringifiedData]: updatedTask };
-
-        console.log('ISS DATEEE:, ', isDate);
-
         if (isDate) {
           updatePlan(planId, tempPlan);
         } else {

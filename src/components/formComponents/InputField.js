@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
+import { device } from '../contexts/FunctionsProvider';
+
 const FormField = styled.div`
   display: block;
   margin-bottom: 16px;
@@ -35,26 +37,38 @@ const FormField = styled.div`
 
 const Label = styled.label`
   /* display: #b11adc; */
-  font-size: 1.45rem;
 
-  font-weight: normal;
-  left: 0;
-  margin: 0;
-  padding: 18px 12px;
-  position: absolute;
-  top: -5px;
-  transition: all 0.4s;
-  width: 100%;
-  cursor: text;
+  @media ${device.mobileS} {
+    font-size: 1.35rem;
+
+    font-weight: normal;
+    left: 0;
+    margin: 0;
+    padding: 18px 12px;
+    position: absolute;
+    top: -5px;
+    transition: all 0.4s;
+    width: 100%;
+    cursor: text;
+  }
+  @media ${device.tablet} {
+    font-size: 1.45rem;
+  }
 `;
 
 const Control = styled.div`
-  background: #eee;
-  border-radius: 8px 8px 0 0;
-  overflow: hidden;
-  position: relative;
-  width: 50%;
-  margin: 30px auto 0px;
+  @media ${device.mobileS} {
+    background: #eee;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    position: relative;
+    width: 65%;
+    margin: 30px auto 0px;
+  }
+
+  @media ${device.tablet} {
+    width: 50%;
+  }
 
   &::after {
     border-bottom: 2px solid black;

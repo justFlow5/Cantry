@@ -1,8 +1,28 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import { FuncContext, device } from '../contexts/FunctionsProvider';
 
 const Form = styled.form`
-  font-size: 13px;
+  font-size: 12px;
+
+  @media ${device.mobileS} {
+  }
+
+  @media ${device.mobileL} {
+  }
+
+  @media ${device.tablet} {
+    font-size: 13px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
   & > .radioGroup {
     border: solid 2px #333333;
     display: inline-block;
@@ -28,13 +48,32 @@ const Input = styled.input`
 `;
 
 const Label = styled.label`
-  color: #333333;
-  display: inline-block;
-  cursor: pointer;
-  font-weight: 800;
-  padding: 4px 15px;
-  background: #dedede;
-  transition: all 0.3s;
+  @media ${device.mobileS} {
+    color: #333333;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: 800;
+    padding: 4px 10px;
+    background: #dedede;
+    transition: all 0.3s;
+  }
+
+  @media ${device.mobileL} {
+    /* padding: 4px 10px; */
+  }
+
+  @media ${device.tablet} {
+    padding: 4px 15px;
+  }
+
+  @media ${device.laptop} {
+  }
+
+  @media ${device.laptopL} {
+  }
+
+  @media ${device.desktop} {
+  }
 
   &:hover {
     color: #636363;

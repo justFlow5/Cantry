@@ -52,12 +52,12 @@ const LabelBox = styled.label`
 
     @media ${device.mobileS} {
       position: relative;
-      top: -8px;
+      top: 0px;
     }
 
     @media ${device.tablet} {
       position: relative;
-      top: -6px;
+      top: 0px;
     }
     path {
       fill: none;
@@ -75,25 +75,25 @@ const LabelBox = styled.label`
 const LabelText = styled.label`
   @media ${device.mobileS} {
     position: relative;
-    bottom: 10px;
-    font-size: 17px;
+    bottom: 3px;
+    font-size: 16px;
     cursor: pointer;
     padding: 5px 5px 5px 10px;
-    color: #303030;
-    color: #606060;
-    color: #505050;
+    /* color: #303030;
+    color: #606060; */
+    color: #34353a;
     letter-spacing: 0.1px;
     display: inline;
+
     transition: all 0.2s;
   }
 
   @media ${device.mobileL} {
     padding: 5px 5px 5px 10px;
-    /* font-size: 17px; */
   }
 
   @media ${device.tablet} {
-    /* font-size: 17px; */
+    font-size: 19px;
   }
 
   @media ${device.laptop} {
@@ -155,7 +155,7 @@ const LabelText = styled.label`
 `;
 
 // const CheckInput = ({ dailyTask, id, planId, isChecked }) => {
-const CheckInput = props => {
+const CheckInputEdit = props => {
   // console.log('DAILY FROM CHECK INPUT: ', dailyTask.dailyTask);
   const { editTask } = useContext(FuncContext);
 
@@ -185,4 +185,4 @@ const CheckInput = props => {
   );
 };
 
-export default CheckInput;
+export default CheckInputEdit;

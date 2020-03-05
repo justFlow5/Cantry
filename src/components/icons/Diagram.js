@@ -5,7 +5,7 @@ export default function Diagram(props) {
     <svg
       version="1.1"
       //   id="Capa_1"
-
+      className={props.className}
       //   x="0px"
       //   y="0px"
       viewBox="0 0 480.006 480.006"
