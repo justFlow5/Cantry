@@ -208,10 +208,10 @@ const Deadline = styled.p`
 
   & > span {
     @media ${device.mobileS} {
-      font-weight: 700;
+      font-weight: 600;
       position: relative;
       /* bottom: 8px; */
-      font-size: 18px;
+      font-size: 17px;
       line-height: 1.2;
       /* right: -15px;
       z-index: 899; */
@@ -301,6 +301,10 @@ const DescriptionContainer = styled.div`
       align-items: center;
       width: 90%;
       border-bottom: 1px solid #8e8e8e;
+
+      &:first-child {
+        padding-top: 17px;
+      }
     }
     &:last-child {
       border-bottom: none;

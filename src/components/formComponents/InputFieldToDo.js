@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
+import { device } from '../contexts/FunctionsProvider';
+
 const FormField = styled.div`
   display: block;
   margin-bottom: 16px;

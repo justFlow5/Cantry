@@ -34,13 +34,19 @@ const ButtonBackContainer = styled.div`
 `;
 
 const ListContainer = styled.div`
-  position: relative;
-  display: flex;
-  /* justify-content: space-between; */
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  margin-top: 17px;
+  @media ${device.mobileS} {
+    position: relative;
+    display: flex;
+    /* justify-content: space-between; */
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 45px;
+  }
+
+  @media ${device.tablet} {
+    margin-top: 17px;
+  }
 `;
 
 const RadioButtonContainer = styled.div`

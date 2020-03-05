@@ -89,7 +89,7 @@ const LabelText = styled.label`
 
   @media ${device.mobileL} {
     padding: 5px 5px 5px 10px;
-    /* font-size: 17px; */
+    font-size: 17px;
   }
 
   @media ${device.tablet} {

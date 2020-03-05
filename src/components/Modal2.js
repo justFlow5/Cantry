@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import PlanContext from './contexts/Plan-context';
+import { device } from './contexts/FunctionsProvider';
 
 import Button from './Button';
 

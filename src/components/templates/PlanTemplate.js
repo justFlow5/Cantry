@@ -402,7 +402,7 @@ const DescriptionContainer = styled.div`
       position: relative;
 
       &:first-child {
-        padding-top: 25px;
+        padding-top: 17px;
       }
     }
 
