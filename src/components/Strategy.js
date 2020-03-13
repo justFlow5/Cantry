@@ -701,13 +701,9 @@ const Strategy = ({ location }) => {
   //     }
   //   };
 
-  const currentProgress = () => {
-    //   weighted average: low difficulty: 1 | medium: 3 | high : 5
+  const currentProgress = planJobs => {
     let nominator = 0;
     let denominator = 0;
-    // const completedTasks = planJobsEdit.filter(planJob => {
-    //   return planJob.completed === true;
-    // });
 
     planJobsEdit.forEach(planJob => {
       if (planJob.difficulty === 1) {

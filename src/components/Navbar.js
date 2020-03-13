@@ -214,6 +214,11 @@ export default () => {
         onClick={() => {
           localStorage.removeItem('plans');
           localStorage.removeItem('userData');
+          localStorage.removeItem('todo');
+          localStorage.removeItem('quoteStatus');
+          localStorage.removeItem('quoteMany');
+          localStorage.removeItem('quoteOne');
+
           firebase.auth().signOut();
         }}
       >

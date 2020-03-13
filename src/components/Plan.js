@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 // import PlanContext from './contexts/Plan-context';
 import { FuncContext } from './contexts/FunctionsProvider';
 
@@ -16,6 +16,12 @@ import PreviewIcon from './icons/Preview';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 import { device } from './contexts/FunctionsProvider';
+
+import {
+  CircularProgressbarWithChildren,
+  buildStyles
+} from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const Accordion = styled.li`
   @media ${device.mobileS} {
@@ -218,10 +224,38 @@ const LinkContainer = styled.div`
     }
   }
 `;
+
+const Procent = styled.h3`
+  @media ${device.mobileS} {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  @media ${device.mobileM} {
+    font-size: 14px;
+  }
+
+  @media ${device.mobileL} {
+    font-size: 14px;
+  }
+/* 
+  @media ${device.tablet} {
+    font-size: 26px;
+  } */
+
+  @media ${device.laptopL} {
+    font-size: 16px;
+  }
+  @media ${device.desktop} {
+    font-size: 18px;
+  }
+`;
+
 const SinglePlan = props => {
   const [setActive, setActiveState] = useState('');
   const [setHeight, setHeightState] = useState('0px');
   const [setRotate, setRotateState] = useState('accordionIcon');
+
+  const [isGoalAccomplished, setIsGoalAccomplished] = useState(false);
 
   const { goal, dailyTask, deadline } = props.plan;
   const { plan } = props;
@@ -236,8 +270,10 @@ const SinglePlan = props => {
     setRotateState(setActive === 'active' ? 'accordionIcon' : 'rotate');
   }
 
-  const formatGoal = str => str.replace(/\W+/g, '-').toLowerCase();
-  // const classess = ['editIcon', 'tooltip'];
+  const formatGoal = str => {
+    return str.replace(/\W+/g, '-').toLowerCase();
+  };
+
   console.log('HEERE IS PLAN dailyTask: ', dailyTask);
 
   return (

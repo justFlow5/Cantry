@@ -22,21 +22,6 @@ import db from '../../firebase/Firebase';
 import { AuthContext } from '../contexts/Auth';
 import { FuncContext, device } from '../contexts/FunctionsProvider';
 
-// const GlobalStyles = createGlobalStyle`
-// @import url(https://fonts.googleapis.com/css?family=Lora);
-//   blockquote {
-//     font-family: 'Notable', sans-serif;
-//   }
-// `;
-
-// const getPlan = () => {
-//   const newPlans = localStorage.getItem('plans');
-//   if (newPlans) {
-//     return setPlans(JSON.parse(newPlans));
-//   }
-// };
-
-// import Navbar from "../components/navbar"
 const ContentContainer = styled.div`
   @media ${device.mobileS} {
     width: 100%;

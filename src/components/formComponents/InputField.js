@@ -99,6 +99,13 @@ const Input = styled.input`
   width: 100%;
   resize: none;
   cursor: text;
+
+  &[disabled],
+  &[disabled]:hover,
+  &[disabled]:focus,
+  &[disabled]:active {
+    cursor: not-allowed;
+  }
 `;
 
 const InputField = props => {
@@ -155,6 +162,7 @@ const InputField = props => {
               id={props.id}
               name={props.name}
               value={props.value}
+              readonly={props.readonly}
               onChange={e => {
                 e.preventDefault();
                 props.action(e.target.value);
@@ -181,6 +189,7 @@ const InputField = props => {
             ></Input>
           ) : (
             <Input
+              disabled={props.disabled}
               id={props.id}
               name={props.name}
               value={props.value}

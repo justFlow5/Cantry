@@ -65,6 +65,8 @@ export default () => {
         name="singleTask"
         action={setTempDailyTask}
         title="Task"
+        disabled={!!dailyTask}
+
         // setInputLength={setInputLength}
       />
 
