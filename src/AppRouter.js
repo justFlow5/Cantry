@@ -32,7 +32,7 @@ const AppRouter = () => {
           {/* <PrivateRoute exact path="/" component={Dashboard} /> */}
           <PublicRoute exact path="/" component={Signup_Login2} />
           <Route exact path="/login" component={Login_SignUp} />
-          <Route exact path="/about" component={About} />
+          <PrivateRoute exact path="/about" component={About} />
           <FunctionsProvider>
             <PrivateRoute
               exact

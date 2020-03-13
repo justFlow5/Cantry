@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { firebase } from '../firebase/Firebase';
 
 import SettingsIcon from './icons/Settings';
+import WingsLogo from '../images/wingsLogo.png';
 
 const NavBar = styled.nav`
   @media ${device.mobileS} {
@@ -58,7 +59,9 @@ const NavBar = styled.nav`
 
       cursor: pointer;
       display: inline-block;
-      /* transform: scale(1); */
+      &.logoName {
+        display: none;
+      }
       transition: all 0.2s;
     }
 
@@ -66,10 +69,32 @@ const NavBar = styled.nav`
 
       @media ${device.mobileL} {
         font-size: 17px;
+
+  
       }
+
+      @media (min-width: 550px) {
+        &.logoName {
+        display: inline-block;
+        margin-left: auto;
+        font-weight: 500;
+        letter-spacing: 1.4px;
+        font-size: 25px;
+        position: relative;
+        top: -5px;
+        font-family: 'Courgette', cursive;
+        pointer-events: none;
+      }
+
+      & .logo{
+        width: 50px;
+      }
+  }
 
       @media ${device.tablet} {
         font-size: 18px;
+
+       
       }
 
       @media ${device.laptop} {
@@ -78,6 +103,8 @@ const NavBar = styled.nav`
       font-size: 21px;
       margin: 0 10px;
       padding: 5px 10px;
+
+     
 
     }
       
@@ -112,11 +139,7 @@ const NavBar = styled.nav`
 
   & .quoteOption {
         @media ${device.mobileS} {
-    
-       
-
-
-       
+ 
         }
         @media ${device.laptop} {
         display: none;
@@ -125,14 +148,20 @@ const NavBar = styled.nav`
 `;
 
 const Dropdown = styled.div`
-  margin-left: auto;
-  display: inline-block;
-  cursor: pointer;
-  position: relative;
-  padding: 5px 0px;
-  width: 30px;
-  height: 100%;
-  margin-right: 15px;
+  @media ${device.mobileS} {
+    margin-left: auto;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding: 5px 0px;
+    width: 30px;
+    height: 100%;
+    margin-right: 15px;
+  }
+
+  @media ${device.laptop} {
+    display: none;
+  }
 
   & .quoteOption {
     height: 30px;
@@ -199,6 +228,11 @@ export default () => {
       <Link to="/about">ABOUT</Link>
 
       {/* <a onClick={handleLogout}>LOGOUT</a> */}
+
+      <a className="logoName">
+        Cantry
+        <img className="logo" src={WingsLogo} />
+      </a>
       <Dropdown>
         <SettingsIcon className="quoteOption" />
         <DropdownContent className="dropdownContent">
