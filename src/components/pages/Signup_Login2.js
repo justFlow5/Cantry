@@ -216,17 +216,21 @@ const Headline = styled.p`
 const FbButton = styled.button`
   @media ${device.mobileS} {
     border: none;
-    background: #1d2122;
+    background: #538464;
     width: 120px;
     height: 25px;
     font-size: 10px;
     color: #fff;
     text-transform: uppercase;
     border-radius: 4px;
-    border: 1px solid #1d2122;
+    border: 1px solid #538464;
     cursor: pointer;
     margin-bottom: 5px;
     transition: all 0.3s linear;
+
+    &.anon {
+      margin-bottom: 15px;
+    }
   }
 
   @media ${device.mobileL} {
@@ -241,8 +245,8 @@ const FbButton = styled.button`
 
   @media ${device.laptop} {
     width: 160px;
-    font-size: 12px;
-    margin-bottom: 20px;
+    font-size: 11px;
+    margin-bottom: 5px;
   }
 
   @media ${device.laptopL} {
@@ -412,7 +416,7 @@ const Signup_Login2 = ({ history }) => {
   const [isClicked2, setIsClicked2] = useState(false);
 
   const handleLogin = useCallback(
-    async event => {
+    async (event) => {
       event.preventDefault();
       const { email, password } = event.target.elements;
       try {
@@ -431,8 +435,12 @@ const Signup_Login2 = ({ history }) => {
     firebase.auth().signInWithPopup(googleAuthProvider);
   };
 
+  const handleAnonimousLogin = () => {
+    return firebase.auth().signInAnonymously();
+  };
+
   const handleSignUp = useCallback(
-    async event => {
+    async (event) => {
       event.preventDefault();
       const { email, password } = event.target.elements;
       try {
@@ -504,7 +512,11 @@ const Signup_Login2 = ({ history }) => {
         {/* <br></br> */}
         <h3>Back!</h3>
         <FbButton type="button" onClick={handleGoogleLogin}>
-          Log In With Google
+          Login With Google
+        </FbButton>
+
+        <FbButton className="anon" type="button" onClick={handleAnonimousLogin}>
+          Login Anonymously
         </FbButton>
         <Headline>- or -</Headline>
         <Input

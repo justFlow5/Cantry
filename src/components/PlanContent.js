@@ -118,7 +118,7 @@ export default props => {
     return `${time} ${prefix}`;
   };
   // const dailyTaskProps = dailyTask;
-  console.log('props.dailyTaskprops.dailyTask: ', props.dailyTask);
+  // console.log('props.dailyTaskprops.dailyTask: ', props.dailyTask);
 
   return (
     <>
